@@ -15,21 +15,29 @@ from __future__ import annotations
 import sys
 from typing import Any, Dict, List, Optional
 
-from textual.app import App, ComposeResult
-from textual.binding import Binding
-from textual.containers import Container, Horizontal, Vertical
-from textual.screen import Screen
-from textual.widgets import (
-    Button,
-    Footer,
-    Header,
-    Input,
-    Label,
-    ListItem,
-    ListView,
-    Markdown,
-    Static,
-)
+try:
+    from textual.app import App, ComposeResult
+    from textual.binding import Binding
+    from textual.containers import Container, Horizontal, Vertical
+    from textual.screen import Screen
+    from textual.widgets import (
+        Button,
+        Footer,
+        Header,
+        Input,
+        Label,
+        ListItem,
+        ListView,
+        Markdown,
+        Static,
+    )
+except ImportError:
+    raise SystemExit(
+        "The interactive TUI requires the 'textual' package, which is not installed.\n"
+        "Install it with one of:\n"
+        "  uv sync --extra tui\n"
+        "  pip install 'eu-ai-act-tool[tui]'"
+    )
 
 from . import compliance, data, search
 

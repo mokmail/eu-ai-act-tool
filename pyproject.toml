@@ -8,6 +8,9 @@ version = "1.0.0"
 description = "Exhaustive CLI + dataset + docs tool for navigating, understanding and applying the EU AI Act (Regulation (EU) 2024/1689)."
 readme = "README.md"
 requires-python = ">=3.9"
+dependencies = [
+    "textual>=0.80",
+]
 license = { text = "MIT" }
 authors = [{ name = "Mohammed Kmail", email = "kmail@kmail.at" }]
 keywords = ["eu-ai-act", "ai-act", "compliance", "regulation", "european-union", "artificial-intelligence"]
