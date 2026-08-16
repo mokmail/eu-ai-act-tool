@@ -24,7 +24,7 @@ import json
 import sys
 from typing import Any, Dict, List, Optional
 
-from . import ai_provider, ai_rag, compliance, data, search, vector_store
+from . import compliance, data, search
 
 
 # --- Output helpers --------------------------------------------------------
@@ -313,6 +313,9 @@ def _print_ai_result(result: Dict[str, Any], json_out: bool = False) -> None:
 
 def _dispatch_ai(args: argparse.Namespace) -> None:
     """Dispatch the `ai` subcommands."""
+    # Lazy imports so the base CLI works without the AI extras installed.
+    from . import ai_provider, ai_rag, vector_store
+
     cmd = args.ai_command
 
     if cmd == "embed":
@@ -471,9 +474,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     except data.DataError as e:
         print(f"Error: {e}", file=sys.stderr)
         return 1
-    except (ai_provider.ProviderError, ai_rag.ProviderError) as e:
-        print(f"AI Error: {e}", file=sys.stderr)
-        return 1
+    except Exception as e:
+        # Catch AI provider errors (lazily imported) without a hard dependency.
+        if type(e).__name__ == "ProviderError":
+            print(f"AI Error: {e}", file=sys.stderr)
+            return 1
+        raise
 
     return 0
 
