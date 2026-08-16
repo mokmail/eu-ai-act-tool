@@ -196,6 +196,26 @@ Every command supports `--json` for machine-readable output.
 
 ---
 
+## Interactive TUI
+
+For a menu-driven, arrow-key-navigable browser, use the built-in **TUI** (built on [Textual](https://textual.textualize.io/)):
+
+```bash
+# Install with the TUI extra
+pip install -e ".[tui]"
+# or with uv
+uv sync --extra tui
+
+# Launch the TUI
+eu-ai-act-tui
+```
+
+The TUI gives you a home menu with 13 sections — search, articles, recitals, annexes, risk tiers, actors, compliance checklists, timeline, penalties, definitions, governance bodies, cross-references, and the official citation. Navigate with **arrow keys**, select with **Enter**, go back with **Esc**, and quit with **q**.
+
+> **Note:** The TUI requires a terminal that supports full-screen interactive apps (not a plain piped/CI environment).
+
+---
+
 ## What the EU AI Act is
 
 Regulation (EU) 2024/1689 is the world's first comprehensive, horizontal legal framework for artificial intelligence. It was adopted by the European Parliament and the Council, published in the Official Journal on **12 July 2024**, entered into force on **1 August 2024**, and applies in full from **2 August 2026** (with phased application of specific chapters earlier).

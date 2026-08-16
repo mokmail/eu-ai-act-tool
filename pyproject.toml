@@ -21,9 +21,11 @@ classifiers = [
 
 [project.scripts]
 eu-ai-act = "eu_ai_act.cli:main"
+eu-ai-act-tui = "eu_ai_act.tui:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=7", "pytest-cov"]
+tui = ["textual>=0.80"]
 
 [tool.setuptools]
 package-dir = { "" = "src" }
@@ -37,3 +39,9 @@ eu_ai_act = ["data/*.json"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+
+[dependency-groups]
+dev = [
+    "pytest-asyncio>=1.2.0",
+    "textual>=0.80",
+]
