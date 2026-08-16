@@ -12,12 +12,129 @@ This repository ships three integrated layers:
 
 ---
 
-## Quick start
+## Installation
+
+### Prerequisites
+
+- **Python 3.9 or newer** (3.11+ recommended). Check your version:
+
+  ```bash
+  python3 --version
+  ```
+
+- **`pip`** (Python's package installer). On most systems it ships with Python. If missing:
+
+  ```bash
+  # Debian / Ubuntu
+  sudo apt install python3-pip
+
+  # macOS (Homebrew)
+  brew install python3
+  ```
+
+- **`git`** (only needed for the "install from source" methods). Check:
+
+  ```bash
+  git --version
+  ```
+
+---
+
+### Method 1 — Install from PyPI (recommended, simplest)
+
+If the package is published to PyPI, install it directly:
 
 ```bash
-# Install (Python 3.9+)
-pip install -e ".[dev]"
+pip install eu-ai-act-tool
+```
 
+> **Note:** If this package is not yet on PyPI, use Method 2 or 3 below. (The dataset is bundled inside the package, so no extra download is needed.)
+
+---
+
+### Method 2 — Install from GitHub (no clone needed)
+
+Install straight from the repository:
+
+```bash
+pip install git+https://github.com/mokmail/eu-ai-act-tool.git
+```
+
+---
+
+### Method 3 — Clone and install in editable mode (for development)
+
+This is the recommended approach if you want to modify the code or run the tests.
+
+**Step 1 — Clone the repository:**
+
+```bash
+git clone https://github.com/mokmail/eu-ai-act-tool.git
+cd eu-ai-act-tool
+```
+
+**Step 2 — (Recommended) Create and activate a virtual environment.**
+
+A virtual environment keeps the tool's dependencies isolated from your system Python.
+
+```bash
+# Create the virtual environment
+python3 -m venv .venv
+
+# Activate it
+# Linux / macOS:
+source .venv/bin/activate
+# Windows (PowerShell):
+# .venv\Scripts\Activate.ps1
+```
+
+**Step 3 — Install the package (with dev dependencies for testing):**
+
+```bash
+pip install -e ".[dev]"
+```
+
+**Step 4 — Verify the installation:**
+
+```bash
+eu-ai-act citation
+```
+
+You should see the official citation of Regulation (EU) 2024/1689. If the command is not found, make sure your virtual environment is activated (Step 2).
+
+---
+
+### Method 4 — Run without installing (from source)
+
+If you prefer not to install anything, you can run the CLI directly from the source tree:
+
+```bash
+git clone https://github.com/mokmail/eu-ai-act-tool.git
+cd eu-ai-act-tool
+python3 -m eu_ai_act.cli citation
+```
+
+> This requires the `src/` directory to be on your `PYTHONPATH`. The simplest way is to install in editable mode (Method 3), which handles this automatically.
+
+---
+
+### Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| `eu-ai-act: command not found` | Your virtual environment isn't activated, or the install didn't complete. Re-run `source .venv/bin/activate` then `pip install -e ".[dev]"`. |
+| `pip: command not found` | Install pip (see Prerequisites) or use `python3 -m pip install ...`. |
+| `externally-managed-environment` error (PEP 668) | You're on a system Python that blocks pip. Use a virtual environment (Method 3, Step 2). |
+| Permission errors during install | Use a virtual environment, or add `--user` to the pip command. |
+| `ModuleNotFoundError: eu_ai_act` | The package isn't installed. Run `pip install -e ".[dev]"` from the repo root. |
+
+---
+
+## Quick start
+
+Once installed, you can start using the tool immediately:
+
+```bash
 # Search the Act
 eu-ai-act search "human oversight"
 
