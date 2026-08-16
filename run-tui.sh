@@ -54,4 +54,15 @@ fi
 # --- 3. Launch the TUI ------------------------------------------------------
 echo "==> Starting the EU AI Act TUI..."
 echo "    (press 'q' to quit)"
-$RUN eu-ai-act-tui
+if [ -t 0 ]; then
+    # stdin is already a terminal: run normally.
+    $RUN eu-ai-act-tui
+elif [ -e /dev/tty ]; then
+    # stdin is not a terminal (e.g. piped via 'curl | sh'), but a controlling
+    # terminal exists: read keyboard input from it so the TUI is not stuck.
+    $RUN eu-ai-act-tui < /dev/tty
+else
+    echo "ERROR: no terminal available for the interactive TUI." >&2
+    echo "Run the script directly (./run-tui.sh) in a terminal instead of piping it." >&2
+    exit 1
+fi
