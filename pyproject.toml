@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eu-ai-act-tool"
+version = "1.0.0"
+description = "Exhaustive CLI + dataset + docs tool for navigating, understanding and applying the EU AI Act (Regulation (EU) 2024/1689)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Mohammed Kmail", email = "kmail@kmail.at" }]
+keywords = ["eu-ai-act", "ai-act", "compliance", "regulation", "european-union", "artificial-intelligence"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.scripts]
+eu-ai-act = "eu_ai_act.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "pytest-cov"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+eu_ai_act = ["data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

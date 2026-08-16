@@ -1,0 +1,311 @@
+{
+  "meta": {
+    "title": "EU AI Act — Curated Analytical Dataset",
+    "regulation": "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
+    "official_citation": "Regulation (EU) 2024/1689 of the European Parliament and of the Council of 13 June 2024 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act), OJ L, 2024/1689, 12.7.2024.",
+    "source": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32024R1689",
+    "published": "2024-07-12",
+    "entered_into_force": "2024-08-01",
+    "applies_from": "2026-08-02",
+    "generated": "2026-08-16",
+    "note": "This curated dataset is an analytical layer built on top of the official EUR-Lex text (see data/raw_articles_recitals_annexes.json). Every obligation, penalty, and timeline entry cites its source article(s). It is a compliance aid, not legal advice."
+  },
+  "risk_tiers": [
+    {
+      "tier": "prohibited",
+      "label": "Prohibited AI practices",
+      "summary": "AI practices that are banned outright because they pose unacceptable risk to fundamental rights and safety.",
+      "legal_basis": "Article 5",
+      "applies_from": "2025-02-02",
+      "penalty": "Up to EUR 35,000,000 or 7% of total worldwide annual turnover, whichever is higher (Article 99(3))",
+      "practices": [
+        {
+          "id": "5a",
+          "ref": "Article 5(1)(a)",
+          "name": "Subliminal / manipulative / deceptive techniques",
+          "description": "Deploying subliminal techniques beyond a person's consciousness, or purposefully manipulative or deceptive techniques, with the objective or effect of materially distorting behaviour by appreciably impairing informed decision-making, causing significant harm.",
+          "exceptions": "None"
+        },
+        {
+          "id": "5b",
+          "ref": "Article 5(1)(b)",
+          "name": "Exploitation of vulnerabilities",
+          "description": "Exploiting vulnerabilities of a person or group due to age, disability, or specific social or economic situation, to materially distort behaviour causing significant harm.",
+          "exceptions": "None"
+        },
+        {
+          "id": "5c",
+          "ref": "Article 5(1)(c)",
+          "name": "Social scoring",
+          "description": "Evaluation or classification of persons over time based on social behaviour or predicted personal characteristics, where the social score leads to detrimental/unfavourable treatment unrelated to the original data context, or unjustified/disproportionate treatment.",
+          "exceptions": "None"
+        },
+        {
+          "id": "5d",
+          "ref": "Article 5(1)(d)",
+          "name": "Predictive policing based solely on profiling",
+          "description": "Risk assessments of persons to predict criminal-offence risk based solely on profiling or personality traits. Does NOT apply to AI supporting human assessment of involvement in criminal activity based on objective, verifiable facts directly linked to the activity.",
+          "exceptions": "AI systems supporting human assessment of criminal involvement based on objective verifiable facts (Article 5(1)(d) second subparagraph)"
+        },
+        {
+          "id": "5e",
+          "ref": "Article 5(1)(e)",
+          "name": "Untargeted scraping of facial images",
+          "description": "Creating or expanding facial recognition databases through untargeted scraping of facial images from the internet or CCTV footage.",
+          "exceptions": "None"
+        },
+        {
+          "id": "5f",
+          "ref": "Article 5(1)(f)",
+          "name": "Emotion inference in workplace and education",
+          "description": "Inferring emotions of a person in the areas of workplace and education institutions, except where used for medical or safety reasons.",
+          "exceptions": "Medical or safety reasons (Article 5(1)(f))"
+        },
+        {
+          "id": "5g",
+          "ref": "Article 5(1)(g)",
+          "name": "Biometric categorisation of sensitive attributes",
+          "description": "Biometric categorisation systems that infer sensitive attributes (race, political opinions, trade union membership, religious/belief, sex life or sexual orientation) from biometric data.",
+          "exceptions": "Labelling/filtering of lawfully acquired biometric datasets, or where law enforcement categorises in accordance with Union law (Article 5(1)(g))"
+        },
+        {
+          "id": "5h",
+          "ref": "Article 5(1)(h)",
+          "name": "Real-time remote biometric identification in publicly accessible spaces (law enforcement)",
+          "description": "Real-time remote biometric identification (RBI) in publicly accessible spaces for law enforcement, subject to strict conditions and prior judicial/administrative authorisation.",
+          "exceptions": "Strictly limited to: (i) search for missing persons/abducted victims; (ii) prevention of a specific, substantial and imminent threat to life or physical safety or a genuine and present or real and foreseeable terrorist attack; (iii) detection, localisation, identification or prosecution of perpetrators of specific listed serious crimes (Annex II). Requires prior authorisation (Article 5(2)-(6))"
+        }
+      ]
+    },
+    {
+      "tier": "high_risk",
+      "label": "High-risk AI systems",
+      "summary": "AI systems that pose significant risk to health, safety, or fundamental rights. Subject to the most extensive obligations (risk management, data governance, technical documentation, human oversight, etc.).",
+      "legal_basis": "Articles 6, 7, 9-27, Annexes I, III",
+      "applies_from": "2026-08-02 (Article 6(1) and corresponding obligations apply from 2027-08-02)",
+      "classification": [
+        {
+          "ref": "Article 6(1) + Annex I",
+          "rule": "AI systems that are safety components of products, or AI systems themselves, covered by Union harmonisation legislation listed in Annex I, and required to undergo third-party conformity assessment under that legislation, are high-risk."
+        },
+        {
+          "ref": "Article 6(2) + Annex III",
+          "rule": "AI systems falling within the 8 areas of Annex III are high-risk UNLESS they do not pose a significant risk of harm to health, safety or fundamental rights, do not materially influence the outcome of decision-making, and are not used for profiling of natural persons (Article 6(3))."
+        }
+      ],
+      "annex_iii_areas": [
+        {"area": 1, "ref": "Annex III, point 1", "name": "Biometrics", "description": "Biometric identification, categorisation, and emotion recognition systems (with exceptions for verification systems)."},
+        {"area": 2, "ref": "Annex III, point 2", "name": "Critical infrastructure", "description": "Safety components of critical digital infrastructure, roads, water, gas, heating, electricity management."},
+        {"area": 3, "ref": "Annex III, point 3", "name": "Education and vocational training", "description": "Determining access, admission, or evaluation of learning outcomes; assessing appropriate level of education; monitoring and detecting prohibited behaviour during tests."},
+        {"area": 4, "ref": "Annex III, point 4", "name": "Employment, workers management, access to self-employment", "description": "Recruitment/selection, promotion/termination, task allocation, monitoring and evaluating performance and behaviour."},
+        {"area": 5, "ref": "Annex III, point 5", "name": "Access to essential private and public services and benefits", "description": "Evaluating eligibility for essential services/benefits, creditworthiness (except small-scale consumer credit), emergency services dispatch/prioritisation."},
+        {"area": 6, "ref": "Annex III, point 6", "name": "Law enforcement", "description": "Individual risk assessment, polygraphs, evaluating reliability of evidence, assessing risk of re-offending, profiling in criminal investigations/prosecutions."},
+        {"area": 7, "ref": "Annex III, point 7", "name": "Migration, asylum and border control management", "description": "Polygraphs, assessing security/risk of persons, examining applications for international protection, border surveillance."},
+        {"area": 8, "ref": "Annex III, point 8", "name": "Administration of justice and democratic processes", "description": "Assisting judicial authorities in researching/interpreting/applying law, influencing elections/referendums/voting behaviour."}
+      ],
+      "obligations": [
+        {"ref": "Article 9", "obligation": "Risk management system"},
+        {"ref": "Article 10", "obligation": "Data and data governance"},
+        {"ref": "Article 11", "obligation": "Technical documentation"},
+        {"ref": "Article 12", "obligation": "Record-keeping (automatic logs)"},
+        {"ref": "Article 13", "obligation": "Transparency and provision of information to deployers"},
+        {"ref": "Article 14", "obligation": "Human oversight"},
+        {"ref": "Article 15", "obligation": "Accuracy, robustness and cybersecurity"},
+        {"ref": "Article 16", "obligation": "Obligations of providers (quality management system, corrective actions, cooperation, etc.)"},
+        {"ref": "Article 17", "obligation": "Quality management system"},
+        {"ref": "Article 18", "obligation": "Documentation keeping"},
+        {"ref": "Article 19", "obligation": "Automatically generated logs"},
+        {"ref": "Article 20", "obligation": "Corrective actions and duty of information"},
+        {"ref": "Article 21", "obligation": "Cooperation with competent authorities"},
+        {"ref": "Article 22", "obligation": "Authorised representatives"},
+        {"ref": "Article 23", "obligation": "Obligations of importers"},
+        {"ref": "Article 24", "obligation": "Obligations of distributors"},
+        {"ref": "Article 25", "obligation": "Responsibilities along the AI value chain"},
+        {"ref": "Article 26", "obligation": "Obligations of deployers"},
+        {"ref": "Article 27", "obligation": "Fundamental rights impact assessment"},
+        {"ref": "Article 43", "obligation": "Conformity assessment"},
+        {"ref": "Article 47", "obligation": "EU declaration of conformity"},
+        {"ref": "Article 48", "obligation": "CE marking"},
+        {"ref": "Article 49", "obligation": "Registration in EU database"},
+        {"ref": "Article 72", "obligation": "Post-market monitoring"},
+        {"ref": "Article 73", "obligation": "Reporting of serious incidents"}
+      ]
+    },
+    {
+      "tier": "limited_risk",
+      "label": "Limited-risk / transparency AI systems",
+      "summary": "AI systems with specific transparency obligations (e.g., chatbots, deepfakes, emotion recognition, biometric categorisation).",
+      "legal_basis": "Article 50",
+      "applies_from": "2026-08-02",
+      "obligations": [
+        {"ref": "Article 50(1)", "obligation": "AI systems intended to interact directly with natural persons must be designed so users are informed they are interacting with an AI system (unless obvious)."},
+        {"ref": "Article 50(2)", "obligation": "Emotion recognition or biometric categorisation systems must inform persons exposed to them."},
+        {"ref": "Article 50(3)", "obligation": "Deepfakes must be disclosed as artificially generated or manipulated."},
+        {"ref": "Article 50(4)", "obligation": "AI-generated text intended to inform the public on matters of public interest must be disclosed as artificially generated."}
+      ]
+    },
+    {
+      "tier": "minimal_risk",
+      "label": "Minimal-risk AI systems",
+      "summary": "All other AI systems. No mandatory obligations under the AI Act, but voluntary codes of conduct are encouraged (Article 95).",
+      "legal_basis": "Article 95 (voluntary codes of conduct)",
+      "applies_from": "N/A (voluntary)",
+      "obligations": [
+        {"ref": "Article 95", "obligation": "Voluntary application of the high-risk requirements via codes of conduct."}
+      ]
+    }
+  ],
+  "actors": [
+    {
+      "actor": "provider",
+      "definition_ref": "Article 3(3)",
+      "definition": "A natural or legal person, public authority, agency or other body that develops an AI system or a general-purpose AI model or that has an AI system or a general-purpose AI model developed and places it on the market or puts it into service, under its own name or trademark, whether for payment or free of charge.",
+      "key_obligations": [
+        {"ref": "Article 16", "obligation": "Ensure high-risk systems comply with requirements (Articles 9-15), have quality management system, technical documentation, logs, corrective actions, cooperation."},
+        {"ref": "Article 22", "obligation": "Appoint authorised representative (if established outside the EU)."},
+        {"ref": "Article 43", "obligation": "Undergo conformity assessment."},
+        {"ref": "Article 47", "obligation": "Draw up EU declaration of conformity."},
+        {"ref": "Article 48", "obligation": "Affix CE marking."},
+        {"ref": "Article 49", "obligation": "Register high-risk systems in EU database."},
+        {"ref": "Article 50", "obligation": "Comply with transparency obligations."},
+        {"ref": "Article 53", "obligation": "GPAI model providers: technical documentation, copyright policy, training-data summary."},
+        {"ref": "Article 55", "obligation": "GPAI systemic-risk providers: model evaluation, adversarial testing, systemic-risk mitigation, incident reporting, cybersecurity."}
+      ]
+    },
+    {
+      "actor": "deployer",
+      "definition_ref": "Article 3(4)",
+      "definition": "A natural or legal person, public authority, agency or other body using an AI system under its authority, except where the AI system is used in the course of a personal non-professional activity.",
+      "key_obligations": [
+        {"ref": "Article 26", "obligation": "Use high-risk systems in accordance with instructions, ensure human oversight, monitor operation, keep logs, cooperate with authorities."},
+        {"ref": "Article 27", "obligation": "Conduct fundamental rights impact assessment (for public bodies and certain private deployers of high-risk systems)."},
+        {"ref": "Article 50", "obligation": "Comply with transparency obligations."},
+        {"ref": "Article 4", "obligation": "Ensure AI literacy of staff."}
+      ]
+    },
+    {
+      "actor": "importer",
+      "definition_ref": "Article 3(6)",
+      "definition": "A natural or legal person established in the Union that places on the market or puts into service an AI system or general-purpose AI model bearing the name or trademark of a natural or legal person established outside the Union.",
+      "key_obligations": [
+        {"ref": "Article 23", "obligation": "Verify provider compliance, ensure conformity assessment done, keep copies of documentation, cooperate with authorities."}
+      ]
+    },
+    {
+      "actor": "distributor",
+      "definition_ref": "Article 3(7)",
+      "definition": "A natural or legal person in the supply chain, other than the provider or importer, that makes an AI system or general-purpose AI model available on the Union market.",
+      "key_obligations": [
+        {"ref": "Article 24", "obligation": "Verify CE marking, documentation, instructions; cooperate with authorities; take corrective action if non-compliant."}
+      ]
+    },
+    {
+      "actor": "authorised_representative",
+      "definition_ref": "Article 3(5)",
+      "definition": "A natural or legal person established in the Union who has received a written mandate from a provider to act on its behalf regarding specified tasks.",
+      "key_obligations": [
+        {"ref": "Article 22", "obligation": "Act on behalf of non-EU providers; keep documentation; cooperate with authorities."}
+      ]
+    },
+    {
+      "actor": "operator",
+      "definition_ref": "Article 3(8)",
+      "definition": "A provider, deployer, importer, distributor, or authorised representative.",
+      "key_obligations": [
+        {"ref": "Article 99", "obligation": "Subject to penalties for non-compliance."}
+      ]
+    }
+  ],
+  "timeline": [
+    {"date": "2024-07-12", "event": "Publication in the Official Journal of the EU (OJ L, 2024/1689).", "ref": "Article 113"},
+    {"date": "2024-08-01", "event": "Entry into force (20th day after publication).", "ref": "Article 113"},
+    {"date": "2025-02-02", "event": "Chapters I and II apply: general provisions, definitions, and prohibited AI practices (Article 5).", "ref": "Article 113(a)"},
+    {"date": "2025-08-02", "event": "Chapter III Section 4 (notified bodies), Chapter V (GPAI models), Chapter VII (governance), Chapter XII (final provisions) and Article 78 (confidentiality) apply, except Article 101.", "ref": "Article 113(b)"},
+    {"date": "2026-08-02", "event": "Full application of the Regulation (all remaining provisions).", "ref": "Article 113"},
+    {"date": "2027-08-02", "event": "Article 6(1) and corresponding obligations apply (high-risk classification for AI systems that are safety components of products under Annex I).", "ref": "Article 113(c)"}
+  ],
+  "penalties": [
+    {"ref": "Article 99(3)", "violation": "Non-compliance with prohibited practices (Article 5)", "fine": "Up to EUR 35,000,000 or 7% of total worldwide annual turnover, whichever higher"},
+    {"ref": "Article 99(4)", "violation": "Non-compliance with obligations of providers (Art 16), authorised representatives (Art 22), importers (Art 23), distributors (Art 24), deployers (Art 26), notified bodies (Arts 31, 33, 34), transparency obligations (Art 50)", "fine": "Up to EUR 15,000,000 or 3% of total worldwide annual turnover, whichever higher"},
+    {"ref": "Article 99(5)", "violation": "Supply of incorrect, incomplete or misleading information to notified bodies or national competent authorities", "fine": "Up to EUR 7,500,000 or 1% of total worldwide annual turnover, whichever higher"},
+    {"ref": "Article 99(6)", "violation": "SMEs/start-ups: fines capped at lower of the above amounts", "note": "Member States may cap fines for SMEs/start-ups at the lower of the amounts"},
+    {"ref": "Article 100", "violation": "Infringements by Union institutions, bodies, offices and agencies", "fine": "Fines set by the Commission, up to the amounts in Article 99"},
+    {"ref": "Article 101", "violation": "Non-compliance by providers of general-purpose AI models (Art 53) or systemic-risk providers (Art 55), or failure to comply with Commission requests (Arts 91, 92, 93)", "fine": "Up to EUR 15,000,000 or 3% of total worldwide annual turnover, whichever higher (imposed by the Commission)"}
+  ],
+  "definitions": {
+    "ai_system": {"ref": "Article 3(1)", "definition": "A machine-based system designed to operate with varying levels of autonomy, that may exhibit adaptiveness after deployment, and that, for explicit or implicit objectives, infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments."},
+    "provider": {"ref": "Article 3(3)", "definition": "A natural or legal person, public authority, agency or other body that develops an AI system or a general-purpose AI model or that has one developed and places it on the market or puts it into service, under its own name or trademark, whether for payment or free of charge."},
+    "deployer": {"ref": "Article 3(4)", "definition": "A natural or legal person, public authority, agency or other body using an AI system under its authority, except where used in the course of a personal non-professional activity."},
+    "general_purpose_ai_model": {"ref": "Article 3(63)", "definition": "An AI model, including where trained with a large amount of data using self-supervision at scale, that displays significant generality and is capable of competently performing a wide range of distinct tasks regardless of the way the model is placed on the market."},
+    "systemic_risk": {"ref": "Article 3(65)", "definition": "A risk that is specific to the high-impact capabilities of general-purpose AI models, having a significant impact on the Union market, and with real or reasonably foreseeable negative effects on public health, safety, public security, fundamental rights, or society at large."},
+    "deep_fake": {"ref": "Article 3(60)", "definition": "AI-generated or manipulated image, audio or video content that resembles existing persons, objects, places, entities or events and would falsely appear to a person to be authentic or truthful."},
+    "emotion_recognition_system": {"ref": "Article 3(39)", "definition": "An AI system for the purpose of identifying or inferring emotions or intentions of natural persons on the basis of their biometric data."},
+    "biometric_identification": {"ref": "Article 3(35)", "definition": "The automated recognition of physical, physiological, behavioural, and psychological human features for the purpose of establishing an individual's identity."},
+    "biometric_verification": {"ref": "Article 3(36)", "definition": "The automated, one-to-one verification of a natural person's identity, including by verifying the identity of a person by comparing two sets of biometric data."},
+    "profiling": {"ref": "Article 3(52)", "definition": "Any form of automated processing of personal data to evaluate certain personal aspects relating to a natural person, in particular to analyse or predict aspects concerning performance at work, economic situation, health, personal preferences, interests, reliability, behaviour, location or movements."},
+    "ai_literacy": {"ref": "Article 3(56)", "definition": "The skills, knowledge and understanding that allow providers, deployers and affected persons, taking into account their respective rights and obligations, to make an informed deployment of AI systems, as well as to gain awareness about the opportunities and risks of AI and possible harm it can cause."}
+  },
+  "delegated_acts": [
+    {"ref": "Article 7", "subject": "Amendments to Annex III (high-risk list) to add or modify high-risk areas."},
+    {"ref": "Article 51(3)", "subject": "Amend thresholds for systemic-risk classification (10^25 FLOPs) and benchmarks/indicators."},
+    {"ref": "Article 97", "subject": "General delegation of power to adopt delegated acts."}
+  ],
+  "governance_bodies": [
+    {"body": "AI Office", "ref": "Article 64", "role": "Commission body responsible for oversight of general-purpose AI models, coordination, and enforcement at EU level."},
+    {"body": "European Artificial Intelligence Board", "ref": "Article 65", "role": "Advisory body ensuring consistent application of the Regulation across Member States."},
+    {"body": "Advisory Forum", "ref": "Article 67", "role": "Provides technical and expert advice to the Board and the Commission."},
+    {"body": "Scientific Panel of Independent Experts", "ref": "Article 68", "role": "Provides scientific and technical advice, alerts on systemic risks."},
+    {"body": "National Competent Authorities", "ref": "Article 70", "role": "Member State authorities responsible for market surveillance and enforcement."}
+  ],
+  "cross_references": {
+    "gpaI_models": {
+      "ref": "Chapter V (Articles 51-56)",
+      "summary": "General-purpose AI models and GPAI models with systemic risk are subject to transparency and risk-management obligations.",
+      "key_articles": [
+        {"ref": "Article 51", "subject": "Classification of GPAI models with systemic risk (10^25 FLOPs presumption)."},
+        {"ref": "Article 52", "subject": "Procedure for classification."},
+        {"ref": "Article 53", "subject": "Obligations for providers of GPAI models (technical documentation, copyright policy, training-data summary)."},
+        {"ref": "Article 54", "subject": "Authorised representatives of GPAI providers."},
+        {"ref": "Article 55", "subject": "Obligations of systemic-risk providers (model evaluation, adversarial testing, risk mitigation, incident reporting, cybersecurity)."},
+        {"ref": "Article 56", "subject": "Codes of practice."}
+      ]
+    },
+    "sandboxes": {
+      "ref": "Articles 57-59",
+      "summary": "AI regulatory sandboxes allow controlled testing of innovative AI systems before market placement.",
+      "key_articles": [
+        {"ref": "Article 57", "subject": "Establishment of AI regulatory sandboxes."},
+        {"ref": "Article 58", "subject": "Detailed arrangements and functioning."},
+        {"ref": "Article 59", "subject": "Further processing of personal data for developing certain AI systems in the public interest in the sandbox."}
+      ]
+    },
+    "real_world_testing": {
+      "ref": "Articles 60-61",
+      "summary": "Testing of high-risk AI systems in real-world conditions outside sandboxes, subject to conditions and informed consent.",
+      "key_articles": [
+        {"ref": "Article 60", "subject": "Testing of high-risk AI systems in real-world conditions outside AI regulatory sandboxes."},
+        {"ref": "Article 61", "subject": "Informed consent to participate in testing in real-world conditions."}
+      ]
+    },
+    "market_surveillance": {
+      "ref": "Articles 74-83",
+      "summary": "Market surveillance and control of AI systems in the Union market, including procedures for dealing with risky or non-compliant systems.",
+      "key_articles": [
+        {"ref": "Article 74", "subject": "Market surveillance and control of AI systems."},
+        {"ref": "Article 79", "subject": "Procedure at national level for dealing with AI systems presenting a risk."},
+        {"ref": "Article 81", "subject": "Union safeguard procedure."},
+        {"ref": "Article 83", "subject": "Formal non-compliance."}
+      ]
+    },
+    "fundamental_rights": {
+      "ref": "Articles 27, 77, 85, 86",
+      "summary": "Fundamental rights protections: impact assessments, authority powers, complaint rights, right to explanation.",
+      "key_articles": [
+        {"ref": "Article 27", "subject": "Fundamental rights impact assessment for high-risk systems."},
+        {"ref": "Article 77", "subject": "Powers of authorities protecting fundamental rights."},
+        {"ref": "Article 85", "subject": "Right to lodge a complaint with a market surveillance authority."},
+        {"ref": "Article 86", "subject": "Right to explanation of individual decision-making."}
+      ]
+    }
+  }
+}
