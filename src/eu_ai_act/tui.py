@@ -599,10 +599,7 @@ class AIChatScreen(Screen):
             return
         out = self.query_one("#ai_output", Markdown)
         out.update(f"*Asking: {query}...*")
-        # Run the RAG ask in a thread to avoid blocking the UI
-        from textual import work
-
-        @work(thread=True)
+        # Run the RAG ask in a background thread to avoid blocking the UI.
         def do_ask() -> None:
             try:
                 from . import ai_rag
@@ -611,11 +608,11 @@ class AIChatScreen(Screen):
                 answer = result.get("answer", "")
                 sources = result.get("sources", [])
                 src = f"\n\n---\n*Sources: {', '.join(sources)}*" if sources else ""
-                self.call_from_thread(out.update, f"{answer}{src}")
+                self.app.call_from_thread(out.update, f"{answer}{src}")
             except Exception as e:
-                self.call_from_thread(out.update, f"*Error: {e}*")
+                self.app.call_from_thread(out.update, f"*Error: {e}*")
 
-        do_ask()
+        self.run_worker(do_ask, thread=True)
         self.query_one("#ai_query", Input).value = ""
 
 

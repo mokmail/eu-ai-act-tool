@@ -35,6 +35,29 @@ async def test_tui_search_screen():
 
 
 @pytest.mark.asyncio
+async def test_tui_ai_chat_screen_submit():
+    """Submitting a query in the AI chat screen must not crash.
+
+    Regression: the @work(thread=True) decorator was applied to a nested
+    function with no self argument, raising IndexError. It now uses
+    self.run_worker(do_ask, thread=True).
+    """
+    from eu_ai_act.tui import AIChatScreen
+
+    app = EUAIActApp()
+    async with app.run_test() as pilot:
+        await pilot.pause()
+        app.push_screen(AIChatScreen())
+        await pilot.pause()
+        assert "AIChatScreen" in type(app.screen).__name__
+        # Submit a query; the worker runs in a background thread.
+        await pilot.press("h", "e", "l", "l", "o")
+        await pilot.press("enter")
+        await pilot.pause()
+        assert app.screen is not None
+
+
+@pytest.mark.asyncio
 async def test_tui_markdown_screens_render():
     """All Markdown-based detail screens must render without crashing."""
     from eu_ai_act.tui import (
