@@ -36,3 +36,4 @@ eu_ai_act = ["data/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]

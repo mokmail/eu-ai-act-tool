@@ -104,6 +104,30 @@ You should see the official citation of Regulation (EU) 2024/1689. If the comman
 
 ---
 
+### Using `uv` (fast, modern alternative)
+
+This project is `uv`-compatible and ships a `uv.lock` for reproducible installs. If you use [uv](https://docs.astral.sh/uv/):
+
+```bash
+# Install the project and its dev dependencies from the lockfile
+uv sync
+
+# Run the CLI
+uv run eu-ai-act citation
+
+# Run the tests
+uv run pytest
+```
+
+To add the tool to an existing `uv` project (from the git repo, since it is not yet on PyPI):
+
+```bash
+uv add "eu-ai-act-tool @ git+https://github.com/mokmail/eu-ai-act-tool.git"
+uv run eu-ai-act citation
+```
+
+---
+
 ### Method 4 — Run without installing (from source)
 
 If you prefer not to install anything, you can run the CLI directly from the source tree:
