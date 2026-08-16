@@ -10,6 +10,8 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "textual>=0.80",
+    "httpx>=0.27",
+    "chromadb>=0.5",
 ]
 license = { text = "MIT" }
 authors = [{ name = "Mohammed Kmail", email = "kmail@kmail.at" }]
