@@ -52,17 +52,28 @@ else
 fi
 
 # --- 3. Launch the TUI ------------------------------------------------------
+# The TUI is a full-screen interactive app. It needs a real terminal (a TTY)
+# and a TERM that is not 'dumb'. When piped via 'curl | sh', stdin is the
+# curl pipe, so we redirect the TUI's input from the controlling terminal.
+can_tui() {
+    [ "$TERM" != "dumb" ] && { [ -t 0 ] || [ -e /dev/tty ]; }
+}
+
 echo "==> Starting the EU AI Act TUI..."
-echo "    (press 'q' to quit)"
-if [ -t 0 ]; then
-    # stdin is already a terminal: run normally.
+echo "    (navigate with arrow keys, Enter to select, 'q' to quit)"
+if [ -t 0 ] && [ "$TERM" != "dumb" ]; then
     $RUN eu-ai-act-tui
-elif [ -e /dev/tty ]; then
-    # stdin is not a terminal (e.g. piped via 'curl | sh'), but a controlling
-    # terminal exists: read keyboard input from it so the TUI is not stuck.
+elif [ -e /dev/tty ] && [ "$TERM" != "dumb" ]; then
     $RUN eu-ai-act-tui < /dev/tty
 else
-    echo "ERROR: no terminal available for the interactive TUI." >&2
-    echo "Run the script directly (./run-tui.sh) in a terminal instead of piping it." >&2
-    exit 1
+    echo
+    echo "The interactive TUI needs a real terminal and is not available here."
+    echo "The tool is installed. Run it directly in a terminal with:"
+    echo "  cd $INSTALL_DIR"
+    echo "  $RUN eu-ai-act-tui"
+    echo
+    echo "Or use the command-line interface instead, e.g.:"
+    echo "  $RUN eu-ai-act article 5"
+    echo "  $RUN eu-ai-act search 'human oversight'"
+    echo "  $RUN eu-ai-act --help"
 fi
