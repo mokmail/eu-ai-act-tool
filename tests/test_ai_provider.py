@@ -38,8 +38,9 @@ def test_embed_empty_list():
     p.close()
 
 
-def test_embed_query_returns_flat_list():
-    """embed_query must return a single flat embedding, not a nested list."""
+def test_embed_query_returns_list_of_embeddings():
+    """embed_query must return a list of embeddings (one per query), as
+    ChromaDB expects, not a single flat embedding."""
     from eu_ai_act import vector_store
 
     class FakeProvider:
@@ -51,5 +52,5 @@ def test_embed_query_returns_flat_list():
     ef = vector_store.OllamaEmbeddingFunction(FakeProvider())
     result = ef.embed_query("prohibited practices")
     assert isinstance(result, list)
-    assert all(isinstance(x, float) for x in result)
-    assert result == [0.1, 0.2, 0.3]
+    assert len(result) == 1
+    assert result[0] == [0.1, 0.2, 0.3]

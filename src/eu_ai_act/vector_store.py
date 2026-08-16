@@ -36,15 +36,16 @@ class OllamaEmbeddingFunction:
     def __call__(self, input: List[str]) -> List[List[float]]:
         return self._provider.embed(input)
 
-    def embed_query(self, input: str) -> List[float]:
-        # ChromaDB may pass a plain string or a nested list; normalise.
+    def embed_query(self, input: str) -> List[List[float]]:
+        # ChromaDB expects embed_query to return a list of embeddings
+        # (one per query). It may pass a plain string or a (nested) list;
+        # normalise to a single query string and return a list of one embedding.
         if isinstance(input, list):
             if input and isinstance(input[0], list):
                 input = input[0][0]
             elif input:
                 input = input[0]
-        embeddings = self._provider.embed([input])
-        return embeddings[0] if embeddings else []
+        return self._provider.embed([input])
 
     def embed_documents(self, input: List[str]) -> List[List[float]]:
         # ChromaDB may pass a nested list; flatten.
