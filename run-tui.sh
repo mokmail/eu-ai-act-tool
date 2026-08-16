@@ -1,28 +1,44 @@
 #!/usr/bin/env bash
 #
-# run-tui.sh — install the EU AI Act tool and launch the interactive TUI.
+# run-tui.sh — bootstrap the EU AI Act tool and launch the interactive TUI.
 #
-# Usage:
+# This script can be run directly from the repo, or downloaded and run
+# standalone. It clones (or updates) the repository, installs the tool,
+# and starts the TUI.
+#
+#   # Run directly from a downloaded copy:
+#   curl -fsSL https://raw.githubusercontent.com/mokmail/eu-ai-act-tool/main/run-tui.sh | bash
+#
+#   # Or download, then run:
+#   curl -fsSL -o run-tui.sh https://raw.githubusercontent.com/mokmail/eu-ai-act-tool/main/run-tui.sh
+#   chmod +x run-tui.sh
 #   ./run-tui.sh
 #
-# Prefers uv when available; otherwise falls back to a Python venv + pip.
-# All runtime dependencies (textual, httpx, chromadb) are core dependencies,
-# so a plain install is enough to run the TUI.
+# Install location can be overridden with EU_AI_ACT_DIR.
 #
 set -euo pipefail
 
-# Resolve the directory this script lives in, so it works from anywhere.
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+REPO_URL="https://github.com/mokmail/eu-ai-act-tool.git"
+INSTALL_DIR="${EU_AI_ACT_DIR:-$HOME/eu-ai-act-tool}"
 
-echo "==> Installing the EU AI Act tool..."
+# --- 1. Clone or update the repository -------------------------------------
+if [ -d "$INSTALL_DIR/.git" ]; then
+    echo "==> Updating existing install in $INSTALL_DIR"
+    git -C "$INSTALL_DIR" pull --ff-only
+else
+    echo "==> Cloning repository into $INSTALL_DIR"
+    git clone "$REPO_URL" "$INSTALL_DIR"
+fi
 
+cd "$INSTALL_DIR"
+
+# --- 2. Install the tool ---------------------------------------------------
 if command -v uv >/dev/null 2>&1; then
-    echo "    Using uv (uv sync)"
+    echo "==> Installing with uv (uv sync)"
     uv sync
     RUN_CMD=(uv run)
 else
-    echo "    uv not found; using python venv + pip"
+    echo "==> uv not found; using python venv + pip"
     if [ ! -d .venv ]; then
         python3 -m venv .venv
     fi
@@ -33,6 +49,7 @@ else
     RUN_CMD=()
 fi
 
+# --- 3. Launch the TUI ------------------------------------------------------
 echo "==> Starting the EU AI Act TUI..."
 echo "    (press 'q' to quit)"
 "${RUN_CMD[@]}" eu-ai-act-tui
