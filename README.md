@@ -2,11 +2,13 @@
 
 An exhaustive, citation-grounded tool for **navigating, understanding and applying the EU AI Act** — Regulation (EU) 2024/1689 (the Artificial Intelligence Act).
 
-This repository ships three integrated layers:
+This repository ships five integrated layers:
 
 1. **A full structured dataset** — the complete official text of the Act (180 recitals, 113 articles, 13 annexes) extracted from EUR-Lex, plus a curated analytical layer (risk tiers, actor obligations, timeline, penalties, definitions, governance bodies, cross-references).
 2. **A powerful CLI** — search, risk-tier lookup, actor obligation maps, compliance checklists, timeline, penalties, definitions, and a heuristic high-risk classifier. Every output cites its legal basis.
-3. **Comprehensive documentation** — risk-tier guides, actor obligation maps, compliance checklists, timeline, penalties, and a quick-start.
+3. **An interactive TUI** — a menu-driven, arrow-key-navigable browser built on Textual.
+4. **An AI assistant** — natural-language interaction with the Act (ask, summarize, list, compare, explain) via local Ollama, grounded in a hardened ChromaDB vector store.
+5. **Comprehensive documentation** — risk-tier guides, actor obligation maps, compliance checklists, timeline, penalties, and a quick-start.
 
 > **Disclaimer:** This tool is a compliance aid, not legal advice. It is built on the official EUR-Lex text of Regulation (EU) 2024/1689, but formal legal assessment is always required for definitive compliance decisions.
 
@@ -210,7 +212,7 @@ uv sync --extra tui
 eu-ai-act-tui
 ```
 
-The TUI gives you a home menu with 13 sections — search, articles, recitals, annexes, risk tiers, actors, compliance checklists, timeline, penalties, definitions, governance bodies, cross-references, and the official citation. Navigate with **arrow keys**, select with **Enter**, go back with **Esc**, and quit with **q**.
+The TUI gives you a home menu with 14 sections — search, articles, recitals, annexes, risk tiers, actors, compliance checklists, timeline, penalties, definitions, governance bodies, cross-references, the official citation, and the AI Assistant. Navigate with **arrow keys**, select with **Enter**, go back with **Esc**, and quit with **q**.
 
 > **Note:** The TUI requires a terminal that supports full-screen interactive apps (not a plain piped/CI environment).
 
@@ -329,7 +331,11 @@ eu-ai-act-tool/
 │   ├── data.py                           # Data loading & access layer
 │   ├── search.py                         # Full-text search
 │   ├── compliance.py                     # Obligation maps & checklists
-│   └── cli.py                            # Command-line interface
+│   ├── cli.py                            # Command-line interface
+│   ├── tui.py                            # Interactive TUI (Textual)
+│   ├── ai_provider.py                    # AI provider abstraction (Ollama default)
+│   ├── ai_rag.py                         # RAG + natural-language capabilities
+│   └── vector_store.py                   # Hardened ChromaDB vector store
 ├── docs/
 │   ├── risk-tiers.md                     # Deep dive on the four risk tiers
 │   ├── obligations.md                    # Actor-by-actor obligation map
@@ -337,7 +343,7 @@ eu-ai-act-tool/
 │   ├── timeline.md                       # Application timeline
 │   ├── penalties.md                     # Penalty schedule
 │   └── dataset.md                        # Dataset schema & provenance
-├── tests/                                # 38 tests
+├── tests/                                # 52 tests
 └── pyproject.toml
 ```
 
@@ -373,13 +379,26 @@ python scripts/extract_eurlex.py /tmp/aiact.html data/raw_articles_recitals_anne
 
 ## Development
 
+The project uses [uv](https://docs.astral.sh/uv/) for dependency management and a `uv.lock` for reproducible installs.
+
 ```bash
+# Install the project + all extras (dev, tui, ai) from the lockfile
+uv sync --all-extras
+
 # Run tests
-python -m pytest
+uv run pytest
 
 # Run tests with coverage
-python -m pytest --cov=eu_ai_act
+uv run pytest --cov=eu_ai_act
+
+# Run the CLI
+uv run eu-ai-act citation
+
+# Run the TUI
+uv run eu-ai-act-tui
 ```
+
+> **Note:** The AI tests that hit a live model require Ollama to be running. The unit tests (52 total) run without it.
 
 ---
 
