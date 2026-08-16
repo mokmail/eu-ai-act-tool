@@ -216,6 +216,90 @@ The TUI gives you a home menu with 13 sections — search, articles, recitals, a
 
 ---
 
+## AI Assistant (local Ollama)
+
+The tool includes an **AI-powered assistant** that lets you interact with the EU AI Act in natural language — ask questions, summarize provisions, list obligations, compare concepts, and more. It uses **local Ollama** by default (fully private, no data leaves your machine), with a **hardened ChromaDB vector store** for semantic retrieval over the full Act.
+
+### Setup
+
+1. **Install with the AI extra:**
+   ```bash
+   pip install -e ".[ai]"
+   # or with uv
+   uv sync --extra ai
+   ```
+
+2. **Ensure Ollama is running** and has the embedding model:
+   ```bash
+   ollama serve
+   ollama pull nomic-embed-text
+   ```
+
+3. **Build the vector store** (embeds the full Act — 488 chunks):
+   ```bash
+   eu-ai-act ai embed
+   ```
+
+4. **Check status:**
+   ```bash
+   eu-ai-act ai status
+   ```
+
+### Usage
+
+```bash
+# Ask a question (grounded in the Act, with citations)
+eu-ai-act ai ask "What are the prohibited AI practices?"
+
+# Summarize a provision or topic
+eu-ai-act ai summarize "Article 5"
+eu-ai-act ai summarize "high-risk obligations"
+
+# List obligations on a topic
+eu-ai-act ai list "data governance requirements"
+
+# Compare two provisions or concepts
+eu-ai-act ai compare "provider" "deployer"
+
+# List obligations for an actor or tier
+eu-ai-act ai obligations --actor provider
+eu-ai-act ai obligations --tier high_risk
+
+# Plain-language explanation of a provision
+eu-ai-act ai explain "Article 5"
+
+# Manage the provider
+eu-ai-act ai models          # list available models
+eu-ai-act ai config --chat-model "deepseek-v4-flash:0731-cloud"
+eu-ai-act ai status          # provider + vector store status
+```
+
+### Configuration
+
+The AI provider is configured via `~/.config/eu-ai-act/provider.json`:
+
+```json
+{
+  "base_url": "http://localhost:11434/v1",
+  "chat_model": "deepseek-v4-flash:0731-cloud",
+  "embed_model": "nomic-embed-text:latest",
+  "api_key": null,
+  "timeout": 120
+}
+```
+
+- **Default:** local Ollama (`http://localhost:11434/v1`), fully private.
+- **Ollama Cloud:** if you're logged into Ollama Cloud, the same endpoint can reach cloud models (e.g. `gemini-3-flash-preview`, `mistral-large-3:675b-cloud`). Just set the `chat_model` to a cloud model.
+- **Other providers:** set `base_url` to any OpenAI-compatible endpoint and provide an `api_key` if required.
+
+### In the TUI
+
+The TUI has an **AI Assistant** screen (menu item 14) — type a question, press Enter, and get a grounded answer with sources.
+
+> **Note:** The AI features require Ollama to be running. The vector store is built once and reused (hardened, persistent) — queries do not recompute embeddings.
+
+---
+
 ## What the EU AI Act is
 
 Regulation (EU) 2024/1689 is the world's first comprehensive, horizontal legal framework for artificial intelligence. It was adopted by the European Parliament and the Council, published in the Official Journal on **12 July 2024**, entered into force on **1 August 2024**, and applies in full from **2 August 2026** (with phased application of specific chapters earlier).

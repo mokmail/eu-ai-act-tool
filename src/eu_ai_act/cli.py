@@ -24,7 +24,7 @@ import json
 import sys
 from typing import Any, Dict, List, Optional
 
-from . import compliance, data, search
+from . import ai_provider, ai_rag, compliance, data, search, vector_store
 
 
 # --- Output helpers --------------------------------------------------------
@@ -250,7 +250,159 @@ def build_parser() -> argparse.ArgumentParser:
     p_class.add_argument("description", nargs="+", help="Describe the AI system (multiple words allowed).")
     p_class.add_argument("--json", action="store_true")
 
+    # --- AI subcommands ---
+    p_ai = sub.add_parser("ai", help="AI-powered interaction with the Act (requires local Ollama).")
+    ai_sub = p_ai.add_subparsers(dest="ai_command", required=True)
+
+    p_ai_ask = ai_sub.add_parser("ask", help="Ask a question grounded in the Act.")
+    p_ai_ask.add_argument("question", nargs="+", help="Your question.")
+    p_ai_ask.add_argument("--n", type=int, default=6, help="Number of context chunks to retrieve.")
+    p_ai_ask.add_argument("--json", action="store_true")
+
+    p_ai_sum = ai_sub.add_parser("summarize", help="Summarize a provision or topic.")
+    p_ai_sum.add_argument("target", nargs="+", help="Provision (e.g. 'Article 5') or topic.")
+    p_ai_sum.add_argument("--n", type=int, default=6)
+    p_ai_sum.add_argument("--json", action="store_true")
+
+    p_ai_list = ai_sub.add_parser("list", help="List obligations/practices on a topic.")
+    p_ai_list.add_argument("topic", nargs="+", help="Topic to list items for.")
+    p_ai_list.add_argument("--n", type=int, default=8)
+    p_ai_list.add_argument("--json", action="store_true")
+
+    p_ai_cmp = ai_sub.add_parser("compare", help="Compare two provisions or concepts.")
+    p_ai_cmp.add_argument("a", help="First item.")
+    p_ai_cmp.add_argument("b", help="Second item.")
+    p_ai_cmp.add_argument("--n", type=int, default=8)
+    p_ai_cmp.add_argument("--json", action="store_true")
+
+    p_ai_obl = ai_sub.add_parser("obligations", help="List obligations for an actor or tier.")
+    p_ai_obl.add_argument("--actor", choices=["provider", "deployer", "importer", "distributor", "authorised_representative", "operator"])
+    p_ai_obl.add_argument("--tier", choices=["prohibited", "high_risk", "limited_risk", "minimal_risk", "gpai", "gpai_systemic"])
+    p_ai_obl.add_argument("--json", action="store_true")
+
+    p_ai_exp = ai_sub.add_parser("explain", help="Plain-language explanation of a provision.")
+    p_ai_exp.add_argument("provision", nargs="+", help="e.g. 'Article 5'.")
+    p_ai_exp.add_argument("--json", action="store_true")
+
+    p_ai_embed = ai_sub.add_parser("embed", help="Build/rebuild the vector store.")
+    p_ai_embed.add_argument("--force", action="store_true", help="Force rebuild even if up to date.")
+
+    p_ai_status = ai_sub.add_parser("status", help="Show AI provider + vector store status.")
+
+    p_ai_models = ai_sub.add_parser("models", help="List models available on the provider.")
+
+    p_ai_config = ai_sub.add_parser("config", help="Show or set the AI provider config.")
+    p_ai_config.add_argument("--base-url", help="Set the provider base URL.")
+    p_ai_config.add_argument("--chat-model", help="Set the default chat model.")
+    p_ai_config.add_argument("--embed-model", help="Set the embedding model.")
+    p_ai_config.add_argument("--api-key", help="Set the API key (for cloud providers).")
+
     return parser
+
+
+def _print_ai_result(result: Dict[str, Any], json_out: bool = False) -> None:
+    """Print an AI result (answer + sources)."""
+    if json_out:
+        _print_json(result)
+        return
+    print(f"\n{result.get('answer', '')}")
+    sources = result.get("sources", [])
+    if sources:
+        print(f"\n  Sources: {', '.join(sources)}")
+
+
+def _dispatch_ai(args: argparse.Namespace) -> None:
+    """Dispatch the `ai` subcommands."""
+    cmd = args.ai_command
+
+    if cmd == "embed":
+        result = vector_store.build(force=args.force)
+        print(f"\nVector store: {result['status']}")
+        print(f"  Documents: {result.get('document_count', 0)}")
+        print(f"  Embed model: {result.get('embed_model', '')}")
+        print(f"  Path: {result.get('path', '')}")
+        return
+
+    if cmd == "status":
+        provider = ai_provider.AIProvider()
+        try:
+            available = provider.is_available()
+            print(f"\nAI Provider: {provider.config.base_url}")
+            print(f"  Available: {'yes' if available else 'no'}")
+            print(f"  Chat model: {provider.config.chat_model}")
+            print(f"  Embed model: {provider.config.embed_model}")
+            vs = vector_store.status()
+            print(f"\nVector store: {vs['status']}")
+            if vs.get("document_count"):
+                print(f"  Documents: {vs['document_count']}")
+                print(f"  Embed model: {vs.get('embed_model', '')}")
+            print(f"  Path: {vs.get('path', '')}")
+        finally:
+            provider.close()
+        return
+
+    if cmd == "models":
+        provider = ai_provider.AIProvider()
+        try:
+            if not provider.is_available():
+                print("Provider not available. Is Ollama running?")
+                return
+            models = provider.list_models()
+            print(f"\nModels on {provider.config.base_url}:")
+            for m in models:
+                print(f"  - {m.get('id', m.get('name', '?'))}")
+        finally:
+            provider.close()
+        return
+
+    if cmd == "config":
+        cfg = ai_provider.ProviderConfig.load()
+        changed = False
+        if args.base_url:
+            cfg.base_url = args.base_url
+            changed = True
+        if args.chat_model:
+            cfg.chat_model = args.chat_model
+            changed = True
+        if args.embed_model:
+            cfg.embed_model = args.embed_model
+            changed = True
+        if args.api_key is not None:
+            cfg.api_key = args.api_key
+            changed = True
+        if changed:
+            path = cfg.save()
+            print(f"\nConfig saved to {path}")
+        print(f"\nAI Provider config:")
+        print(f"  base_url:   {cfg.base_url}")
+        print(f"  chat_model: {cfg.chat_model}")
+        print(f"  embed_model:{cfg.embed_model}")
+        print(f"  api_key:    {'***' if cfg.api_key else '(none)'}")
+        return
+
+    # RAG-based commands
+    if cmd == "ask":
+        q = " ".join(args.question)
+        result = ai_rag.ask(q, n=args.n)
+        _print_ai_result(result, args.json)
+    elif cmd == "summarize":
+        target = " ".join(args.target)
+        result = ai_rag.summarize(target, n=args.n)
+        _print_ai_result(result, args.json)
+    elif cmd == "list":
+        topic = " ".join(args.topic)
+        result = ai_rag.list_items(topic, n=args.n)
+        _print_ai_result(result, args.json)
+    elif cmd == "compare":
+        result = ai_rag.compare(args.a, args.b, n=args.n)
+        _print_ai_result(result, args.json)
+    elif cmd == "obligations":
+        result = ai_rag.obligations(actor=args.actor, tier=args.tier)
+        _print_ai_result(result, args.json)
+    elif cmd == "explain":
+        provision = " ".join(args.provision)
+        result = ai_rag.explain(provision)
+        _print_ai_result(result, args.json)
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -311,11 +463,16 @@ def main(argv: Optional[List[str]] = None) -> int:
                 _print_json(compliance.classify_high_risk(desc))
             else:
                 _print_classify(desc)
+        elif args.command == "ai":
+            _dispatch_ai(args)
         else:
             parser.print_help()
             return 1
     except data.DataError as e:
         print(f"Error: {e}", file=sys.stderr)
+        return 1
+    except (ai_provider.ProviderError, ai_rag.ProviderError) as e:
+        print(f"AI Error: {e}", file=sys.stderr)
         return 1
 
     return 0

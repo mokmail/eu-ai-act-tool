@@ -24,8 +24,9 @@ eu-ai-act = "eu_ai_act.cli:main"
 eu-ai-act-tui = "eu_ai_act.tui:main"
 
 [project.optional-dependencies]
-dev = ["pytest>=7", "pytest-cov"]
+dev = ["pytest>=7", "pytest-cov", "pytest-asyncio"]
 tui = ["textual>=0.80"]
+ai = ["chromadb>=0.5", "httpx>=0.27"]
 
 [tool.setuptools]
 package-dir = { "" = "src" }
@@ -42,6 +43,8 @@ pythonpath = ["src"]
 
 [dependency-groups]
 dev = [
+    "chromadb>=0.5",
+    "httpx>=0.27",
     "pytest-asyncio>=1.2.0",
     "textual>=0.80",
 ]

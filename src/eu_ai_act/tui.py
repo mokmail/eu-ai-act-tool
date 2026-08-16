@@ -88,6 +88,7 @@ class HomeScreen(Screen):
                 ListItem(Label("🏛️  Governance Bodies")),
                 ListItem(Label("🔗  Cross-References")),
                 ListItem(Label("📌  Citation")),
+                ListItem(Label("🤖  AI Assistant (Ollama)")),
                 id="menu",
             ),
             id="home",
@@ -122,6 +123,8 @@ class HomeScreen(Screen):
             self.app.push_screen(CrossrefsScreen())
         elif index == 12:
             self.app.push_screen(CitationScreen())
+        elif index == 13:
+            self.app.push_screen(AIChatScreen())
 
 
 class ArticleListScreen(Screen):
@@ -561,6 +564,48 @@ class CitationScreen(Screen):
         yield Header(show_clock=True)
         yield Markdown(f"# Official Citation\n\n{data.citation()}", id="body")
         yield Footer()
+
+
+class AIChatScreen(Screen):
+    """AI chat assistant (RAG over the Act via local Ollama)."""
+
+    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+
+    def compose(self) -> ComposeResult:
+        yield Header(show_clock=True)
+        yield Container(
+            Static("AI Assistant — ask anything about the EU AI Act", classes="title"),
+            Static("Type a question and press Enter. Answers are grounded in the Act.", classes="hint"),
+            Input(placeholder="e.g. What are the prohibited AI practices?", id="ai_query"),
+            Markdown("", id="ai_output"),
+            id="content",
+        )
+        yield Footer()
+
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        query = event.value.strip()
+        if not query:
+            return
+        out = self.query_one("#ai_output", Markdown)
+        out.update(f"*Asking: {query}...*")
+        # Run the RAG ask in a thread to avoid blocking the UI
+        from textual import work
+
+        @work(thread=True)
+        def do_ask() -> None:
+            try:
+                from . import ai_rag
+
+                result = ai_rag.ask(query)
+                answer = result.get("answer", "")
+                sources = result.get("sources", [])
+                src = f"\n\n---\n*Sources: {', '.join(sources)}*" if sources else ""
+                self.call_from_thread(out.update, f"{answer}{src}")
+            except Exception as e:
+                self.call_from_thread(out.update, f"*Error: {e}*")
+
+        do_ask()
+        self.query_one("#ai_query", Input).value = ""
 
 
 # ---------------------------------------------------------------------------
