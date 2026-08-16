@@ -32,3 +32,39 @@ async def test_tui_search_screen():
         await pilot.pause()
         # Should have results
         assert app.screen is not None
+
+
+@pytest.mark.asyncio
+async def test_tui_markdown_screens_render():
+    """All Markdown-based detail screens must render without crashing."""
+    from eu_ai_act.tui import (
+        ActorDetailScreen,
+        ChecklistDetailScreen,
+        CitationScreen,
+        CrossrefsScreen,
+        DefinitionsScreen,
+        GovernanceScreen,
+        PenaltiesScreen,
+        TierDetailScreen,
+        TimelineScreen,
+    )
+
+    screens = [
+        ChecklistDetailScreen("provider"),
+        TimelineScreen(),
+        PenaltiesScreen(),
+        TierDetailScreen("high_risk"),
+        TierDetailScreen("prohibited"),
+        ActorDetailScreen("provider"),
+        DefinitionsScreen(),
+        GovernanceScreen(),
+        CrossrefsScreen(),
+        CitationScreen(),
+    ]
+    app = EUAIActApp()
+    async with app.run_test() as pilot:
+        await pilot.pause()
+        for screen in screens:
+            app.push_screen(screen)
+            await pilot.pause()
+            assert app.screen is not None

@@ -281,10 +281,10 @@ class TierDetailScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
-        yield Markdown(self._render(), id="body")
+        yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
-    def _render(self) -> str:
+    def _build_markdown(self) -> str:
         t = data.get_risk_tier(self.tier)
         if not t:
             return f"# Risk tier '{self.tier}' not found."
@@ -292,17 +292,20 @@ class TierDetailScreen(Screen):
         if t.get("penalty"):
             lines.append(f"**Penalty:** {t['penalty']}")
         if t.get("practices"):
-            lines.append("", "## Prohibited practices")
+            lines.append("")
+            lines.append("## Prohibited practices")
             for p in t["practices"]:
                 lines.append(f"- **{p['name']}** ({p['ref']}) — {p['description']}")
                 if p.get("exceptions"):
                     lines.append(f"  - *Exceptions:* {p['exceptions']}")
         if t.get("annex_iii_areas"):
-            lines.append("", "## Annex III high-risk areas")
+            lines.append("")
+            lines.append("## Annex III high-risk areas")
             for a in t["annex_iii_areas"]:
                 lines.append(f"- **[{a['area']}] {a['name']}** ({a['ref']}) — {a['description']}")
         if t.get("obligations"):
-            lines.append("", "## Obligations")
+            lines.append("")
+            lines.append("## Obligations")
             for o in t["obligations"]:
                 lines.append(f"- {o['obligation']} ({o['ref']})")
         return "\n".join(lines)
@@ -343,10 +346,10 @@ class ActorDetailScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
-        yield Markdown(self._render(), id="body")
+        yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
-    def _render(self) -> str:
+    def _build_markdown(self) -> str:
         a = data.get_actor(self.actor)
         if not a:
             return f"# Actor '{self.actor}' not found."
@@ -395,10 +398,10 @@ class ChecklistDetailScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
-        yield Markdown(self._render(), id="body")
+        yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
-    def _render(self) -> str:
+    def _build_markdown(self) -> str:
         items = compliance.checklist(self.actor)
         lines = [f"# Compliance Checklist — {self.actor.replace('_', ' ').title()}", "", f"**{len(items)} obligations.**", ""]
         for i, item in enumerate(items, 1):
@@ -460,10 +463,10 @@ class TimelineScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
-        yield Markdown(self._render(), id="body")
+        yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
-    def _render(self) -> str:
+    def _build_markdown(self) -> str:
         lines = ["# Application Timeline", ""]
         for ev in data.timeline():
             lines.append(f"## {ev['date']}")
@@ -480,10 +483,10 @@ class PenaltiesScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
-        yield Markdown(self._render(), id="body")
+        yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
-    def _render(self) -> str:
+    def _build_markdown(self) -> str:
         lines = ["# Penalties", ""]
         for p in data.penalties():
             lines.append(f"## {p['ref']}")
@@ -503,10 +506,10 @@ class DefinitionsScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
-        yield Markdown(self._render(), id="body")
+        yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
-    def _render(self) -> str:
+    def _build_markdown(self) -> str:
         lines = ["# Key Definitions", ""]
         for term, d in data.definitions().items():
             lines.append(f"## {term.replace('_', ' ').title()} ({d['ref']})")
@@ -522,10 +525,10 @@ class GovernanceScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
-        yield Markdown(self._render(), id="body")
+        yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
-    def _render(self) -> str:
+    def _build_markdown(self) -> str:
         lines = ["# Governance Bodies", ""]
         for g in data.governance_bodies():
             lines.append(f"## {g['body']} ({g['ref']})")
@@ -541,10 +544,10 @@ class CrossrefsScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
-        yield Markdown(self._render(), id="body")
+        yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
-    def _render(self) -> str:
+    def _build_markdown(self) -> str:
         lines = ["# Cross-References", ""]
         for key, cr in data.cross_references().items():
             lines.append(f"## {key.replace('_', ' ').title()} ({cr['ref']})")
