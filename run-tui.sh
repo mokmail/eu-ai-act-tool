@@ -1,13 +1,13 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
 # run-tui.sh — bootstrap the EU AI Act tool and launch the interactive TUI.
 #
-# This script can be run directly from the repo, or downloaded and run
-# standalone. It clones (or updates) the repository, installs the tool,
+# POSIX sh compatible, so it works whether piped to sh or bash, or run
+# directly. It clones (or updates) the repository, installs the tool,
 # and starts the TUI.
 #
 #   # Run directly from a downloaded copy:
-#   curl -fsSL https://raw.githubusercontent.com/mokmail/eu-ai-act-tool/main/run-tui.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/mokmail/eu-ai-act-tool/main/run-tui.sh | sh
 #
 #   # Or download, then run:
 #   curl -fsSL -o run-tui.sh https://raw.githubusercontent.com/mokmail/eu-ai-act-tool/main/run-tui.sh
@@ -16,7 +16,7 @@
 #
 # Install location can be overridden with EU_AI_ACT_DIR.
 #
-set -euo pipefail
+set -eu
 
 REPO_URL="https://github.com/mokmail/eu-ai-act-tool.git"
 INSTALL_DIR="${EU_AI_ACT_DIR:-$HOME/eu-ai-act-tool}"
@@ -36,20 +36,20 @@ cd "$INSTALL_DIR"
 if command -v uv >/dev/null 2>&1; then
     echo "==> Installing with uv (uv sync)"
     uv sync
-    RUN_CMD=(uv run)
+    RUN="uv run"
 else
     echo "==> uv not found; using python venv + pip"
     if [ ! -d .venv ]; then
         python3 -m venv .venv
     fi
     # shellcheck disable=SC1091
-    source .venv/bin/activate
+    . .venv/bin/activate
     python -m pip install --upgrade pip >/dev/null
     pip install -e .
-    RUN_CMD=()
+    RUN=""
 fi
 
 # --- 3. Launch the TUI ------------------------------------------------------
 echo "==> Starting the EU AI Act TUI..."
 echo "    (press 'q' to quit)"
-"${RUN_CMD[@]}" eu-ai-act-tui
+$RUN eu-ai-act-tui
