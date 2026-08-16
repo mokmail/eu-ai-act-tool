@@ -24,6 +24,8 @@ INSTALL_DIR="${EU_AI_ACT_DIR:-$HOME/eu-ai-act-tool}"
 # --- 1. Clone or update the repository -------------------------------------
 if [ -d "$INSTALL_DIR/.git" ]; then
     echo "==> Updating existing install in $INSTALL_DIR"
+    # Use the HTTPS URL for pulls so no SSH key is required.
+    git -C "$INSTALL_DIR" remote set-url origin "$REPO_URL"
     git -C "$INSTALL_DIR" pull --ff-only
 else
     echo "==> Cloning repository into $INSTALL_DIR"
