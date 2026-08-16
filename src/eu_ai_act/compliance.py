@@ -361,7 +361,8 @@ def classify_high_risk(description: str) -> Dict[str, Any]:
     It is NOT a substitute for a formal legal assessment.
     """
     text = description.lower()
-    areas = data.risk_tiers()[1]["annex_iii_areas"]
+    high_risk = data.get_risk_tier("high_risk")
+    areas = high_risk.get("annex_iii_areas", []) if high_risk else []
     matches = []
     keywords = {
         1: ["biometric", "facial recognition", "emotion recognition", "biometric categorisation"],

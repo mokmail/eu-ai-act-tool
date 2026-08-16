@@ -36,3 +36,20 @@ def test_embed_empty_list():
     p = ai_provider.AIProvider(cfg)
     assert p.embed([]) == []
     p.close()
+
+
+def test_embed_query_returns_flat_list():
+    """embed_query must return a single flat embedding, not a nested list."""
+    from eu_ai_act import vector_store
+
+    class FakeProvider:
+        config = ai_provider.ProviderConfig(embed_model="test-embed")
+
+        def embed(self, texts):
+            return [[0.1, 0.2, 0.3] for _ in texts]
+
+    ef = vector_store.OllamaEmbeddingFunction(FakeProvider())
+    result = ef.embed_query("prohibited practices")
+    assert isinstance(result, list)
+    assert all(isinstance(x, float) for x in result)
+    assert result == [0.1, 0.2, 0.3]

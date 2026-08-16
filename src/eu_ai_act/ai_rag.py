@@ -32,6 +32,12 @@ def _retrieve_context(query: str, n: int = 6) -> str:
     try:
         results = vector_store.query(query, n_results=n)
     except Exception as e:
+        msg = str(e).lower()
+        if "readonly" in msg or "read-only" in msg or "read only" in msg:
+            raise ProviderError(
+                "The vector store database is not writable. Make sure the Chroma "
+                "directory is writable, or rebuild it with the 'ai embed' command."
+            ) from e
         raise ProviderError(f"Vector store query failed: {e}") from e
     if not results:
         return ""
@@ -183,21 +189,28 @@ def _direct_provision(target: str) -> Optional[Dict[str, Any]]:
     """Fetch a provision directly by reference (e.g. 'Article 5', 'Recital 12', 'Annex III')."""
     t = target.strip()
     low = t.lower()
+    parts = t.split()
     if low.startswith("article"):
-        num = t.split()[1]
+        if len(parts) < 2:
+            return None
+        num = parts[1]
         art = data.get_article(num)
         if art:
             return {"ref": f"Article {num}", "text": art["text"]}
     elif low.startswith("recital"):
+        if len(parts) < 2:
+            return None
         try:
-            num = int(t.split()[1])
-        except (IndexError, ValueError):
+            num = int(parts[1])
+        except ValueError:
             return None
         rec = data.get_recital(num)
         if rec:
             return {"ref": f"Recital {num}", "text": rec["text"]}
     elif low.startswith("annex"):
-        num = t.split()[1].upper()
+        if len(parts) < 2:
+            return None
+        num = parts[1].upper()
         ann = data.get_annex(num)
         if ann:
             return {"ref": f"Annex {num}", "text": ann["text"]}

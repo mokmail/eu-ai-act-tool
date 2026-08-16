@@ -25,6 +25,23 @@ def test_direct_provision_invalid():
     assert ai_rag._direct_provision("Not a provision") is None
 
 
+def test_direct_provision_missing_number_article():
+    # Regression: "Article" with no number must not raise IndexError.
+    assert ai_rag._direct_provision("Article") is None
+
+
+def test_direct_provision_missing_number_recital():
+    assert ai_rag._direct_provision("Recital") is None
+
+
+def test_direct_provision_missing_number_annex():
+    assert ai_rag._direct_provision("Annex") is None
+
+
+def test_direct_provision_non_numeric_recital():
+    assert ai_rag._direct_provision("Recital twelve") is None
+
+
 def test_obligations_provider():
     result = ai_rag.obligations(actor="provider")
     assert result["answer"]
