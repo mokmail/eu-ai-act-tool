@@ -176,6 +176,9 @@ class ArticleDetailScreen(Screen):
         yield Markdown(_article_md(self.number), id="body")
         yield Footer()
 
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
+
 
 class RecitalListScreen(Screen):
     """List of all 180 recitals."""
@@ -215,6 +218,9 @@ class RecitalDetailScreen(Screen):
         yield Header(show_clock=True)
         yield Markdown(_recital_md(self.number), id="body")
         yield Footer()
+
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
 
 
 class AnnexListScreen(Screen):
@@ -256,6 +262,9 @@ class AnnexDetailScreen(Screen):
         yield Header(show_clock=True)
         yield Markdown(_annex_md(self.number), id="body")
         yield Footer()
+
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
 
 
 class TierListScreen(Screen):
@@ -299,6 +308,9 @@ class TierDetailScreen(Screen):
         yield Header(show_clock=True)
         yield Markdown(self._build_markdown(), id="body")
         yield Footer()
+
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
 
     def _build_markdown(self) -> str:
         t = data.get_risk_tier(self.tier)
@@ -366,6 +378,9 @@ class ActorDetailScreen(Screen):
         yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
+
     def _build_markdown(self) -> str:
         a = data.get_actor(self.actor)
         if not a:
@@ -420,6 +435,9 @@ class ChecklistDetailScreen(Screen):
         yield Header(show_clock=True)
         yield Markdown(self._build_markdown(), id="body")
         yield Footer()
+
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
 
     def _build_markdown(self) -> str:
         items = compliance.checklist(self.actor)
@@ -486,6 +504,9 @@ class TimelineScreen(Screen):
         yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
+
     def _build_markdown(self) -> str:
         lines = ["# Application Timeline", ""]
         for ev in data.timeline():
@@ -505,6 +526,9 @@ class PenaltiesScreen(Screen):
         yield Header(show_clock=True)
         yield Markdown(self._build_markdown(), id="body")
         yield Footer()
+
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
 
     def _build_markdown(self) -> str:
         lines = ["# Penalties", ""]
@@ -529,6 +553,9 @@ class DefinitionsScreen(Screen):
         yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
+
     def _build_markdown(self) -> str:
         lines = ["# Key Definitions", ""]
         for term, d in data.definitions().items():
@@ -548,6 +575,9 @@ class GovernanceScreen(Screen):
         yield Markdown(self._build_markdown(), id="body")
         yield Footer()
 
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
+
     def _build_markdown(self) -> str:
         lines = ["# Governance Bodies", ""]
         for g in data.governance_bodies():
@@ -566,6 +596,9 @@ class CrossrefsScreen(Screen):
         yield Header(show_clock=True)
         yield Markdown(self._build_markdown(), id="body")
         yield Footer()
+
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
 
     def _build_markdown(self) -> str:
         lines = ["# Cross-References", ""]
@@ -587,6 +620,9 @@ class CitationScreen(Screen):
         yield Header(show_clock=True)
         yield Markdown(f"# Official Citation\n\n{data.citation()}", id="body")
         yield Footer()
+
+    def on_mount(self) -> None:
+        self.query_one("#body").focus()
 
 
 class AIChatScreen(Screen):
