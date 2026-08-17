@@ -20,6 +20,25 @@ async def test_tui_launches_and_has_menu():
 
 
 @pytest.mark.asyncio
+async def test_tui_escape_returns_to_previous_screen():
+    """Pressing Escape on a pushed screen must pop back to the previous one.
+
+    Regression: the ``escape`` binding used the bare action name ``pop``
+    (and later ``pop_screen``), which Textual could not resolve on the
+    Screen namespace, so Escape did nothing. The action must target the
+    App namespace as ``app.pop_screen``.
+    """
+    app = EUAIActApp()
+    async with app.run_test() as pilot:
+        await pilot.press("down", "enter")
+        await pilot.pause()
+        assert type(app.screen).__name__ == "ArticleListScreen"
+        await pilot.press("escape")
+        await pilot.pause()
+        assert type(app.screen).__name__ == "HomeScreen"
+
+
+@pytest.mark.asyncio
 async def test_tui_search_screen():
     app = EUAIActApp()
     async with app.run_test() as pilot:

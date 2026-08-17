@@ -73,8 +73,7 @@ class HomeScreen(Screen):
     """Main menu."""
 
     BINDINGS = [
-        Binding("q", "quit", "Quit"),
-        Binding("enter", "select", "Select"),
+        Binding("q", "app.quit", "Quit"),
     ]
 
     def compose(self) -> ComposeResult:
@@ -102,6 +101,9 @@ class HomeScreen(Screen):
             id="home",
         )
         yield Footer()
+
+    def on_mount(self) -> None:
+        self.query_one("#menu", ListView).index = 0
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         index = event.list_view.index
@@ -138,7 +140,7 @@ class HomeScreen(Screen):
 class ArticleListScreen(Screen):
     """List of all 113 articles."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -153,6 +155,7 @@ class ArticleListScreen(Screen):
         lv = self.query_one("#articles", ListView)
         for num, art in data.articles().items():
             lv.append(ListItem(Label(f"Article {num} — {art['title']}")))
+        lv.index = 0
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         num = event.list_view.index + 1
@@ -162,7 +165,7 @@ class ArticleListScreen(Screen):
 class ArticleDetailScreen(Screen):
     """Full text of a single article."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def __init__(self, number: str, **kwargs: Any) -> None:
         super().__init__(**kwargs)
@@ -177,7 +180,7 @@ class ArticleDetailScreen(Screen):
 class RecitalListScreen(Screen):
     """List of all 180 recitals."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -192,6 +195,7 @@ class RecitalListScreen(Screen):
         lv = self.query_one("#recitals", ListView)
         for num in sorted(data.recitals().keys()):
             lv.append(ListItem(Label(f"Recital {num}")))
+        lv.index = 0
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         num = event.list_view.index + 1
@@ -201,7 +205,7 @@ class RecitalListScreen(Screen):
 class RecitalDetailScreen(Screen):
     """Full text of a single recital."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def __init__(self, number: int, **kwargs: Any) -> None:
         super().__init__(**kwargs)
@@ -216,7 +220,7 @@ class RecitalDetailScreen(Screen):
 class AnnexListScreen(Screen):
     """List of all 13 annexes."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -231,6 +235,7 @@ class AnnexListScreen(Screen):
         lv = self.query_one("#annexes", ListView)
         for num, ann in data.annexes().items():
             lv.append(ListItem(Label(f"Annex {num} — {ann['title']}")))
+        lv.index = 0
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         nums = list(data.annexes().keys())
@@ -241,7 +246,7 @@ class AnnexListScreen(Screen):
 class AnnexDetailScreen(Screen):
     """Full text of a single annex."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def __init__(self, number: str, **kwargs: Any) -> None:
         super().__init__(**kwargs)
@@ -256,7 +261,7 @@ class AnnexDetailScreen(Screen):
 class TierListScreen(Screen):
     """List of the four risk tiers."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -273,6 +278,9 @@ class TierListScreen(Screen):
         )
         yield Footer()
 
+    def on_mount(self) -> None:
+        self.query_one("#tiers", ListView).index = 0
+
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         tiers = ["prohibited", "high_risk", "limited_risk", "minimal_risk"]
         self.app.push_screen(TierDetailScreen(tiers[event.list_view.index]))
@@ -281,7 +289,7 @@ class TierListScreen(Screen):
 class TierDetailScreen(Screen):
     """Detail view of a single risk tier."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def __init__(self, tier: str, **kwargs: Any) -> None:
         super().__init__(**kwargs)
@@ -322,7 +330,7 @@ class TierDetailScreen(Screen):
 class ActorListScreen(Screen):
     """List of actors."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -337,6 +345,7 @@ class ActorListScreen(Screen):
         lv = self.query_one("#actors", ListView)
         for a in data.actors():
             lv.append(ListItem(Label(a["actor"].replace("_", " ").title())))
+        lv.index = 0
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         actors = [a["actor"] for a in data.actors()]
@@ -346,7 +355,7 @@ class ActorListScreen(Screen):
 class ActorDetailScreen(Screen):
     """Detail view of a single actor."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def __init__(self, actor: str, **kwargs: Any) -> None:
         super().__init__(**kwargs)
@@ -370,7 +379,7 @@ class ActorDetailScreen(Screen):
 class ChecklistScreen(Screen):
     """Compliance checklist generator."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -390,6 +399,9 @@ class ChecklistScreen(Screen):
         )
         yield Footer()
 
+    def on_mount(self) -> None:
+        self.query_one("#actors", ListView).index = 0
+
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         actors = ["provider", "deployer", "importer", "distributor", "authorised_representative", "operator"]
         self.app.push_screen(ChecklistDetailScreen(actors[event.list_view.index]))
@@ -398,7 +410,7 @@ class ChecklistScreen(Screen):
 class ChecklistDetailScreen(Screen):
     """Checklist for a single actor."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def __init__(self, actor: str, **kwargs: Any) -> None:
         super().__init__(**kwargs)
@@ -424,7 +436,7 @@ class ChecklistDetailScreen(Screen):
 class SearchScreen(Screen):
     """Full-text search."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -467,7 +479,7 @@ class SearchScreen(Screen):
 class TimelineScreen(Screen):
     """Application timeline."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -487,7 +499,7 @@ class TimelineScreen(Screen):
 class PenaltiesScreen(Screen):
     """Penalty schedule."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -510,7 +522,7 @@ class PenaltiesScreen(Screen):
 class DefinitionsScreen(Screen):
     """Key definitions."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -529,7 +541,7 @@ class DefinitionsScreen(Screen):
 class GovernanceScreen(Screen):
     """Governance bodies."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -548,7 +560,7 @@ class GovernanceScreen(Screen):
 class CrossrefsScreen(Screen):
     """Cross-references."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -569,7 +581,7 @@ class CrossrefsScreen(Screen):
 class CitationScreen(Screen):
     """Official citation."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -580,7 +592,7 @@ class CitationScreen(Screen):
 class AIChatScreen(Screen):
     """AI chat assistant (RAG over the Act via local Ollama)."""
 
-    BINDINGS = [Binding("escape", "pop", "Back"), Binding("q", "quit", "Quit")]
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.quit", "Quit")]
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
