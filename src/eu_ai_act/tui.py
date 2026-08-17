@@ -660,11 +660,11 @@ class EUAIActApp(App):
     }
     #content {
         padding: 1 2;
-        height: 100%;
+        height: 1fr;
     }
     #body {
         padding: 1 2;
-        height: 100%;
+        height: 1fr;
     }
     ListView {
         background: #24283b;
