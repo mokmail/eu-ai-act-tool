@@ -80,10 +80,10 @@ Certain AI systems carry specific transparency obligations even though they are 
 
 | Ref | Obligation |
 |---|---|
-| Art 50(1) | AI systems interacting directly with persons must inform users they are interacting with an AI system (unless obvious) |
-| Art 50(2) | Emotion recognition / biometric categorisation systems must inform persons exposed to them |
-| Art 50(3) | Deepfakes must be disclosed as artificially generated or manipulated |
-| Art 50(4) | AI-generated text informing the public on matters of public interest must be disclosed as artificially generated |
+| Art 50(1) | AI systems interacting directly with persons must inform users they are interacting with an AI system (unless obvious) — provider duty |
+| Art 50(2) | Systems generating synthetic audio, image, video or text must mark the output in a machine-readable format, detectable as artificially generated — provider duty |
+| Art 50(3) | Emotion recognition / biometric categorisation systems must inform persons exposed to them — deployer duty |
+| Art 50(4) | Deepfakes, and AI-generated text on matters of public interest, must be disclosed as artificially generated or manipulated — deployer duty |
 
 ---
 

@@ -105,10 +105,11 @@ eu-ai-act classify "describe your AI system here"
 
 | # | Obligation | Ref |
 |---|---|---|
-| 1 | Disclose AI interaction (chatbots) | Art 50(1) |
-| 2 | Disclose emotion recognition / biometric categorisation | Art 50(2) |
-| 3 | Disclose deepfakes | Art 50(3) |
-| 4 | Disclose AI-generated public-interest text | Art 50(4) |
+| 1 | Disclose AI interaction (chatbots, voice assistants) | Art 50(1) |
+| 2 | Mark synthetic content as machine-readable | Art 50(2) |
+| 3 | Inform people exposed to emotion recognition / biometric categorisation | Art 50(3) |
+| 4 | Disclose deepfakes | Art 50(4) |
+| 5 | Disclose AI-generated public-interest text | Art 50(4) |
 
 ---
 

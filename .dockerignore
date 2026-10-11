@@ -1,0 +1,14 @@
+# Build context for both images is the repo root; keep it small.
+**/node_modules
+**/.next
+**/.venv
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.turbo
+.git
+.github
+data/raw_eurlex_32024R1689.html
+docs
+tests
+**/.DS_Store

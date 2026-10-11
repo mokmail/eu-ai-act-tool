@@ -139,9 +139,9 @@
       "applies_from": "2026-08-02",
       "obligations": [
         {"ref": "Article 50(1)", "obligation": "AI systems intended to interact directly with natural persons must be designed so users are informed they are interacting with an AI system (unless obvious)."},
-        {"ref": "Article 50(2)", "obligation": "Emotion recognition or biometric categorisation systems must inform persons exposed to them."},
-        {"ref": "Article 50(3)", "obligation": "Deepfakes must be disclosed as artificially generated or manipulated."},
-        {"ref": "Article 50(4)", "obligation": "AI-generated text intended to inform the public on matters of public interest must be disclosed as artificially generated."}
+        {"ref": "Article 50(2)", "obligation": "Providers of systems generating synthetic audio, image, video or text must mark the output in a machine-readable format, detectable as artificially generated."},
+        {"ref": "Article 50(3)", "obligation": "Deployers of an emotion recognition or biometric categorisation system must inform the natural persons exposed to it."},
+        {"ref": "Article 50(4)", "obligation": "Deployers must disclose that a deep fake, or text published to inform the public on matters of public interest, is artificially generated or manipulated."}
       ]
     },
     {

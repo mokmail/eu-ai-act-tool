@@ -1,0 +1,34 @@
+[project]
+name = "eu-ai-act-server"
+version = "1.0.0"
+description = "AG-UI protocol server exposing the EU AI Act tool (RAG + curated dataset) to web frontends."
+requires-python = ">=3.10"
+dependencies = [
+    "eu-ai-act-tool",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "httpx>=0.27",
+    "chromadb>=0.5",
+]
+
+[project.optional-dependencies]
+ai = ["chromadb>=0.5"]
+
+[dependency-groups]
+dev = [
+    "chromadb>=0.5",
+    "pytest>=7",
+    "pytest-asyncio>=1.2.0",
+    "httpx>=0.27",
+]
+
+[tool.uv.sources]
+eu-ai-act-tool = { path = "..", editable = true }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"
+
+[tool.setuptools]
+packages = ["app"]

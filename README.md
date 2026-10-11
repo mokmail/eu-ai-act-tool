@@ -2,15 +2,119 @@
 
 An exhaustive, citation-grounded tool for **navigating, understanding and applying the EU AI Act** — Regulation (EU) 2024/1689 (the Artificial Intelligence Act).
 
-This repository ships five integrated layers:
+This repository ships six integrated layers:
 
 1. **A full structured dataset** — the complete official text of the Act (180 recitals, 113 articles, 13 annexes) extracted from EUR-Lex, plus a curated analytical layer (risk tiers, actor obligations, timeline, penalties, definitions, governance bodies, cross-references).
 2. **A powerful CLI** — search, risk-tier lookup, actor obligation maps, compliance checklists, timeline, penalties, definitions, and a heuristic high-risk classifier. Every output cites its legal basis.
 3. **An interactive TUI** — a menu-driven, arrow-key-navigable browser built on Textual.
 4. **An AI assistant** — natural-language interaction with the Act (ask, summarize, list, compare, explain) via local Ollama, grounded in a hardened ChromaDB vector store.
-5. **Comprehensive documentation** — risk-tier guides, actor obligation maps, compliance checklists, timeline, penalties, and a quick-start.
+5. **A web application** — a modern Next.js front-end whose agent backend speaks the **AG-UI protocol**, so every step the agent takes streams to the browser as typed events. See [Web application](#web-application-ag-ui--nextjs).
+6. **Comprehensive documentation** — risk-tier guides, actor obligation maps, compliance checklists, timeline, penalties, and a quick-start.
 
 > **Disclaimer:** This tool is a compliance aid, not legal advice. It is built on the official EUR-Lex text of Regulation (EU) 2024/1689, but formal legal assessment is always required for definitive compliance decisions.
+
+---
+
+## Web application (AG-UI + Next.js)
+
+A modern web front-end over the same tool: ask in natural language and watch the
+agent work, or browse the Act directly. The backend speaks the **AG-UI protocol** —
+an open, event-based standard (SSE) for agent↔UI interaction — so the browser
+receives every step (run lifecycle, streamed text, tool calls, state, sources) as
+typed events rather than one opaque response.
+
+- `server/` — FastAPI. Reuses the Python `eu_ai_act` package as the agent's tools,
+  so there is one implementation of the legal logic.
+- `web/` — Next.js 15 · React 19 · Tailwind v4 · `@ag-ui/client`.
+
+### Run it
+
+Two processes. In one terminal:
+
+```bash
+cd server
+uv sync
+uv run uvicorn app.main:app --reload --port 8000
+```
+
+In another:
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+Open **http://localhost:3000**.
+
+The server needs a tool-calling model. By default it uses local Ollama at
+`http://localhost:11434/v1` with `deepseek-v4.1-flash:cloud`. Override with
+`EU_AI_ACT_BASE_URL`, `EU_AI_ACT_CHAT_MODEL` and `EU_AI_ACT_API_KEY` — any
+OpenAI-compatible endpoint works.
+
+### What it does
+
+Nine views, grouped the way the work splits.
+
+**Understand**
+
+| View | What it is |
+|---|---|
+| **Ask** | Streaming agent chat. Each tool call appears as a card with its arguments and result; the footer lists the provisions cited. |
+| **Map** | Navigate by the Act's own structure — chapters → sections → articles, plus the 180 recitals and 13 annexes — with full-text search and each provision's citation neighbourhood. |
+| **Mindmap** | Eight themed radial maps (prohibited practices, high-risk obligations, transparency, GPAI, governance, timeline, penalties, the whole Act) plus a map of any single chapter. Every leaf cites its provision. |
+| **Charts** | The corpus measured: articles and words per chapter, obligations by actor and tier, the phased timeline, the citation graph between provisions as a force-directed network, and the governance organigram. |
+| **Reference** | Risk tiers, timeline, penalties, definitions, governance, cross-references. |
+
+**Apply**
+
+| View | What it is |
+|---|---|
+| **Classify** | Walk the Act's classification ladder one question at a time — prohibited → high-risk → GPAI → transparency → minimal — with each step citing its article. |
+| **Procedures** | Seven step-by-step procedures (conformity assessment, deployer duties, FRIA, serious-incident reporting, GPAI, transparency, classification), each step citing the provision it comes from. |
+| **Cases** | Worked, illustrative examples — CV screening, credit scoring, hospital triage, chatbots, social scoring, police biometrics, frontier models — with the reasoning anchored to provisions. |
+| **Comply** | Obligation checklists per actor and risk tier, with the article behind each item. |
+
+Plus a **Stream** panel: a live inspector showing the raw AG-UI event stream.
+
+### Server endpoints
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /agent` | AG-UI protocol endpoint. `RunAgentInput` in, `text/event-stream` of AG-UI events out. |
+| `GET /api/*` | Read-only JSON passthrough over the same tool dispatcher, for the Explorer views. |
+| `GET /api/structure`, `/api/structure/{article}` | The table of contents, and where an article sits. |
+| `GET /api/procedures`, `/api/scenarios` (+ `/{id}`) | The curated guide layer. |
+| `GET /api/risk-path`, `POST /api/risk-path/classify` | The classification ladder, and walking it. |
+| `GET /api/stats`, `/api/graph` (+ `/{article}`) | Corpus statistics and the citation graph. |
+| `GET /api/mindmaps` (+ `/{topic}`, `/chapter/{n}`) | Mindmap trees. |
+| `GET /api/governance/structure` | The institutional tree. |
+| `GET /health` | Liveness, provider status, vector-store status, tool list. |
+
+### Docker
+
+```bash
+docker compose up --build
+```
+
+The server reaches an Ollama instance on the host via `host.docker.internal`.
+
+### Tests
+
+One command verifies everything — library, AG-UI server and web client:
+
+```bash
+./scripts/verify.sh          # suites + type-check + production build
+./scripts/verify.sh --live   # also drives a running server end to end
+```
+
+Individually:
+
+```bash
+cd server && uv run pytest              # AG-UI wire layer, tools, agent loop, HTTP layer
+cd web && npm run build                 # type-check + production build
+cd web && node scripts/smoke-agui.mjs   # end-to-end against a running server
+```
 
 ---
 
@@ -327,23 +431,44 @@ eu-ai-act-tool/
 │   └── curated_dataset.json              # Analytical layer (risk tiers, actors, timeline, penalties)
 ├── scripts/
 │   └── extract_eurlex.py                 # Regenerate the raw dataset from EUR-Lex
-├── src/eu_ai_act/
+├── src/eu_ai_act/                        # The Python library + CLI + TUI
 │   ├── data.py                           # Data loading & access layer
 │   ├── search.py                         # Full-text search
-│   ├── compliance.py                     # Obligation maps & checklists
+│   ├── compliance.py                     # Obligation maps, checklists, high-risk classifier
+│   ├── structure.py                      # Chapters/sections, citation graph, corpus stats
+│   ├── guides.py                         # Classification path, procedures, scenarios, governance tree
+│   ├── mindmap.py                        # Mindmap trees built from the data above
 │   ├── cli.py                            # Command-line interface
 │   ├── tui.py                            # Interactive TUI (Textual)
 │   ├── ai_provider.py                    # AI provider abstraction (Ollama default)
 │   ├── ai_rag.py                         # RAG + natural-language capabilities
 │   └── vector_store.py                   # Hardened ChromaDB vector store
+├── server/                               # AG-UI server (FastAPI)
+│   ├── app/
+│   │   ├── agui.py                       # AG-UI 1.0 wire layer: events + SSE encoder
+│   │   ├── tools.py                      # Tool registry wrapping eu_ai_act
+│   │   ├── llm.py                        # Streaming OpenAI-compatible chat transport
+│   │   ├── agent.py                      # Transport-agnostic agent loop (emits AG-UI events)
+│   │   └── main.py                       # /agent (SSE), /api/* passthrough, /health
+│   ├── tests/                            # AG-UI, tools, agent loop, HTTP layer
+│   └── Dockerfile
+├── web/                                  # Next.js 15 web client
+│   ├── app/                              # App Router: layout, page, design tokens
+│   ├── components/                       # ask · map · mindmap · charts · reference ·
+│   │                                     # classify · procedures/cases · comply · stream
+│   │   └── diagrams.tsx                  # SVG organigram, mindmap, step flow, charts, graph
+│   ├── lib/                              # agui.ts (client hook), api.ts, useApi.ts
+│   ├── scripts/smoke-agui.mjs            # End-to-end AG-UI smoke test
+│   └── Dockerfile
+├── docker-compose.yml                    # server + web
 ├── docs/
 │   ├── risk-tiers.md                     # Deep dive on the four risk tiers
 │   ├── obligations.md                    # Actor-by-actor obligation map
 │   ├── compliance-checklist.md           # Step-by-step compliance guide
 │   ├── timeline.md                       # Application timeline
-│   ├── penalties.md                     # Penalty schedule
+│   ├── penalties.md                      # Penalty schedule
 │   └── dataset.md                        # Dataset schema & provenance
-├── tests/                                # 52 tests
+├── tests/                                # 60 tests (library, CLI, TUI)
 └── pyproject.toml
 ```
 

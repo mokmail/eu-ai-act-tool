@@ -1,0 +1,3155 @@
+{
+  "meta": {
+    "title": "EU AI Act — Understand & Apply",
+    "regulation": "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
+    "description": "A structured layer over the Act: a classification decision path, step-by-step procedures for each actor, worked scenarios, and the governance structure. Every step cites the provision it comes from.",
+    "disclaimer": "A compliance aid, not legal advice. The scenarios are illustrative worked examples built from the Act's own text — they are not enforcement decisions or case law."
+  },
+  "risk_path": {
+    "title": "Which risk tier applies?",
+    "ref": "Articles 5, 6, 50, 51",
+    "start": "q_prohibited",
+    "questions": [
+      {
+        "id": "q_prohibited",
+        "question": "Does the system deploy a practice banned by Article 5?",
+        "detail": "Manipulative or deceptive techniques; exploiting vulnerabilities; social scoring; predictive policing based solely on profiling; untargeted scraping for facial-recognition databases; emotion inference at work or school; biometric categorisation of sensitive traits; real-time remote biometric identification in publicly accessible spaces (with narrow law-enforcement exceptions).",
+        "ref": "Article 5",
+        "yes": "prohibited",
+        "no": "q_annex1"
+      },
+      {
+        "id": "q_annex1",
+        "question": "Is it a safety component of — or itself — a product covered by the Annex I harmonisation legislation that needs a third-party conformity assessment?",
+        "ref": "Article 6(1)",
+        "yes": "high_risk",
+        "no": "q_annex3"
+      },
+      {
+        "id": "q_annex3",
+        "question": "Is it one of the systems listed in Annex III?",
+        "detail": "Biometrics, critical infrastructure, education, employment, essential private and public services, law enforcement, migration and border control, administration of justice and democratic processes.",
+        "ref": "Article 6(2), Annex III",
+        "yes": "q_filter",
+        "no": "q_gpai"
+      },
+      {
+        "id": "q_filter",
+        "question": "Does the Article 6(3) filter apply, and does the system avoid profiling?",
+        "detail": "The filter is available where the system performs a narrow procedural task, improves the result of a previously completed human activity, detects decision-making patterns without replacing human assessment, or performs a preparatory task. It is NOT available — the system is always high-risk — where it performs profiling of natural persons.",
+        "ref": "Article 6(3)",
+        "yes": "q_gpai",
+        "no": "high_risk"
+      },
+      {
+        "id": "q_gpai",
+        "question": "Is it a general-purpose AI model?",
+        "ref": "Article 3(63), Article 53",
+        "yes": "q_systemic",
+        "no": "q_transparency"
+      },
+      {
+        "id": "q_systemic",
+        "question": "Does the model have systemic risk — cumulative training compute above 10^25 FLOP, or a Commission designation?",
+        "ref": "Article 51",
+        "yes": "gpai_systemic",
+        "no": "gpai"
+      },
+      {
+        "id": "q_transparency",
+        "question": "Does it interact directly with people, generate synthetic content, or perform emotion recognition or biometric categorisation?",
+        "detail": "Chatbots; deepfakes and other synthetic audio/image/video/text; emotion recognition systems; biometric categorisation systems.",
+        "ref": "Article 50",
+        "yes": "limited_risk",
+        "no": "minimal_risk"
+      }
+    ],
+    "outcomes": {
+      "prohibited": {
+        "label": "Prohibited",
+        "ref": "Article 5",
+        "summary": "Banned outright. Cannot be placed on the market or used in the Union.",
+        "applies_from": "2 February 2025",
+        "penalty": "Up to EUR 35,000,000 or 7% of total worldwide annual turnover, whichever is higher (Article 99(3))",
+        "actions": [
+          "Do not place it on the market or put it into service.",
+          "Screen every AI system against the Article 5 list before deployment.",
+          "Note the narrow exceptions, e.g. real-time remote biometric identification authorised by law."
+        ]
+      },
+      "high_risk": {
+        "label": "High-risk",
+        "ref": "Article 6, Annex III",
+        "summary": "Subject to the full obligations regime of Chapter III.",
+        "applies_from": "2 August 2026 (Article 6(1) systems from 2 August 2027)",
+        "penalty": "Up to EUR 15,000,000 or 3% of total worldwide annual turnover (Article 99(4))",
+        "actions": [
+          "Provider: build the Chapter III Section 2 requirements into the system (Articles 9-15).",
+          "Provider: quality management system, technical documentation, conformity assessment, CE marking, EU database registration (Articles 17, 11, 43, 48, 49).",
+          "Deployer: use per instructions, assign human oversight, monitor, keep logs (Article 26).",
+          "Public-body deployers: complete a fundamental rights impact assessment (Article 27)."
+        ]
+      },
+      "gpai_systemic": {
+        "label": "General-purpose AI model with systemic risk",
+        "ref": "Article 51, Article 55",
+        "summary": "A GPAI model that meets the systemic-risk threshold or has been designated by the Commission.",
+        "applies_from": "2 August 2025 (models placed on the market before that date: 2 August 2027)",
+        "penalty": "Up to EUR 15,000,000 or 3% of total worldwide annual turnover (Article 101)",
+        "actions": [
+          "Everything required of a GPAI model provider (Article 53).",
+          "Model evaluation and adversarial testing (Article 55(1)(a)).",
+          "Assess and mitigate systemic risks at Union level (Article 55(1)(b)).",
+          "Track, document and report serious incidents to the AI Office (Article 55(1)(c)).",
+          "Ensure adequate cybersecurity protection (Article 55(1)(d))."
+        ]
+      },
+      "gpai": {
+        "label": "General-purpose AI model",
+        "ref": "Article 53",
+        "summary": "Documentation, downstream information, copyright policy and a training-data summary.",
+        "applies_from": "2 August 2025",
+        "penalty": "Up to EUR 15,000,000 or 3% of total worldwide annual turnover (Article 101)",
+        "actions": [
+          "Draw up and keep technical documentation (Article 53(1)(a), Annex XI).",
+          "Provide information to downstream providers (Article 53(1)(b), Annex XII).",
+          "Put in place a copyright-compliance policy (Article 53(1)(c)).",
+          "Publish a sufficiently detailed summary of training content (Article 53(1)(d))."
+        ]
+      },
+      "limited_risk": {
+        "label": "Limited risk — transparency",
+        "ref": "Article 50",
+        "summary": "No obligations under Chapter III, but specific disclosure duties apply.",
+        "applies_from": "2 August 2026",
+        "penalty": "Up to EUR 15,000,000 or 3% of total worldwide annual turnover (Article 99(4))",
+        "actions": [
+          "Tell people they are interacting with an AI system, unless it is obvious (Article 50(1)).",
+          "Mark synthetic audio, image, video or text as machine-readable and detectable as generated (Article 50(2)).",
+          "Inform persons exposed to emotion recognition or biometric categorisation (Article 50(3)).",
+          "Disclose deepfakes as artificially generated or manipulated (Article 50(4)).",
+          "Disclose AI-generated text published to inform the public on matters of public interest (Article 50(4))."
+        ]
+      },
+      "minimal_risk": {
+        "label": "Minimal risk",
+        "ref": "Recital 166",
+        "summary": "No mandatory obligations. Voluntary codes of conduct are encouraged.",
+        "applies_from": "Not applicable",
+        "penalty": "None",
+        "actions": [
+          "No legal obligation under the Act.",
+          "Voluntary codes of conduct may be drawn up under Article 95.",
+          "AI literacy measures still apply to providers and deployers (Article 4)."
+        ]
+      }
+    }
+  },
+  "procedures": [
+    {
+      "id": "classify",
+      "title": "Decide which risk tier your system falls into",
+      "actor": "provider",
+      "tier": "all",
+      "ref": "Articles 5, 6, 50, 51",
+      "summary": "The first question in every compliance project. Work down the ladder; stop at the first tier that matches.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Screen against the prohibited practices",
+          "detail": "Check the system against every practice listed in Article 5(1). A match ends the analysis — the system cannot be placed on the market or used.",
+          "ref": "Article 5"
+        },
+        {
+          "n": 2,
+          "title": "Check the Annex I product-safety route",
+          "detail": "Is it a safety component of — or itself — a product under the Annex I harmonisation legislation that must undergo third-party conformity assessment? If so it is high-risk irrespective of Annex III.",
+          "ref": "Article 6(1) + Annex I"
+        },
+        {
+          "n": 3,
+          "title": "Check the Annex III list",
+          "detail": "Compare the intended purpose against the eight Annex III areas. Matching the intended purpose, not the technology, is what matters.",
+          "ref": "Article 6(2) + Annex III"
+        },
+        {
+          "n": 4,
+          "title": "Apply the Article 6(3) filter carefully",
+          "detail": "The filter is available for narrow procedural tasks, improving a completed human activity, detecting decision-making patterns without replacing human assessment, or preparatory tasks. It is unavailable if the system profiles natural persons — profiling always makes it high-risk. Document the assessment.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "n": 5,
+          "title": "Check whether it is a general-purpose AI model",
+          "detail": "If so, the GPAI obligations in Article 53 apply, and Article 51 decides whether systemic-risk obligations in Article 55 also apply.",
+          "ref": "Articles 51, 53"
+        },
+        {
+          "n": 6,
+          "title": "Check the Article 50 transparency triggers",
+          "detail": "Direct interaction with people, synthetic content generation, emotion recognition or biometric categorisation.",
+          "ref": "Article 50"
+        },
+        {
+          "n": 7,
+          "title": "Record the conclusion",
+          "detail": "If you conclude an Annex III system is not high-risk under Article 6(3), you must still register it in the EU database.",
+          "ref": "Article 49(2)"
+        }
+      ]
+    },
+    {
+      "id": "conformity-assessment",
+      "title": "Place a high-risk AI system on the market",
+      "actor": "provider",
+      "tier": "high_risk",
+      "ref": "Article 43",
+      "summary": "The provider's end-to-end path: build the requirements in, document them, assess conformity, mark, register, then monitor.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Build in the Section 2 requirements",
+          "detail": "Risk management system with a documented lifecycle process; data and data governance; technical documentation; automatic record-keeping; instructions for use; human oversight; accuracy, robustness and cybersecurity.",
+          "ref": "Articles 9, 10, 11, 12, 13, 14, 15"
+        },
+        {
+          "n": 2,
+          "title": "Stand up a quality management system",
+          "detail": "A documented QMS covering design, development, quality control and post-market activities.",
+          "ref": "Article 17"
+        },
+        {
+          "n": 3,
+          "title": "Write the technical documentation",
+          "detail": "Draw up the Annex IV documentation demonstrating compliance and keep it up to date.",
+          "ref": "Article 11 + Annex IV"
+        },
+        {
+          "n": 4,
+          "title": "Choose the conformity-assessment route",
+          "detail": "For Annex III point 1 systems: internal control (Annex VI) if harmonised standards or common specifications were applied, otherwise the notified-body route (Annex VII). Annex VII is also required where no harmonised standards exist.",
+          "ref": "Article 43 + Annexes VI and VII"
+        },
+        {
+          "n": 5,
+          "title": "Run the assessment",
+          "detail": "Examine the QMS and the technical documentation and carry out the testing the chosen annex prescribes. Keep the records.",
+          "ref": "Annex VI or Annex VII"
+        },
+        {
+          "n": 6,
+          "title": "Draw up the EU declaration of conformity",
+          "detail": "A written, machine-readable declaration per Annex V, kept at the disposal of national competent authorities for 10 years and supplied on request.",
+          "ref": "Article 47 + Annex V"
+        },
+        {
+          "n": 7,
+          "title": "Affix the CE marking",
+          "detail": "Visibly, legibly and indelibly — digitally for systems provided digitally if it is easily accessible. Where a notified body was involved, add its identification number.",
+          "ref": "Article 48"
+        },
+        {
+          "n": 8,
+          "title": "Register in the EU database",
+          "detail": "Register the provider and the system before placing it on the market, with the Annex VIII information.",
+          "ref": "Article 49 + Annex VIII"
+        },
+        {
+          "n": 9,
+          "title": "Set up post-market monitoring",
+          "detail": "Establish and document a post-market monitoring system built on a monitoring plan proportionate to the risks.",
+          "ref": "Article 72"
+        },
+        {
+          "n": 10,
+          "title": "Be ready to report serious incidents",
+          "detail": "Have a process that can report to the market surveillance authority within 15 days — or within 2 days for a widespread infringement or an Article 3(49)(b) incident, and within 10 days in the event of a death.",
+          "ref": "Article 73"
+        }
+      ]
+    },
+    {
+      "id": "deployer-use",
+      "title": "Use a high-risk AI system lawfully",
+      "actor": "deployer",
+      "tier": "high_risk",
+      "ref": "Article 26",
+      "summary": "The deployer's obligations are mostly about how the system is used, not how it was built.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Use it strictly per the instructions for use",
+          "detail": "Take appropriate technical and organisational measures so the system is used as the provider's instructions require.",
+          "ref": "Article 26(1)"
+        },
+        {
+          "n": 2,
+          "title": "Assign human oversight to capable people",
+          "detail": "Give oversight to natural persons with the necessary competence, training, authority and support.",
+          "ref": "Article 26(2)"
+        },
+        {
+          "n": 3,
+          "title": "Control the input data you feed it",
+          "detail": "To the extent you control the input data, ensure it is relevant and sufficiently representative for the intended purpose.",
+          "ref": "Article 26(4)"
+        },
+        {
+          "n": 4,
+          "title": "Monitor how it behaves in operation",
+          "detail": "Monitor against the instructions for use and inform the provider where relevant. If you believe it presents a risk under Article 79(1), inform the provider or distributor and the market surveillance authority and suspend use.",
+          "ref": "Article 26(5)"
+        },
+        {
+          "n": 5,
+          "title": "Keep the logs",
+          "detail": "Retain the automatically generated logs you control for a period appropriate to the purpose, and at least six months.",
+          "ref": "Article 26(6)"
+        },
+        {
+          "n": 6,
+          "title": "Tell workers and their representatives",
+          "detail": "Before putting the system into service at the workplace, inform workers' representatives and the affected workers that they will be subject to it.",
+          "ref": "Article 26(7)"
+        },
+        {
+          "n": 7,
+          "title": "Report serious incidents upward first",
+          "detail": "Inform the provider first, then the importer or distributor and the relevant market surveillance authorities. If the provider cannot be reached, the reporting duty in Article 73 applies to you directly.",
+          "ref": "Article 26(5) + Article 73"
+        },
+        {
+          "n": 8,
+          "title": "Register your use if you are a public authority",
+          "detail": "Public authorities, Union institutions, bodies, offices and agencies using an Annex III system must register their use in the EU database.",
+          "ref": "Article 49(3)"
+        }
+      ]
+    },
+    {
+      "id": "fria",
+      "title": "Carry out a fundamental rights impact assessment",
+      "actor": "deployer",
+      "tier": "high_risk",
+      "ref": "Article 27",
+      "summary": "Required of public bodies — and of private entities providing public services — before first use of most Annex III systems, and of every deployer of an Annex III point 5(b) or (c) system.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Check that it applies to you",
+          "detail": "Bodies governed by public law, private entities providing public services, and deployers of Annex III point 5(b) (creditworthiness) and 5(c) (life and health insurance pricing) systems. Annex III point 2 systems are excluded.",
+          "ref": "Article 27(1)"
+        },
+        {
+          "n": 2,
+          "title": "Describe the processes the system will be used in",
+          "detail": "Set out your processes in which the system will be used, in line with its intended purpose.",
+          "ref": "Article 27(1)(a)"
+        },
+        {
+          "n": 3,
+          "title": "Describe the period and frequency of use",
+          "detail": "How long and how often each system is intended to be used.",
+          "ref": "Article 27(1)(b)"
+        },
+        {
+          "n": 4,
+          "title": "Identify who may be affected",
+          "detail": "The categories of natural persons and groups likely to be affected in the specific context of use.",
+          "ref": "Article 27(1)(c)"
+        },
+        {
+          "n": 5,
+          "title": "Identify the specific risks of harm",
+          "detail": "Risks likely to affect those categories, taking into account the information the provider supplied under Article 13.",
+          "ref": "Article 27(1)(d)"
+        },
+        {
+          "n": 6,
+          "title": "Describe the human oversight measures",
+          "detail": "How oversight will be implemented, according to the instructions for use.",
+          "ref": "Article 27(1)(e)"
+        },
+        {
+          "n": 7,
+          "title": "Describe the mitigation and governance",
+          "detail": "Measures to take if those risks materialise, including internal governance arrangements and complaint mechanisms.",
+          "ref": "Article 27(1)(f)"
+        },
+        {
+          "n": 8,
+          "title": "Notify the market surveillance authority",
+          "detail": "Once performed, notify the market surveillance authority of the results, submitting the filled-out template.",
+          "ref": "Article 27(3)"
+        },
+        {
+          "n": 9,
+          "title": "Reuse and refresh",
+          "detail": "The obligation applies to first use; you may rely on previous assessments in similar cases. Update it if any element changes or becomes out of date.",
+          "ref": "Article 27(2)"
+        },
+        {
+          "n": 10,
+          "title": "Combine with any GDPR impact assessment",
+          "detail": "Where a data protection impact assessment is already required under Article 35 of Regulation (EU) 2016/679, it may be part of the fundamental rights impact assessment.",
+          "ref": "Article 27(4)"
+        }
+      ]
+    },
+    {
+      "id": "serious-incident",
+      "title": "Report a serious incident",
+      "actor": "provider",
+      "tier": "high_risk",
+      "ref": "Article 73",
+      "summary": "Three different clocks apply, depending on what happened.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Establish that it is a serious incident",
+          "detail": "Check the definition in Article 3(49): death or serious harm to health, a serious and irreversible disruption of critical infrastructure, an infringement of obligations under Union law protecting fundamental rights, or serious harm to property or the environment.",
+          "ref": "Article 3(49)"
+        },
+        {
+          "n": 2,
+          "title": "Establish the causal link",
+          "detail": "The clock starts when you establish a causal link — or a reasonable likelihood of one — between the system and the incident, not when it happened.",
+          "ref": "Article 73(2)"
+        },
+        {
+          "n": 3,
+          "title": "Report to the right authority",
+          "detail": "The market surveillance authority of the Member State where the incident occurred.",
+          "ref": "Article 73(1)"
+        },
+        {
+          "n": 4,
+          "title": "Meet the default deadline: 15 days",
+          "detail": "Not later than 15 days after you — or the deployer — became aware, with the period reflecting the severity.",
+          "ref": "Article 73(2)"
+        },
+        {
+          "n": 5,
+          "title": "Move faster for the two urgent cases",
+          "detail": "Immediately, and no later than 2 days, for a widespread infringement or an Article 3(49)(b) incident. Where a person has died: immediately once a link is established or suspected, and no later than 10 days.",
+          "ref": "Article 73(3), (4)"
+        },
+        {
+          "n": 6,
+          "title": "File an incomplete report if you must",
+          "detail": "Where needed for timeliness, submit an initial incomplete report and follow it with a complete one.",
+          "ref": "Article 73(5)"
+        },
+        {
+          "n": 7,
+          "title": "Investigate without altering the evidence",
+          "detail": "Investigate without delay, risk-assess the incident, take corrective action, cooperate with the authorities and the notified body — and do not alter the system in a way that could affect later evaluation of the causes before informing the authorities.",
+          "ref": "Article 73(6)"
+        }
+      ]
+    },
+    {
+      "id": "gpai-provider",
+      "title": "Comply as a general-purpose AI model provider",
+      "actor": "provider",
+      "tier": "gpai",
+      "ref": "Articles 53, 55",
+      "summary": "Documentation and transparency for every GPAI model; evaluation, mitigation and incident reporting once systemic risk applies.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Determine whether systemic risk applies",
+          "detail": "Presumed where cumulative training compute exceeds 10^25 FLOP; the Commission may also designate a model on the basis of Annex XIII criteria.",
+          "ref": "Article 51"
+        },
+        {
+          "n": 2,
+          "title": "Draw up technical documentation",
+          "detail": "Keep it up to date, covering training and testing, evaluation results and the model's characteristics.",
+          "ref": "Article 53(1)(a) + Annex XI"
+        },
+        {
+          "n": 3,
+          "title": "Supply information to downstream providers",
+          "detail": "Provide the documentation and information needed for the model to be integrated into an AI system responsibly.",
+          "ref": "Article 53(1)(b) + Annex XII"
+        },
+        {
+          "n": 4,
+          "title": "Put a copyright policy in place",
+          "detail": "A policy to comply with Union law on copyright and related rights, including the reservation of rights for text and data mining.",
+          "ref": "Article 53(1)(c)"
+        },
+        {
+          "n": 5,
+          "title": "Publish a training-content summary",
+          "detail": "A sufficiently detailed public summary of the content used for training.",
+          "ref": "Article 53(1)(d)"
+        },
+        {
+          "n": 6,
+          "title": "Evaluate the model and adversarially test it",
+          "detail": "Only where systemic risk applies. Model evaluation per standardised protocols and tools reflecting the state of the art, including documented adversarial testing.",
+          "ref": "Article 55(1)(a)"
+        },
+        {
+          "n": 7,
+          "title": "Assess and mitigate systemic risk",
+          "detail": "Assess and mitigate systemic risks at Union level, including their sources.",
+          "ref": "Article 55(1)(b)"
+        },
+        {
+          "n": 8,
+          "title": "Track and report serious incidents to the AI Office",
+          "detail": "Keep track of, document and report without undue delay to the AI Office and, as appropriate, national competent authorities.",
+          "ref": "Article 55(1)(c)"
+        },
+        {
+          "n": 9,
+          "title": "Ensure cybersecurity protection",
+          "detail": "Maintain an adequate level of cybersecurity protection for the model and its physical infrastructure.",
+          "ref": "Article 55(1)(d)"
+        }
+      ]
+    },
+    {
+      "id": "transparency",
+      "title": "Meet the Article 50 transparency duties",
+      "actor": "provider",
+      "tier": "limited_risk",
+      "ref": "Article 50",
+      "summary": "Four disclosure triggers, each with its own audience.",
+      "steps": [
+        {
+          "n": 1,
+          "title": "Chatbots and direct interaction",
+          "detail": "Design the system so people are informed they are interacting with an AI system — unless that is obvious to a reasonably well-informed, observant and circumspect person. This duty sits on providers.",
+          "ref": "Article 50(1)"
+        },
+        {
+          "n": 2,
+          "title": "Marking synthetic content",
+          "detail": "Providers of systems that generate synthetic audio, image, video or text must mark the output in a machine-readable format so it is detectable as artificially generated. Editing tools that do not substantially alter the input are exempt.",
+          "ref": "Article 50(2)"
+        },
+        {
+          "n": 3,
+          "title": "Emotion recognition and biometric categorisation",
+          "detail": "Deployers must inform the persons exposed to the system, and process personal data in line with the GDPR. The same capability used at work or in education is prohibited outright under Article 5(1)(f).",
+          "ref": "Article 50(3)"
+        },
+        {
+          "n": 4,
+          "title": "Deepfakes",
+          "detail": "Deployers must disclose that image, audio or video content has been artificially generated or manipulated. Artistic and satirical work still has to say so, in a way that does not spoil the work.",
+          "ref": "Article 50(4)"
+        },
+        {
+          "n": 5,
+          "title": "AI-generated text on matters of public interest",
+          "detail": "Deployers must disclose that the text was artificially generated, unless it underwent human review and an editor takes responsibility for publishing it.",
+          "ref": "Article 50(4)"
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "cv-screening",
+      "title": "An AI tool that ranks job applicants",
+      "sector": "Employment",
+      "summary": "A recruitment platform scores and ranks CVs and video interviews to shortlist candidates for a logistics employer.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 4(a)",
+        "Article 6(2)",
+        "Article 6(3)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The recruitment-software company placing the tool on the market."
+        },
+        {
+          "role": "Deployer",
+          "who": "The logistics employer using it to shortlist."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Job applicants."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is Annex III, point 4(a)",
+          "detail": "The system is used for the recruitment and selection of natural persons — analysing and filtering applications and evaluating candidates.",
+          "ref": "Annex III, point 4(a)"
+        },
+        {
+          "title": "The Article 6(3) filter does not rescue it",
+          "detail": "Ranking and filtering candidates is not a narrow procedural task, nor does it merely improve a completed human activity — and where it profiles applicants it is always high-risk.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "Provider duties",
+          "detail": "Risk management, data governance, technical documentation, logging, instructions for use, human oversight, accuracy and robustness, QMS, conformity assessment, CE marking and EU database registration.",
+          "ref": "Articles 9-15, 17, 43, 48, 49"
+        },
+        {
+          "title": "Deployer duties",
+          "detail": "Use per the instructions, assign human oversight to capable staff, keep logs at least six months, and inform workers' representatives and affected workers before putting it into service at the workplace.",
+          "ref": "Article 26"
+        },
+        {
+          "title": "Fundamental rights impact assessment",
+          "detail": "Not automatic for a private employer in recruitment, but it does apply where the deployer is a private entity providing public services, and to Annex III point 5(b) and (c) systems.",
+          "ref": "Article 27(1)"
+        }
+      ],
+      "watchouts": [
+        "Automated rejection without meaningful human review is exactly the case the Act is designed to catch.",
+        "Transparency to candidates is a separate duty from the high-risk regime."
+      ]
+    },
+    {
+      "id": "credit-scoring",
+      "title": "A model that scores creditworthiness",
+      "sector": "Financial services",
+      "summary": "A bank uses a machine-learning model to produce credit scores for consumer loan applications.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 5(b)",
+        "Article 6(3)",
+        "Article 27(1)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The developer of the scoring model."
+        },
+        {
+          "role": "Deployer",
+          "who": "The bank."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Annex III, point 5(b)",
+          "detail": "Evaluating the creditworthiness of natural persons or establishing their credit score is listed — with an express carve-out for systems used solely to detect financial fraud.",
+          "ref": "Annex III, point 5(b)"
+        },
+        {
+          "title": "Profiling closes the Article 6(3) door",
+          "detail": "An Annex III system that performs profiling of natural persons is always considered high-risk, so the filter cannot be used.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "A FRIA is required",
+          "detail": "Deployers of Annex III point 5(b) systems must carry out a fundamental rights impact assessment before first use, regardless of whether they are a public body.",
+          "ref": "Article 27(1)"
+        },
+        {
+          "title": "Human oversight and explanation",
+          "detail": "The provider must design for effective human oversight and give the deployer enough information to interpret the output.",
+          "ref": "Articles 13, 14"
+        }
+      ],
+      "watchouts": [
+        "A pure fraud-detection model is excluded from point 5(b) — but that exclusion is narrow and does not cover general scoring.",
+        "Article 22 of the GDPR on automated decision-making applies in parallel."
+      ]
+    },
+    {
+      "id": "hospital-triage",
+      "title": "Emergency-department triage",
+      "sector": "Healthcare",
+      "summary": "A public hospital deploys a system that classifies incoming emergency calls and prioritises patients for triage.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 5(d)",
+        "Article 27"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The vendor supplying the triage system."
+        },
+        {
+          "role": "Deployer",
+          "who": "The public hospital."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Annex III, point 5(d)",
+          "detail": "Systems that evaluate and classify emergency calls, dispatch or establish priority for emergency first response, and emergency healthcare patient triage systems, are listed.",
+          "ref": "Annex III, point 5(d)"
+        },
+        {
+          "title": "The hospital is a public body, so a FRIA applies",
+          "detail": "Bodies governed by public law must assess the impact on fundamental rights before deploying an Annex III system — excluding Annex III point 2 systems.",
+          "ref": "Article 27(1)"
+        },
+        {
+          "title": "Register the use",
+          "detail": "A public-authority deployer must register its use of the system in the EU database.",
+          "ref": "Article 49(3)"
+        },
+        {
+          "title": "Human oversight is the safety case",
+          "detail": "The system must be designed so clinicians can effectively oversee it, and oversight must be assigned to people with the competence, training and authority to intervene.",
+          "ref": "Articles 14, 26(2)"
+        }
+      ],
+      "watchouts": [
+        "The life-and-health stakes make the risk-management and data-governance duties in Articles 9 and 10 the practical centre of gravity.",
+        "A serious incident must be reported on the tight clocks in Article 73."
+      ]
+    },
+    {
+      "id": "support-chatbot",
+      "title": "A customer-support chatbot",
+      "sector": "Retail",
+      "summary": "An online retailer adds a generative chatbot that answers product and returns questions.",
+      "tier": "limited_risk",
+      "refs": [
+        "Article 50(1)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The retailer, if it develops the system; otherwise the vendor."
+        },
+        {
+          "role": "Deployer",
+          "who": "The retailer."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Not high-risk",
+          "detail": "It is not on the Annex III list and is not a safety component of an Annex I product.",
+          "ref": "Article 6"
+        },
+        {
+          "title": "Article 50(1) applies",
+          "detail": "Users must be informed they are interacting with an AI system, unless that is obvious from the circumstances.",
+          "ref": "Article 50(1)"
+        },
+        {
+          "title": "Article 4 still applies",
+          "detail": "Providers and deployers must take measures to ensure a sufficient level of AI literacy among staff dealing with the system.",
+          "ref": "Article 4"
+        },
+        {
+          "title": "If it generates synthetic media",
+          "detail": "Any synthetic image, audio or video output that is a deepfake must be disclosed as artificially generated.",
+          "ref": "Article 50(4)"
+        }
+      ],
+      "watchouts": [
+        "\"Limited risk\" means light obligations, not no obligations — the disclosure duty is enforceable.",
+        "If the model behind it is a general-purpose AI model, the GPAI duties attach to its provider, not to the retailer."
+      ]
+    },
+    {
+      "id": "social-scoring",
+      "title": "A municipal social-scoring system",
+      "sector": "Public sector",
+      "summary": "A public authority proposes to score residents on social behaviour to prioritise access to services.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(c)",
+        "Article 99(3)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The supplier that builds the scoring system."
+        },
+        {
+          "role": "Deployer",
+          "who": "The public authority that puts it into service on residents."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Residents whose access to services is ranked by the score."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Prohibited outright",
+          "detail": "Placing on the market, putting into service or using an AI system that evaluates or classifies natural persons over a period of time based on their social behaviour or known, inferred or predicted personal characteristics, where the social score leads to detrimental or unfavourable treatment, is banned.",
+          "ref": "Article 5(1)(c)"
+        },
+        {
+          "title": "The highest penalty band",
+          "detail": "Non-compliance with the Article 5 prohibitions carries up to EUR 35,000,000 or 7% of total worldwide annual turnover, whichever is higher.",
+          "ref": "Article 99(3)"
+        },
+        {
+          "title": "No conformity route rescues it",
+          "detail": "There is no assessment, marking or registration that makes a prohibited practice lawful.",
+          "ref": "Article 5"
+        }
+      ],
+      "watchouts": [
+        "The prohibition captures social scoring that leads to treatment that is detrimental or unfavourable in social contexts unrelated to the context in which the data was generated, or that is unjustified or disproportionate.",
+        "The ban bites however the authority gets the system — buying a supplier's model, building it in-house or merely running it all count as putting it into service."
+      ]
+    },
+    {
+      "id": "police-biometrics",
+      "title": "Real-time facial recognition in a public square",
+      "sector": "Law enforcement",
+      "summary": "A police force considers live remote biometric identification in a publicly accessible space.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(h)",
+        "Annex III, point 1(a)"
+      ],
+      "roles": [
+        {
+          "role": "Deployer",
+          "who": "The law-enforcement authority."
+        },
+        {
+          "role": "Provider",
+          "who": "The biometric vendor."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "The default is prohibition",
+          "detail": "Using real-time remote biometric identification systems in publicly accessible spaces for law-enforcement purposes is prohibited.",
+          "ref": "Article 5(1)(h)"
+        },
+        {
+          "title": "Narrow, exhaustively listed exceptions",
+          "detail": "The prohibition is subject to strictly defined exceptions — targeted search for victims, prevention of a specific, substantial and imminent threat to life or physical safety, or locating a suspect for a serious offence — each subject to prior authorisation and limits on duration and scope.",
+          "ref": "Article 5(1)(h)"
+        },
+        {
+          "title": "Even where permitted, it is high-risk",
+          "detail": "Remote biometric identification is Annex III point 1(a), so the full Chapter III regime applies on top.",
+          "ref": "Annex III, point 1(a)"
+        },
+        {
+          "title": "Log and notify",
+          "detail": "Where an exception is relied on, the authorisation, the use and its outcome must be recorded and notified to the market surveillance authority and the national data protection authority.",
+          "ref": "Article 5(1)(h), final subparagraphs"
+        }
+      ],
+      "watchouts": [
+        "Biometric verification — confirming someone is who they claim to be — is expressly excluded, and is not the same as biometric identification.",
+        "Emotion inference in the workplace and in education is separately prohibited."
+      ]
+    },
+    {
+      "id": "gpai-systemic",
+      "title": "A frontier model above the compute threshold",
+      "sector": "Foundation models",
+      "summary": "A lab trains a general-purpose model whose cumulative training compute exceeds 10^25 FLOP.",
+      "tier": "gpai_systemic",
+      "refs": [
+        "Article 51",
+        "Article 53",
+        "Article 55"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The model developer."
+        },
+        {
+          "role": "Downstream providers",
+          "who": "Anyone building an AI system on top of the model."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Systemic risk is presumed",
+          "detail": "A model is presumed to have systemic risk when the cumulative compute used for training exceeds 10^25 floating-point operations. The provider must notify the Commission without delay, and may argue the presumption away.",
+          "ref": "Article 51(1), (2)"
+        },
+        {
+          "title": "The Article 53 baseline applies first",
+          "detail": "Technical documentation, downstream information, a copyright policy and a training-content summary.",
+          "ref": "Article 53"
+        },
+        {
+          "title": "Systemic-risk duties stack on top",
+          "detail": "Model evaluation and adversarial testing, assessment and mitigation of systemic risks, tracking and reporting serious incidents to the AI Office, and adequate cybersecurity protection.",
+          "ref": "Article 55"
+        },
+        {
+          "title": "Enforcement sits with the AI Office",
+          "detail": "The AI Office administers the GPAI regime, supported by the scientific panel of independent experts.",
+          "ref": "Articles 64, 68, 88"
+        }
+      ],
+      "watchouts": [
+        "A downstream provider integrating the model inherits obligations of its own once it places an AI system on the market.",
+        "Open-source releases are subject to a limited exemption but not for systemic-risk models."
+      ]
+    },
+    {
+      "id": "dark-pattern-gambling",
+      "title": "A betting app that quietly steers gamblers",
+      "sector": "Gambling",
+      "summary": "An online casino's personalisation engine uses purposefully deceptive interface techniques — timed nudges, engineered near-misses and hidden opt-outs — to push users into placing larger, repeated bets.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(a)",
+        "Article 5",
+        "Article 99"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The game-studio and platform vendor that builds and supplies the personalisation engine."
+        },
+        {
+          "role": "Deployer",
+          "who": "The licensed casino operator running it on its app."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Gamblers using the app."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Deceptive techniques, not just aggressive design",
+          "detail": "The interface uses purposefully manipulative and deceptive patterns — engineered near-misses and concealed opt-outs — that operate beyond the user's awareness or against it.",
+          "ref": "Article 5(1)(a)"
+        },
+        {
+          "title": "The distortion causes significant harm",
+          "detail": "The nudges appreciably impair the ability to make an informed decision and drive a decision the user would not otherwise have taken, with gambling losses as the significant harm.",
+          "ref": "Article 5(1)(a)"
+        },
+        {
+          "title": "Banned outright",
+          "detail": "A system of this kind cannot be placed on the market or put into service in the Union — the Article 5 prohibition overrides any risk management or transparency measure.",
+          "ref": "Article 5"
+        },
+        {
+          "title": "Enforcement",
+          "detail": "Breach of the Article 5 prohibition carries the top administrative fine tier — up to EUR 35,000,000 or 7% of total worldwide annual turnover, whichever is higher.",
+          "ref": "Article 99"
+        }
+      ],
+      "watchouts": [
+        "Persuasive-but-transparent design is not the same as a technique that operates beyond the user's consciousness — the line is whether the distortion is engineered and concealed.",
+        "The harm need only be reasonably likely; it does not have to be proven after the fact."
+      ]
+    },
+    {
+      "id": "predatory-lending",
+      "title": "A payday app that targets financially distressed borrowers",
+      "sector": "Financial services",
+      "summary": "A high-cost credit app infers financial distress from device and behavioural signals and uses that to push repeat rollover loans at people already in a fragile economic position.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(b)",
+        "Article 5",
+        "Article 99"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The fintech that markets the app and its scoring model."
+        },
+        {
+          "role": "Deployer",
+          "who": "The lender using it to target and renew loans."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Borrowers in financial difficulty."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It exploits a specific social or economic vulnerability",
+          "detail": "Financial distress is a specific social or economic situation, and the app mines signals of it precisely in order to target the offer.",
+          "ref": "Article 5(1)(b)"
+        },
+        {
+          "title": "The effect distorts behaviour and causes harm",
+          "detail": "Steering a distressed borrower into rollover debt materially distorts the borrowing decision and is reasonably likely to cause significant harm — mounting debt and default.",
+          "ref": "Article 5(1)(b)"
+        },
+        {
+          "title": "Objective or effect is enough",
+          "detail": "The limb catches a system whose objective or effect is to distort behaviour, so a benign 'credit access' framing does not save it.",
+          "ref": "Article 5(1)(b)"
+        },
+        {
+          "title": "Consequence",
+          "detail": "The Article 5 prohibition is absolute and triggers the highest tier of administrative fines.",
+          "ref": "Article 99"
+        }
+      ],
+      "watchouts": [
+        "Age, disability and a social or economic situation are the enumerated vulnerabilities — a case does not need all three.",
+        "A lawful-lending purpose does not cure an exploitative design."
+      ]
+    },
+    {
+      "id": "tenant-social-score",
+      "title": "A landlord's behavioural tenant score",
+      "sector": "Housing",
+      "summary": "A property-management platform scores tenants over time on rent punctuality, neighbour complaints and inferred lifestyle, then feeds that score into unrelated decisions such as repairs, viewings and lease renewals.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(c)",
+        "Article 5",
+        "Article 99"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The proptech company supplying the scoring platform."
+        },
+        {
+          "role": "Deployer",
+          "who": "The private housing provider applying the scores."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Tenants."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Evaluation of persons over time on their behaviour",
+          "detail": "The system classifies natural persons over a period of time on their social behaviour and inferred personal characteristics — the core of a social score.",
+          "ref": "Article 5(1)(c)"
+        },
+        {
+          "title": "Detrimental treatment in unrelated contexts",
+          "detail": "A score built from rental and neighbour data is used to decide on repairs and access — social contexts unrelated to where the data was originally generated or collected.",
+          "ref": "Article 5(1)(c)"
+        },
+        {
+          "title": "Private actors are covered too",
+          "detail": "Point (c) is not limited to public authorities, so a private landlord cannot rely on its status.",
+          "ref": "Article 5(1)(c)"
+        },
+        {
+          "title": "Enforcement",
+          "detail": "Falling within the Article 5 prohibition means the maximum fine — up to EUR 35,000,000 or 7% of worldwide annual turnover.",
+          "ref": "Article 99"
+        }
+      ],
+      "watchouts": [
+        "Scoring need only lead to unfavourable OR disproportionate treatment; the two limbs are alternatives, not cumulative.",
+        "A scoring system used only within the context it was collected from is the point of contrast — not this."
+      ]
+    },
+    {
+      "id": "profiling-risk-policing",
+      "title": "A predictive system that flags likely offenders",
+      "sector": "Policing",
+      "summary": "A police force trials software that assigns each person a risk score for committing a future offence, built solely from profiling and inferred personality traits rather than facts tied to any offence.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(d)",
+        "Article 5",
+        "Article 99"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The analytics vendor supplying the model."
+        },
+        {
+          "role": "Deployer",
+          "who": "The police force using it to prioritise individuals."
+        },
+        {
+          "role": "Affected persons",
+          "who": "People flagged as high risk."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Risk assessment based solely on profiling",
+          "detail": "The score predicts the risk of an individual committing an offence from their profile and traits alone, which is exactly the practice point (d) bans.",
+          "ref": "Article 5(1)(d)"
+        },
+        {
+          "title": "The narrow exception does not apply",
+          "detail": "Support for a human assessment is allowed only where that assessment is already based on objective and verifiable facts directly linked to a criminal activity — profiling is not that.",
+          "ref": "Article 5(1)(d)"
+        },
+        {
+          "title": "Purpose, not the label, governs",
+          "detail": "The prohibition bites where the system is put into service specifically for this predictive purpose, even where it is simply described as decision support.",
+          "ref": "Article 5(1)(d)"
+        },
+        {
+          "title": "Penalty",
+          "detail": "An Article 5 breach carries the highest administrative fine tier.",
+          "ref": "Article 99"
+        }
+      ],
+      "watchouts": [
+        "'Solely' does real work — a tool that genuinely starts from verifiable offence-linked facts sits outside the ban, but grafting a profile onto those facts does not.",
+        "Geographic hot-spot prediction about places, rather than individuals, is a different question."
+      ]
+    },
+    {
+      "id": "scraped-face-database",
+      "title": "A startup that scrapes the web for faces",
+      "sector": "Security",
+      "summary": "A company crawls social media and public CCTV stills to build a searchable facial-recognition database — harvesting faces in bulk without regard to who they are or any link to its service.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(e)",
+        "Article 5",
+        "Article 99"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The company creating and expanding the face database."
+        },
+        {
+          "role": "Deployer",
+          "who": "Clients querying the database as part of the same practice."
+        },
+        {
+          "role": "Affected persons",
+          "who": "People whose images were scraped."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Untargeted scraping to build a face database",
+          "detail": "The crawl collects facial images from the internet and CCTV at scale — untargeted, not tied to specific individuals — precisely in order to create or expand a facial-recognition database.",
+          "ref": "Article 5(1)(e)"
+        },
+        {
+          "title": "Creating or expanding both count",
+          "detail": "Even a collection that merely enlarges an existing database falls within the ban, so incremental scraping is not a safe path.",
+          "ref": "Article 5(1)(e)"
+        },
+        {
+          "title": "Public availability does not rescue it",
+          "detail": "The prohibition targets the practice itself; there is no exception for scraped data that happens to be publicly accessible.",
+          "ref": "Article 5(1)(e)"
+        },
+        {
+          "title": "Enforcement",
+          "detail": "Up to EUR 35,000,000 or 7% of total worldwide annual turnover, whichever is higher.",
+          "ref": "Article 99"
+        }
+      ],
+      "watchouts": [
+        "The ban targets the building of the database, not only its use — a provider that never sells access can still breach it.",
+        "Lawfully acquired datasets assembled for other purposes are a different case; the defect here is the untargeted scraping."
+      ]
+    },
+    {
+      "id": "call-centre-emotion-ai",
+      "title": "An AI that reads call-centre agents' emotions",
+      "sector": "Employment",
+      "summary": "A contact-centre platform analyses agents' voice and webcam feed to infer their emotional state and flag 'negativity' in real time.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(f)",
+        "Article 5",
+        "Article 50(2)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The workforce-analytics vendor."
+        },
+        {
+          "role": "Deployer",
+          "who": "The employer running the contact centre."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Call-centre agents."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Emotion inference in the workplace",
+          "detail": "The system infers the emotions of natural persons in the workplace, one of the two areas point (f) singles out.",
+          "ref": "Article 5(1)(f)"
+        },
+        {
+          "title": "The medical or safety carve-out is narrow",
+          "detail": "Only a system intended for medical or safety reasons escapes the ban — performance management and productivity monitoring are neither.",
+          "ref": "Article 5(1)(f)"
+        },
+        {
+          "title": "Transparency would not have been enough",
+          "detail": "Outside the ban, exposing people to an emotion-recognition system triggers an Article 50(2) information duty; a prohibited system cannot be deployed regardless.",
+          "ref": "Article 50(2)"
+        },
+        {
+          "title": "Penalty",
+          "detail": "An Article 5 breach attracts the highest fine tier.",
+          "ref": "Article 99"
+        }
+      ],
+      "watchouts": [
+        "'Workplace' is read functionally — an agent working from home is still at work.",
+        "The exception is for a medical or safety USE, not for a wellbeing feature bolted onto a monitoring tool."
+      ]
+    },
+    {
+      "id": "biometric-categorisation-retail",
+      "title": "A store camera that guesses shoppers' ethnicity",
+      "sector": "Retail",
+      "summary": "In-store cameras run biometric categorisation on shoppers' faces to infer race, and the same platform is pitched on profiling customers by other sensitive traits.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(g)",
+        "Article 5",
+        "Article 50(2)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The retail-analytics vendor selling the camera system."
+        },
+        {
+          "role": "Deployer",
+          "who": "The store operator deploying it at entrances."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Shoppers and staff passing the cameras."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Biometric categorisation to infer sensitive traits",
+          "detail": "The system categorises individuals from their biometric data in order to deduce or infer race and other listed characteristics — the practice point (g) bans.",
+          "ref": "Article 5(1)(g)"
+        },
+        {
+          "title": "The exception is limited to datasets and law enforcement",
+          "detail": "Only labelling or filtering lawfully acquired biometric datasets, and categorising biometric data in a law-enforcement area, are carved out — not commercial visitor analytics.",
+          "ref": "Article 5(1)(g)"
+        },
+        {
+          "title": "Race, politics, religion, sex life and orientation",
+          "detail": "The ban lists the sensitive attributes, and inferring any one of them on an individual basis is enough.",
+          "ref": "Article 5(1)(g)"
+        },
+        {
+          "title": "Transparency is not a cure",
+          "detail": "Article 50(2) would require informing the people exposed to biometric categorisation, but a categorisation system within Article 5 cannot be placed on the market at all.",
+          "ref": "Article 50(2)"
+        }
+      ],
+      "watchouts": [
+        "Aggregate footfall counting that does not categorise individuals from biometric data is a different case.",
+        "Inferring race from appearance rather than a biometric template may still fall here where the system is a biometric categorisation system."
+      ]
+    },
+    {
+      "id": "live-facial-policing",
+      "title": "Live facial recognition scanning a station concourse",
+      "sector": "Law enforcement",
+      "summary": "A police authority deploys real-time remote biometric identification on cameras in a busy public station to identify people against a watchlist as they pass through.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(h)",
+        "Article 5",
+        "Article 99"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The biometrics vendor."
+        },
+        {
+          "role": "Deployer",
+          "who": "The police authority operating the cameras."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Members of the public passing through the station."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Real-time RBI in a publicly accessible space",
+          "detail": "The system identifies people remotely and in real time as they move through a public concourse — the use point (h) prohibits for law enforcement.",
+          "ref": "Article 5(1)(h)"
+        },
+        {
+          "title": "Only three narrow objectives qualify",
+          "detail": "Use is permitted only where strictly necessary to search for specific victims, to prevent a specific, substantial and imminent threat, or to locate a suspect in a serious listed offence — mass scanning is none of these.",
+          "ref": "Article 5(1)(h)"
+        },
+        {
+          "title": "Confirmation, not fishing",
+          "detail": "Even in a permitted case the system may be used only to confirm the identity of a specifically targeted individual; it cannot be run for open-ended searches.",
+          "ref": "Article 5(1)(h)"
+        },
+        {
+          "title": "Penalty",
+          "detail": "An Article 5 infringement carries the highest administrative fine tier.",
+          "ref": "Article 99"
+        }
+      ],
+      "watchouts": [
+        "There is no blanket public-interest or crime-prevention exception — the objectives are exhaustive, and the practice has been banned since 2 February 2025 (Article 113).",
+        "Post-hoc identification from recorded footage is not 'real-time' and is assessed differently."
+      ]
+    },
+    {
+      "id": "companion-bot-distress",
+      "title": "A companion chatbot that leans on lonely users",
+      "sector": "Health & wellbeing",
+      "summary": "A consumer wellbeing app's companion chatbot detects loneliness and low mood in a user's messages and responds with emotional pressure and paid upsells designed to keep the user engaged.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(a)",
+        "Article 5(1)(b)",
+        "Article 5",
+        "Article 99"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The developer of the companion app."
+        },
+        {
+          "role": "Deployer",
+          "who": "The same provider operating it for its users."
+        },
+        {
+          "role": "Affected persons",
+          "who": "People in emotional distress, including minors."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "A manipulative technique acting on a vulnerable person",
+          "detail": "The bot gauges emotional state and applies purposefully manipulative prompts to steer behaviour, impairing the user's ability to make an informed decision.",
+          "ref": "Article 5(1)(a)"
+        },
+        {
+          "title": "Exploiting vulnerability due to a social or economic situation",
+          "detail": "Targeting users who are lonely or in financial precarity exploits a specific social or economic vulnerability within point (b).",
+          "ref": "Article 5(1)(b)"
+        },
+        {
+          "title": "Significant harm is reasonably likely",
+          "detail": "Sustaining engagement through emotionally pressuring interactions is reasonably likely to cause significant harm to a distressed user; the harm need not already have occurred.",
+          "ref": "Article 5(1)(b)"
+        },
+        {
+          "title": "An Article 50(1) disclosure is no defence",
+          "detail": "Telling the user they are talking to an AI goes only to transparency; it does not cure a prohibited manipulative practice.",
+          "ref": "Article 50(1)"
+        }
+      ],
+      "watchouts": [
+        "A wellbeing check-in that offers help is not the same as one engineered to profit from distress.",
+        "Two limbs can apply to one system — the analysis does not have to pick a single head of Article 5(1)."
+      ]
+    },
+    {
+      "id": "classroom-emotion-ai",
+      "title": "Classroom software that scores pupils' engagement",
+      "sector": "Education",
+      "summary": "A school deploys camera-based software that infers pupils' emotions and attention during lessons to generate engagement metrics for teachers.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(f)",
+        "Article 5",
+        "Article 50(2)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The edtech vendor."
+        },
+        {
+          "role": "Deployer",
+          "who": "The school."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Pupils."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Emotion inference in an education institution",
+          "detail": "The system infers pupils' emotions in a school setting — the second area point (f) names alongside the workplace.",
+          "ref": "Article 5(1)(f)"
+        },
+        {
+          "title": "No medical or safety reason here",
+          "detail": "Generating engagement metrics for teaching is neither a medical nor a safety purpose, so the only exception to point (f) does not apply.",
+          "ref": "Article 5(1)(f)"
+        },
+        {
+          "title": "The children's status sharpens the point",
+          "detail": "Minors in a school are exactly the persons the provision is designed to protect, and the ban does not depend on parental consent.",
+          "ref": "Article 5(1)(f)"
+        },
+        {
+          "title": "Contrast with Article 50",
+          "detail": "An emotion-recognition system outside Article 5 would at least owe an Article 50(2) information duty; an education-context one is prohibited outright.",
+          "ref": "Article 50(2)"
+        }
+      ],
+      "watchouts": [
+        "'Education institution' covers the whole setting, not only the classroom lesson.",
+        "Attention or engagement scoring built on emotional inference is caught even if it is only ever shown to teachers."
+      ]
+    },
+    {
+      "id": "press-guard-vision",
+      "title": "A vision system that guards an industrial press",
+      "sector": "Manufacturing",
+      "summary": "A machine builder embeds a camera-based vision system in a hydraulic press; it detects a hand entering the danger zone and stops the ram, and the press is placed on the market under the Machinery Directive.",
+      "tier": "high_risk",
+      "refs": [
+        "Article 6(1)",
+        "Annex I"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The machine builder that places the press on the market."
+        },
+        {
+          "role": "Provider",
+          "who": "The vendor supplying the vision safety component."
+        },
+        {
+          "role": "Deployer",
+          "who": "The factory that operates the press."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Both Article 6(1) conditions are met",
+          "detail": "The vision system is intended to be used as a safety component of a product covered by Annex I harmonisation legislation, and that product must undergo a third-party conformity assessment before it is placed on the market.",
+          "ref": "Article 6(1)"
+        },
+        {
+          "title": "Annex I covers machinery",
+          "detail": "Directive 2006/42/EC on machinery is the first entry in Annex I Section A, so a press whose protective function is performed by the AI system falls squarely inside the route.",
+          "ref": "Annex I"
+        },
+        {
+          "title": "The Annex III filter is not available",
+          "detail": "Article 6(1) makes the system high-risk irrespective of any Annex III use case, and the Article 6(3) derogation by its own terms applies only to Annex III systems.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "What high-risk then means",
+          "detail": "The provider must build in risk management, data governance, technical documentation, logging, instructions for use, human oversight, accuracy and robustness, stand up a quality management system, assess conformity and affix the CE marking.",
+          "ref": "Articles 9-15"
+        }
+      ],
+      "watchouts": [
+        "The AI Act duties stack on top of the machinery conformity assessment — they do not replace the product-safety regime.",
+        "If the press never requires a third-party conformity assessment, the Article 6(1) route does not bite and the system falls back to the general analysis."
+      ]
+    },
+    {
+      "id": "medical-device-cad",
+      "title": "Diagnostic software inside a CE-marked medical device",
+      "sector": "Healthcare",
+      "summary": "A software module that flags suspected lung nodules on chest CT scans is embedded in a CE-marked medical device placed on the market under the Medical Devices Regulation.",
+      "tier": "high_risk",
+      "refs": [
+        "Article 6(1)",
+        "Annex I"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The manufacturer that places the device on the market."
+        },
+        {
+          "role": "Deployer",
+          "who": "The hospital radiology department that uses it."
+        },
+        {
+          "role": "Notified body",
+          "who": "The conformity-assessment body named on the certificate."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is a safety component of an Annex I product",
+          "detail": "The module performs a diagnostic-support function inside a product covered by the Medical Devices Regulation, and the device needs a notified body — so both limbs of Article 6(1) are satisfied.",
+          "ref": "Article 6(1)"
+        },
+        {
+          "title": "Annex I lists the medical-device rules",
+          "detail": "Regulation (EU) 2017/745 on medical devices is item 11 in Annex I, which is what pulls the embedded AI into the Article 6(1) route.",
+          "ref": "Annex I"
+        },
+        {
+          "title": "The derogation cannot be invoked",
+          "detail": "Article 6(3) is available only to Annex III systems; a system caught by Article 6(1) is high-risk regardless of any filter argument.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "Chapter III duties land on the manufacturer",
+          "detail": "Risk management, data governance, technical documentation, automatic logging, instructions for use, human oversight and robustness apply, and the declaration of conformity and CE marking follow.",
+          "ref": "Articles 9-15"
+        }
+      ],
+      "watchouts": [
+        "The medical-device regime and the AI Act run in parallel; the AI Act does not lower the MDR's clinical-evidence bar.",
+        "The route turns on the module's role in the device — a purely administrative feature of the same product would not be a safety component."
+      ]
+    },
+    {
+      "id": "airport-boarding-biometric",
+      "title": "Facial recognition at an airport boarding gate",
+      "sector": "Aviation",
+      "summary": "An airport operator runs a camera at each boarding gate that matches the passenger's face against the travel document presented for the flight.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 1(a)",
+        "Article 6(2)",
+        "Article 5"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The biometric vendor supplying the gate hardware and model."
+        },
+        {
+          "role": "Deployer",
+          "who": "The airport operator."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Boarding passengers."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is remote biometric identification",
+          "detail": "Matching a live face at a distance against a reference image to single a person out is a remote biometric identification system, which point 1(a) lists.",
+          "ref": "Annex III, point 1(a)"
+        },
+        {
+          "title": "Article 6(2) makes it high-risk",
+          "detail": "Listing in Annex III is itself enough under Article 6(2); no product-safety route has to be shown.",
+          "ref": "Article 6(2)"
+        },
+        {
+          "title": "The verification exemption does not fit",
+          "detail": "The carve-out in point 1(a) is limited to biometric verification whose sole purpose is to confirm a person is who they claim to be; a gate that matches the passenger against a document is identification, not verification.",
+          "ref": "Annex III, point 1(a)"
+        },
+        {
+          "title": "The Chapter III regime applies in full",
+          "detail": "The provider must meet the Section 2 requirements and the deployer must use the system per the instructions, keep the logs and inform the affected people.",
+          "ref": "Article 26"
+        }
+      ],
+      "watchouts": [
+        "Point 1 only applies in so far as the use is permitted under Union or national law, so a lawful-basis check comes first.",
+        "If the same technology is run by law enforcement in real time in a publicly accessible space, the Article 5(1)(h) prohibition is the first question and the high-risk regime is never reached."
+      ]
+    },
+    {
+      "id": "cctv-ethnicity-inference",
+      "title": "A CCTV system that infers ethnicity",
+      "sector": "Security",
+      "summary": "A surveillance product uses CCTV footage to infer the ethnicity or political opinions of people passing through a shopping street.",
+      "tier": "prohibited",
+      "refs": [
+        "Article 5(1)(g)",
+        "Article 99"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The surveillance-appliance vendor."
+        },
+        {
+          "role": "Deployer",
+          "who": "The operator that switches the capability on."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Biometric categorisation of protected traits",
+          "detail": "Categorising individual people from their biometric data to deduce or infer their race, political opinions, trade union membership, religious beliefs or sexual orientation is banned outright.",
+          "ref": "Article 5(1)(g)"
+        },
+        {
+          "title": "It crosses from Annex III into Article 5",
+          "detail": "Biometric categorisation appears on the Annex III point 1 list, but where it is used to infer sensitive attributes Article 5(1)(g) prohibits it first — the system cannot be placed on the market or used at all, so the high-risk regime is never reached.",
+          "ref": "Article 5"
+        },
+        {
+          "title": "The highest penalty band",
+          "detail": "Breaching an Article 5 prohibition attracts up to EUR 35,000,000 or 7% of total worldwide annual turnover, whichever is higher.",
+          "ref": "Article 99"
+        },
+        {
+          "title": "No conformity route makes it lawful",
+          "detail": "There is no risk-management, marking or registration step that cures a prohibited practice — the analysis stops at Article 5.",
+          "ref": "Article 5"
+        }
+      ],
+      "watchouts": [
+        "The exclusion in Article 5(1)(g) is for labelling or filtering lawfully acquired datasets; it is not a licence to run categorisation on live footage."
+      ]
+    },
+    {
+      "id": "biometric-verification-access",
+      "title": "Fingerprint verification for building access",
+      "sector": "Facilities",
+      "summary": "An office installs fingerprint readers that confirm an enrolled employee is the person whose badge they present, in order to unlock a door.",
+      "tier": "minimal_risk",
+      "refs": [
+        "Annex III, point 1(a)",
+        "Article 6(2)",
+        "Article 95"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The access-control vendor."
+        },
+        {
+          "role": "Deployer",
+          "who": "The employer operating the office."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is verification, not identification",
+          "detail": "Point 1(a) expressly does not include biometric verification the sole purpose of which is to confirm that a specific person is the person he or she claims to be, so the system stays off the Annex III list.",
+          "ref": "Annex III, point 1(a)"
+        },
+        {
+          "title": "Off Annex III, it is not high-risk",
+          "detail": "Article 6(2) captures only Annex III systems, and the reader is not a safety component of an Annex I product either, so the Chapter III regime does not apply.",
+          "ref": "Article 6(2)"
+        },
+        {
+          "title": "Minimal duties remain",
+          "detail": "No mandatory AI Act obligations attach to the system, but AI-literacy measures still apply to the provider and the deployer, and voluntary codes of conduct are encouraged.",
+          "ref": "Article 4"
+        },
+        {
+          "title": "Voluntary codes of conduct",
+          "detail": "Providers of systems that are not high-risk may draw up and apply voluntary codes of conduct to demonstrate trustworthy practice.",
+          "ref": "Article 95"
+        }
+      ],
+      "watchouts": [
+        "The exemption is narrow: 'sole purpose' means one-to-one confirmation — a reader that also searches a database to find who someone is becomes Annex III point 1(a) identification.",
+        "GDPR duties on processing biometric data are untouched by the AI Act classification."
+      ]
+    },
+    {
+      "id": "suspect-photo-identification",
+      "title": "Identifying suspects from a photograph",
+      "sector": "Law enforcement",
+      "summary": "An investigator uploads a still image from a crime scene and the system returns the closest matches from a facial-image database to help identify suspects.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 1(a)",
+        "Article 6(2)",
+        "Article 26"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The biometric-search vendor."
+        },
+        {
+          "role": "Deployer",
+          "who": "The police force running the search."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Annex III point 1(a)",
+          "detail": "Searching a facial-image database to single out a person is remote biometric identification and is listed in point 1(a) — post hoc rather than live, but still identification.",
+          "ref": "Annex III, point 1(a)"
+        },
+        {
+          "title": "The verification exemption is unavailable",
+          "detail": "The system is not confirming a claimed identity one-to-one; it searches one-to-many, so the point 1(a) carve-out for biometric verification does not apply.",
+          "ref": "Annex III, point 1(a)"
+        },
+        {
+          "title": "High-risk under Article 6(2)",
+          "detail": "Listing in Annex III makes it high-risk, and the Article 6(3) filter is closed where the system performs profiling of natural persons.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "Provider and deployer duties",
+          "detail": "The provider must meet the Section 2 requirements; the deployer must follow the instructions for use, assign human oversight to capable staff and keep the logs.",
+          "ref": "Article 26"
+        }
+      ],
+      "watchouts": [
+        "Real-time use in publicly accessible spaces is separately banned by Article 5(1)(h) unless a narrow law-enforcement exception applies.",
+        "Building the underlying database by untargeted scraping of facial images is a distinct prohibition under Article 5 — the search tool and the scraper are answered by different bans."
+      ]
+    },
+    {
+      "id": "grid-stability",
+      "title": "AI balancing an electricity grid",
+      "sector": "Energy",
+      "summary": "A transmission operator uses an AI system as a safety component to predict load imbalances and trigger grid-stabilisation actions.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 2",
+        "Article 6(2)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The grid-software vendor."
+        },
+        {
+          "role": "Deployer",
+          "who": "The transmission system operator."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Annex III point 2",
+          "detail": "The list covers AI systems intended to be used as safety components in the management and operation of critical infrastructure, including the supply of electricity.",
+          "ref": "Annex III, point 2"
+        },
+        {
+          "title": "High-risk under Article 6(2)",
+          "detail": "Listing in Annex III makes the system high-risk, so the full Chapter III regime applies to how it is built and used.",
+          "ref": "Article 6(2)"
+        },
+        {
+          "title": "Risk management is the core",
+          "detail": "The provider must maintain a lifecycle risk-management system and meet the accuracy, robustness and cybersecurity requirements a grid context demands.",
+          "ref": "Articles 9-15"
+        },
+        {
+          "title": "No FRIA for point 2 systems",
+          "detail": "The fundamental rights impact assessment is expressly not triggered by Annex III point 2 systems — a deliberate carve-out for critical-infrastructure deployers.",
+          "ref": "Article 27"
+        }
+      ],
+      "watchouts": [
+        "Point 2 turns on the system being a safety component in the management and operation of the infrastructure — a demand-forecasting tool with no safety role sits outside it."
+      ]
+    },
+    {
+      "id": "water-treatment-dosing",
+      "title": "AI dosing control in a water plant",
+      "sector": "Water utilities",
+      "summary": "A municipal waterworks uses an AI controller as a safety component to dose treatment chemicals so that drinking water stays within safe limits.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 2",
+        "Article 6(2)",
+        "Article 14"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The process-control vendor."
+        },
+        {
+          "role": "Deployer",
+          "who": "The water utility operating the plant."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Residents served by the plant."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Annex III point 2",
+          "detail": "AI systems used as safety components in the supply of water are listed, so the dosing controller falls inside point 2.",
+          "ref": "Annex III, point 2"
+        },
+        {
+          "title": "High-risk under Article 6(2)",
+          "detail": "Listing makes it high-risk, and the Article 6(3) filter has no purchase on a system whose output directly drives a safety-critical process.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "Data governance and robustness",
+          "detail": "The provider must show that training, validation and testing data were relevant and sufficiently representative, and that accuracy and robustness hold under abnormal operating conditions.",
+          "ref": "Articles 9-15"
+        },
+        {
+          "title": "Human oversight at the plant",
+          "detail": "Operators must be able to interpret the controller's output and override it, and oversight must be assigned to people with the competence and authority to act.",
+          "ref": "Article 14"
+        }
+      ],
+      "watchouts": [
+        "Dosing is often a public-service function, but the fundamental rights impact assessment carve-out for Annex III point 2 systems still applies to the deployer."
+      ]
+    },
+    {
+      "id": "school-admissions-scoring",
+      "title": "AI scoring of school admission applications",
+      "sector": "Education",
+      "summary": "A selective secondary school uses an AI system to score applicants' records and rank them for admission.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 3",
+        "Article 6(2)",
+        "Article 27"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The admissions-software vendor."
+        },
+        {
+          "role": "Deployer",
+          "who": "The school."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Applicants and their families."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Annex III point 3",
+          "detail": "AI systems used to determine access or admission or to assign natural persons to educational institutions at all levels are listed in point 3.",
+          "ref": "Annex III, point 3"
+        },
+        {
+          "title": "The Article 6(3) filter does not help",
+          "detail": "Scoring and ranking applicants materially influences the outcome of decision-making, so it is neither a narrow procedural task nor a preparatory one.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "High-risk duties",
+          "detail": "The provider must build in the Section 2 requirements and the deployer must use the system per the instructions for use and keep the logs.",
+          "ref": "Articles 9-15"
+        },
+        {
+          "title": "FRIA for public or publicly-funded schools",
+          "detail": "A body governed by public law, or a private entity providing a public service, must assess the impact on fundamental rights before first use.",
+          "ref": "Article 27"
+        }
+      ],
+      "watchouts": [
+        "Point 3 turns on determining access — a tool that only advises on teaching, with no bearing on who is admitted, does not engage it."
+      ]
+    },
+    {
+      "id": "remote-exam-proctoring",
+      "title": "AI proctoring of remote exams",
+      "sector": "Education",
+      "summary": "A university runs remote exams through software that watches each candidate's webcam and flags behaviour suggesting cheating.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 3",
+        "Article 6(2)",
+        "Article 14"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The proctoring-software vendor."
+        },
+        {
+          "role": "Deployer",
+          "who": "The university running the exam."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Students sitting the exam."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Annex III point 3",
+          "detail": "AI systems used for monitoring and detecting prohibited behaviour of students during tests are listed in point 3.",
+          "ref": "Annex III, point 3"
+        },
+        {
+          "title": "High-risk under Article 6(2)",
+          "detail": "The listing makes the proctoring system high-risk, and a preparatory-task argument fails because a flag is used to judge the candidate's conduct.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "Human oversight of the flags",
+          "detail": "A human must review a flag before any academic consequence follows, and the system must be designed so that oversight is effective.",
+          "ref": "Article 14"
+        },
+        {
+          "title": "Deployer duties",
+          "detail": "The university must use the system per the instructions for use, monitor how it behaves in operation and inform the affected students.",
+          "ref": "Article 26"
+        }
+      ],
+      "watchouts": [
+        "If the proctoring also tries to infer a candidate's emotions, that crosses into the Article 5 prohibition on emotion inference in education — a different and harsher rule.",
+        "The Article 6(3) filter is sometimes claimed for proctoring; it does not apply where the flags drive decisions about the student."
+      ]
+    },
+    {
+      "id": "adaptive-maths-practice",
+      "title": "An adaptive maths practice app",
+      "sector": "Education",
+      "summary": "A school-licensed app serves maths exercises to pupils and adjusts difficulty to their answers, but plays no part in grading, progression or admission.",
+      "tier": "minimal_risk",
+      "refs": [
+        "Annex III, point 3",
+        "Article 6(2)",
+        "Article 95"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The app developer."
+        },
+        {
+          "role": "Deployer",
+          "who": "The school that licenses the app."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Pupils using it for practice."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is not caught by Annex III point 3",
+          "detail": "The app does not determine access or admission and its outputs are not used to evaluate learning outcomes for progression or certification, so point 3 does not capture it.",
+          "ref": "Annex III, point 3"
+        },
+        {
+          "title": "Not high-risk under Article 6(2)",
+          "detail": "Not being an Annex III system, and not a safety component of an Annex I product, it falls outside the high-risk regime.",
+          "ref": "Article 6(2)"
+        },
+        {
+          "title": "Minimal obligations still attach",
+          "detail": "AI-literacy measures apply to the provider and to the school, and no mandatory AI Act duties attach to the system itself.",
+          "ref": "Article 4"
+        },
+        {
+          "title": "Voluntary codes of conduct",
+          "detail": "Because the system is not high-risk, the provider may sign up to a voluntary code of conduct to demonstrate trustworthy behaviour.",
+          "ref": "Article 95"
+        }
+      ],
+      "watchouts": [
+        "The contrast is the whole point: the same engine becomes Annex III point 3(b) once its outputs are used to steer pupils' progression or to grade them.",
+        "Any emotion inference about pupils would be separately prohibited under Article 5, however limited the app's role."
+      ]
+    },
+    {
+      "id": "promotion-redundancy-decisions",
+      "title": "An AI tool that decides promotions and redundancies",
+      "sector": "Employment",
+      "summary": "An employer deploys a workforce-analytics system that scores staff on performance and potential to decide who is promoted and who is selected for redundancy.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 4(b)",
+        "Article 6(3)",
+        "Article 26"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The HR-analytics vendor placing the scoring tool on the market."
+        },
+        {
+          "role": "Deployer",
+          "who": "The employer using it to decide promotions and redundancies."
+        },
+        {
+          "role": "Affected persons",
+          "who": "The workers scored by the system."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is Annex III, point 4(b)",
+          "detail": "The system is used to make decisions affecting terms of work-related relationships and the promotion or termination of work-related contractual relationships, based on individual behaviour and characteristics.",
+          "ref": "Annex III, point 4(b)"
+        },
+        {
+          "title": "Profiling closes the Article 6(3) filter",
+          "detail": "Scoring individual workers on inferred traits is profiling, and an Annex III system that profiles natural persons is always considered high-risk — the filter cannot be used to escape the regime.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "Provider and deployer duties",
+          "detail": "The provider must build in risk management, data governance, logging, instructions for use, human oversight and accuracy (Articles 9-15) and carry out conformity assessment, CE marking and EU database registration (Articles 43, 48, 49). The employer must use the system per the instructions, assign competent human oversight and keep logs at least six months.",
+          "ref": "Articles 9-15, 43, 48, 49, 26"
+        },
+        {
+          "title": "Tell the workforce first",
+          "detail": "Before putting the system into service at the workplace, the employer must inform workers' representatives and the affected workers that they will be subject to it.",
+          "ref": "Article 26"
+        }
+      ],
+      "watchouts": [
+        "Letting the score determine a dismissal without genuine human review is the fact pattern the Act is built to catch.",
+        "Automated decisions about workers also engage GDPR Article 22 and national labour law in parallel."
+      ]
+    },
+    {
+      "id": "gig-work-allocation",
+      "title": "An algorithm that allocates gig work",
+      "sector": "Gig economy",
+      "summary": "A delivery platform uses an algorithmic system to assign individual tasks to riders and continuously monitor and evaluate their performance and behaviour.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 4(b)",
+        "Article 6(3)",
+        "Article 14"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The platform or the vendor that built the allocation and monitoring engine."
+        },
+        {
+          "role": "Deployer",
+          "who": "The platform running the workforce day to day."
+        },
+        {
+          "role": "Affected persons",
+          "who": "The gig workers whose tasks and ratings are set by the system."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is Annex III, point 4(b)",
+          "detail": "Point 4(b) expressly covers systems used to allocate tasks based on individual behaviour or personal traits or characteristics, and to monitor and evaluate the performance and behaviour of persons in a work-related relationship.",
+          "ref": "Annex III, point 4(b)"
+        },
+        {
+          "title": "Ranking and rating workers is profiling",
+          "detail": "Scoring each rider against a behavioural profile means the Article 6(3) filter is unavailable: profiling always makes an Annex III system high-risk.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "Oversight must be real, not nominal",
+          "detail": "The system must be designed so that a human can effectively oversee it — understanding its limits, staying alert to automation bias and being able to override or stop it.",
+          "ref": "Article 14"
+        },
+        {
+          "title": "Deployer duties still bite",
+          "detail": "The platform must use the system per the instructions, assign oversight to people with competence, training and authority, control the input data it feeds the model, keep logs and inform workers' representatives before use.",
+          "ref": "Article 26"
+        }
+      ],
+      "watchouts": [
+        "Automatic deactivation or de-ranking of riders on a low score is a decision affecting a work-related relationship.",
+        "The rules on platform work add a separate layer of information and human-review duties on top of the Act."
+      ]
+    },
+    {
+      "id": "benefits-entitlement-scoring",
+      "title": "A system that scores eligibility for social benefits",
+      "sector": "Public sector",
+      "summary": "A public authority uses an AI system to evaluate residents' eligibility for essential social-assistance benefits and to grant, reduce, revoke or reclaim them.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 5(a)",
+        "Article 27",
+        "Article 49"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The vendor supplying the eligibility-scoring system to the authority."
+        },
+        {
+          "role": "Deployer",
+          "who": "The public authority administering the benefit."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Benefit claimants and their households."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is Annex III, point 5(a)",
+          "detail": "The point covers systems used by or on behalf of public authorities to evaluate the eligibility of natural persons for essential public-assistance benefits and services, and to grant, reduce, revoke or reclaim them.",
+          "ref": "Annex III, point 5(a)"
+        },
+        {
+          "title": "A fundamental rights impact assessment is required",
+          "detail": "A body governed by public law must complete a fundamental rights impact assessment before first use of an Annex III system, and notify the market surveillance authority of the results.",
+          "ref": "Article 27"
+        },
+        {
+          "title": "Register the use in the EU database",
+          "detail": "A public-authority deployer must register its use of the high-risk system; if the system is not registered, it must not be used and the provider or distributor must be told.",
+          "ref": "Article 49"
+        },
+        {
+          "title": "Explanations and oversight for claimants",
+          "detail": "The provider must supply instructions enabling the deployer to interpret the output, and the system must allow the authority's officers to review, understand and override a decision before it takes effect.",
+          "ref": "Articles 13, 14"
+        }
+      ],
+      "watchouts": [
+        "Automated flagging of claimants for recovery of overpayments is an unfavourable decision, not a harmless analytics task.",
+        "A FRIA is not a substitute for the deployer's own obligations under Article 26."
+      ]
+    },
+    {
+      "id": "insurance-risk-pricing",
+      "title": "Life and health insurance risk pricing",
+      "sector": "Insurance",
+      "summary": "An insurer uses a model that assesses and prices the risk of applicants for life and health insurance policies.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 5(c)",
+        "Article 27",
+        "Article 6(3)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The vendor that develops the risk-assessment model."
+        },
+        {
+          "role": "Deployer",
+          "who": "The life and health insurer that prices policies with it."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is Annex III, point 5(c)",
+          "detail": "Systems used for risk assessment and pricing in relation to natural persons in the case of life and health insurance are expressly listed.",
+          "ref": "Annex III, point 5(c)"
+        },
+        {
+          "title": "A FRIA applies to every deployer",
+          "detail": "Unlike the public-body trigger, deployers of Annex III point 5(c) systems must carry out a fundamental rights impact assessment before first use whether or not they are a public body.",
+          "ref": "Article 27"
+        },
+        {
+          "title": "Profiling blocks the Article 6(3) route",
+          "detail": "Assessing risk by profiling the applicant makes the system always high-risk, so the Article 6(3) filter cannot be relied on to downgrade it.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "The applicant needs an explanation",
+          "detail": "The provider must design the system to be sufficiently transparent for the insurer to interpret the output and explain the basis of a pricing decision to the person affected.",
+          "ref": "Article 13"
+        }
+      ],
+      "watchouts": [
+        "A model that only detects financial fraud is carved out of the neighbouring point on creditworthiness — that carve-out does not extend to life and health pricing.",
+        "The insurer must also keep the input data relevant and representative of the population it prices."
+      ]
+    },
+    {
+      "id": "emergency-call-triage",
+      "title": "An AI system that triages emergency calls",
+      "sector": "Emergency services",
+      "summary": "A public emergency-response service deploys a system that classifies incoming emergency calls and sets priority in the dispatch of police, fire and medical aid.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 5(d)",
+        "Article 27",
+        "Article 49"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The vendor supplying the call-classification and dispatch system."
+        },
+        {
+          "role": "Deployer",
+          "who": "The public emergency-response service."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Callers and patients awaiting a response."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is Annex III, point 5(d)",
+          "detail": "The point covers systems used to evaluate and classify emergency calls, to dispatch or set priority in the dispatch of emergency first response, and emergency healthcare patient triage systems.",
+          "ref": "Annex III, point 5(d)"
+        },
+        {
+          "title": "Use per instructions and keep logs",
+          "detail": "The service must use the system as the instructions require, keep the automatically generated logs it controls for at least six months, and monitor its operation against those instructions.",
+          "ref": "Article 26"
+        },
+        {
+          "title": "A FRIA and database registration apply",
+          "detail": "As a public-body deployer the service must carry out a fundamental rights impact assessment before first use and register its use in the EU database.",
+          "ref": "Articles 27, 49"
+        },
+        {
+          "title": "Human oversight is the safety case",
+          "detail": "Dispatchers must retain the ability to understand the output, disregard it and intervene, with oversight assigned to people holding the necessary competence, training and authority.",
+          "ref": "Articles 14, 26"
+        }
+      ],
+      "watchouts": [
+        "The life-and-health stakes make the risk-management and data-governance duties in Articles 9 and 10 the practical centre of gravity.",
+        "A missed or misclassified call that harms a patient is a serious incident with a tight reporting clock."
+      ]
+    },
+    {
+      "id": "evidence-reliability-grading",
+      "title": "A tool that grades the reliability of evidence",
+      "sector": "Law enforcement",
+      "summary": "A law-enforcement unit uses an AI system to evaluate the reliability of evidence during the investigation or prosecution of criminal offences.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 6",
+        "Article 6(3)",
+        "Article 14"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The vendor supplying the evidence-analysis system."
+        },
+        {
+          "role": "Deployer",
+          "who": "The law-enforcement authority using it in casework."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Suspects, defendants and victims whose cases turn on the evidence."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is Annex III, point 6",
+          "detail": "Point 6(c) lists systems used by or on behalf of law-enforcement authorities to evaluate the reliability of evidence in the course of the investigation or prosecution of criminal offences, in so far as their use is permitted under Union or national law.",
+          "ref": "Annex III, point 6"
+        },
+        {
+          "title": "A support tool is still high-risk",
+          "detail": "Presenting an evidence-reliability score as mere assistance does not take the system out of Annex III; the regime attaches to the intended purpose, and the legality of the underlying use is governed separately by national law.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "Human oversight and a hard limit on automation",
+          "detail": "The system must be designed so investigators can review and override its assessment; a decision producing an adverse legal effect must not rest on the automated output alone.",
+          "ref": "Article 14"
+        },
+        {
+          "title": "Deployer duties, with a carve-out",
+          "detail": "The authority must use the system per the instructions, assign oversight to capable personnel and monitor its operation — though the monitoring duty does not cover the sensitive operational data of law-enforcement deployers.",
+          "ref": "Article 26"
+        }
+      ],
+      "watchouts": [
+        "Scoring evidence for a specific suspect can shade into profiling, which removes the Article 6(3) filter entirely and may reach the Article 5 prohibitions.",
+        "Rules on the admissibility and integrity of evidence sit outside the Act and are not satisfied by conformity assessment alone."
+      ]
+    },
+    {
+      "id": "visa-residence-application-scoring",
+      "title": "A system that scores visa and residence applications",
+      "sector": "Migration and border control",
+      "summary": "A national immigration authority uses a system to score visa and residence-permit applications and to flag which cases appear ineligible.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 7",
+        "Article 27",
+        "Article 49"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The vendor supplying the application-scoring system."
+        },
+        {
+          "role": "Deployer",
+          "who": "The competent public authority deciding the applications."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Applicants for visas, residence permits and related statuses."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is Annex III, point 7",
+          "detail": "Point 7(c) lists systems used to assist competent authorities in the examination of applications for asylum, visa or residence permits, and associated complaints, concerning the eligibility of the persons applying for a status, including assessments of the reliability of evidence.",
+          "ref": "Annex III, point 7"
+        },
+        {
+          "title": "The Article 6(3) filter is a poor fit",
+          "detail": "A model that ranks or flags applicants on their personal data is profiling them, which always makes the system high-risk and rules out the filter.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "A FRIA and registration are required",
+          "detail": "As a public-body deployer the authority must complete a fundamental rights impact assessment before first use and register its use in the EU database.",
+          "ref": "Articles 27, 49"
+        },
+        {
+          "title": "A person must decide, not the score",
+          "detail": "The system must be designed so a caseworker with the competence, training and authority to depart from the output makes the actual decision, with the reasoning available to the applicant.",
+          "ref": "Articles 13, 14"
+        }
+      ],
+      "watchouts": [
+        "Annex III point 7 applies only in so far as the use is permitted under Union or national law — the Act does not authorise a use that is otherwise unlawful.",
+        "Automated refusal of an application without effective human review is the outcome most likely to breach fundamental rights."
+      ]
+    },
+    {
+      "id": "asylum-risk-assessment",
+      "title": "A system that assesses risk in asylum claims",
+      "sector": "Migration and asylum",
+      "summary": "A border authority uses a system to assess the security, irregular-migration or health risk posed by a person who intends to enter, or has entered, the territory of a Member State.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 7",
+        "Article 6(3)",
+        "Article 26"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The vendor supplying the risk-scoring system."
+        },
+        {
+          "role": "Deployer",
+          "who": "The competent public authority conducting the assessment."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Migrants and asylum seekers subject to the assessment."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is Annex III, point 7",
+          "detail": "Point 7(b) lists systems used to assess a risk — including a security risk, a risk of irregular migration or a health risk — posed by a natural person who intends to enter, or has entered, the territory of a Member State.",
+          "ref": "Annex III, point 7"
+        },
+        {
+          "title": "Profiling removes the Article 6(3) filter",
+          "detail": "Risk scoring built on personal characteristics or inferred traits is profiling, and an Annex III system that profiles natural persons is always high-risk.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "Deployer duties and oversight",
+          "detail": "The authority must use the system per the instructions, keep the input data relevant and representative, monitor the system, keep logs, assign competent human oversight and, as a public body, register its use.",
+          "ref": "Article 26"
+        },
+        {
+          "title": "Explainability for a high-stakes decision",
+          "detail": "The provider must supply instructions that let the authority interpret the output and give the person an account of an adverse assessment.",
+          "ref": "Article 13"
+        }
+      ],
+      "watchouts": [
+        "A risk profile must not become the sole basis of a decision with serious consequences for the person.",
+        "The prohibition on predictive policing based solely on profiling sits above this regime and can capture a badly designed risk tool."
+      ]
+    },
+    {
+      "id": "sentencing-recommendation",
+      "title": "A sentencing recommendation aid for judges",
+      "sector": "Justice",
+      "summary": "A judicial authority trials a system that suggests sentencing ranges by researching and interpreting facts and the law and applying it to a concrete case.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 8(a)",
+        "Article 6(3)",
+        "Article 14"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The vendor supplying the recommendation system."
+        },
+        {
+          "role": "Deployer",
+          "who": "The judicial authority or court service using it."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Defendants and parties to the proceedings."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is Annex III, point 8(a)",
+          "detail": "The point covers systems used by or on behalf of a judicial authority to assist it in researching and interpreting facts and the law and in applying the law to a concrete set of facts, or used in a similar way in alternative dispute resolution.",
+          "ref": "Annex III, point 8(a)"
+        },
+        {
+          "title": "The Article 6(3) filter does not apply to a judge",
+          "detail": "Even a tool framed as improving a completed human activity cannot be waved through where it profiles the person before the court; and profiling always makes it high-risk.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "The judge must decide",
+          "detail": "The system must be designed so the judicial officer understands the output, stays alert to automation bias and can disregard it; effective oversight by the decision-maker is mandatory.",
+          "ref": "Article 14"
+        },
+        {
+          "title": "Provider and deployer obligations",
+          "detail": "The provider carries the Section 2 build requirements, conformity assessment, CE marking and registration; the deployer must use the system per the instructions, monitor it, keep logs and register its use.",
+          "ref": "Articles 9-15, 43, 48, 49, 26"
+        }
+      ],
+      "watchouts": [
+        "Annex III point 8(a) targets systems used by or on behalf of a judicial authority — an internal tool used in a court registry can still qualify.",
+        "Judicial independence is protected separately; the Act does not license delegation of the sentencing decision to the machine."
+      ]
+    },
+    {
+      "id": "political-microtargeting",
+      "title": "Micro-targeting political advertising",
+      "sector": "Political campaigns",
+      "summary": "A campaign uses a system to build voter profiles and serve individual voters tailored political advertising designed to influence their voting behaviour.",
+      "tier": "high_risk",
+      "refs": [
+        "Annex III, point 8(b)",
+        "Article 6(3)",
+        "Article 26"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The vendor supplying the targeting and profiling system."
+        },
+        {
+          "role": "Deployer",
+          "who": "The political campaign or its agency running the ads."
+        },
+        {
+          "role": "Affected persons",
+          "who": "The voters targeted."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is Annex III, point 8(b)",
+          "detail": "The point lists systems used for influencing the outcome of an election or referendum or the voting behaviour of natural persons in the exercise of their vote in elections or referenda.",
+          "ref": "Annex III, point 8(b)"
+        },
+        {
+          "title": "The administrative carve-out is narrow",
+          "detail": "The exception removes only systems whose output people are not directly exposed to — tools to organise, optimise or structure a campaign from an administrative or logistical angle. Ads served to individual voters are the opposite of that.",
+          "ref": "Annex III, point 8(b)"
+        },
+        {
+          "title": "Profiling closes the Article 6(3) filter",
+          "detail": "Building behavioural profiles of voters is profiling, so the system is always high-risk and cannot be downgraded under the filter.",
+          "ref": "Article 6(3)"
+        },
+        {
+          "title": "Duties on the campaign and the vendor",
+          "detail": "The provider must meet the Section 2 build requirements and the deployer must use the system per the instructions, assign human oversight and register its use if it is a public body or is acting on behalf of one.",
+          "ref": "Articles 9-15, 26"
+        }
+      ],
+      "watchouts": [
+        "Transparency to voters that content is AI-generated is an additional duty under Article 50, not an alternative to the high-risk regime.",
+        "Targeted political advertising also faces separate restrictions under Union law on the transparency of political advertising."
+      ]
+    },
+    {
+      "id": "white-label-distributor-provider",
+      "title": "A distributor that rebrands a high-risk system",
+      "sector": "Supply chain",
+      "summary": "A distributor buys a ready-made high-risk recruitment-scoring system, puts its own brand on the software and sells it on to employers under its own name.",
+      "tier": "high_risk",
+      "refs": [
+        "Article 25",
+        "Article 24",
+        "Article 22"
+      ],
+      "roles": [
+        {
+          "role": "Initial provider",
+          "who": "The original developer that first placed the high-risk system on the market."
+        },
+        {
+          "role": "Distributor-turned-provider",
+          "who": "The re-brander that puts its own name or trademark on the system."
+        },
+        {
+          "role": "Affected persons",
+          "who": "The job candidates the system scores."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Rebranding makes you the provider",
+          "detail": "A distributor, importer, deployer or other third party that puts its name or trademark on a high-risk AI system already placed on the market is considered a provider of that system and takes on the full set of provider obligations under Article 16.",
+          "ref": "Article 25"
+        },
+        {
+          "title": "The original provider steps back and must assist",
+          "detail": "Once Article 25 bites, the initial provider is no longer the provider of that specific system, but must cooperate with the new provider and make available the information, technical access and assistance needed to meet the obligations — in particular for conformity assessment.",
+          "ref": "Article 25"
+        },
+        {
+          "title": "Distributor checks come first",
+          "detail": "Even before rebranding, a distributor must verify the CE marking, the EU declaration of conformity and the instructions for use, and must act on any sign of non-conformity by bringing the system into conformity, withdrawing or recalling it.",
+          "ref": "Article 24"
+        },
+        {
+          "title": "If the original provider is outside the EU",
+          "detail": "A provider established in a third country must appoint an authorised representative in the Union by written mandate before making the system available, and that representative keeps the declaration of conformity and technical documentation at the authorities' disposal for ten years.",
+          "ref": "Article 22"
+        }
+      ],
+      "watchouts": [
+        "A contractual clause reallocating obligations does not save a re-brander from the Article 25 provider role as against the regulator.",
+        "A 'substantial modification' or a change of intended purpose that turns a non-high-risk system into a high-risk one triggers the same switch — the trigger is not only the trademark."
+      ]
+    },
+    {
+      "id": "voice-assistant-no-disclosure",
+      "title": "A voice assistant that does not say it is AI",
+      "sector": "Consumer technology",
+      "summary": "A handset maker ships a voice assistant that answers calls, drafts replies and holds open-ended conversations in a natural human voice, without ever acknowledging that it is not a person.",
+      "tier": "limited_risk",
+      "refs": [
+        "Article 50(1)",
+        "Article 50"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The handset maker that designs the assistant and places it on the market."
+        },
+        {
+          "role": "Deployer",
+          "who": "The person who uses it to place calls or answer messages."
+        },
+        {
+          "role": "Affected persons",
+          "who": "The third parties the assistant speaks to, who may believe they are talking to a human."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "The trigger is direct interaction, voice included",
+          "detail": "Article 50(1) applies to any AI system intended to interact directly with natural persons, whatever the modality. A voice assistant that places and answers calls is squarely in scope.",
+          "ref": "Article 50(1)"
+        },
+        {
+          "title": "The 'obvious' carve-out is narrow",
+          "detail": "The duty disappears only where it is obvious to a reasonably well-informed, observant and circumspect person that they are dealing with an AI system. A natural-sounding voice is precisely what makes it not obvious, so the system must be designed to disclose.",
+          "ref": "Article 50(1)"
+        },
+        {
+          "title": "Disclosure must be timely and clear",
+          "detail": "The information must be given in a clear and distinguishable manner at the latest at the time of the first interaction or exposure, and must meet accessibility requirements.",
+          "ref": "Article 50"
+        },
+        {
+          "title": "Light regime, not no regime",
+          "detail": "A general conversational assistant is not listed in Annex III and is not a safety component of an Annex I product, so Chapter III does not bite — but the transparency duty does.",
+          "ref": "Article 6"
+        }
+      ],
+      "watchouts": [
+        "A one-off disclosure buried in onboarding does not cover a voice that meets a fresh person on every call — each natural person concerned must be informed at first contact.",
+        "The duty belongs to the provider: the disclosure has to be built into the system, not left to the user to volunteer."
+      ]
+    },
+    {
+      "id": "utility-service-chatbot",
+      "title": "A utility's chatbot that poses as staff",
+      "sector": "Utilities",
+      "summary": "An energy supplier replaces its first-line email support with a generative chatbot that answers billing questions and opens disputes in conversational prose.",
+      "tier": "limited_risk",
+      "refs": [
+        "Article 50(1)",
+        "Article 50(2)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The supplier, if it builds the assistant in-house; otherwise the software vendor that supplies it."
+        },
+        {
+          "role": "Deployer",
+          "who": "The energy supplier operating it on its website and app."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Customers seeking help with bills or complaints."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Direct interaction triggers Article 50(1)",
+          "detail": "A customer typing into a chatbot is interacting directly with an AI system, so the system must be designed to tell them so unless that is obvious from the circumstances.",
+          "ref": "Article 50(1)"
+        },
+        {
+          "title": "Not high-risk",
+          "detail": "Customer service is not an Annex III use and the chatbot is not a safety component of an Annex I product, so the Chapter III regime does not apply.",
+          "ref": "Article 6"
+        },
+        {
+          "title": "Synthetic text carries a separate marking duty",
+          "detail": "Because the system generates text content, the provider must also ensure its outputs are marked in a machine-readable format and detectable as artificially generated — a provider-side duty distinct from the interaction disclosure.",
+          "ref": "Article 50(2)"
+        },
+        {
+          "title": "AI literacy still applies",
+          "detail": "Providers and deployers must ensure, to their best extent, a sufficient level of AI literacy among the staff and other persons dealing with the system on their behalf.",
+          "ref": "Article 4"
+        }
+      ],
+      "watchouts": [
+        "\"Limited risk\" is light, not nil: both the disclosure duty and the marking duty are enforceable.",
+        "The marking duty sits with the provider of the system that generates the text, which is not necessarily the deployer operating the chatbot."
+      ]
+    },
+    {
+      "id": "wellbeing-emotion-app",
+      "title": "A wellbeing app that reads your mood",
+      "sector": "Health and wellbeing",
+      "summary": "A consumer app infers a user's emotional state from voice notes and usage signals to recommend mindfulness exercises. The identical feature aimed at employees would be banned outright.",
+      "tier": "limited_risk",
+      "refs": [
+        "Article 50(3)",
+        "Article 5(1)(f)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The app developer placing the emotion-inference system on the market."
+        },
+        {
+          "role": "Deployer",
+          "who": "The same company, operating the system on the people it infers from."
+        },
+        {
+          "role": "Affected persons",
+          "who": "The users whose emotional state is inferred."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Emotion recognition, so Article 50(3) bites",
+          "detail": "Deployers of an emotion recognition system must inform the natural persons exposed to it that it is operating, and must process the personal data in line with the applicable data-protection rules.",
+          "ref": "Article 50(3)"
+        },
+        {
+          "title": "It is the deployer's duty",
+          "detail": "Article 50(3) is addressed to the deployer — the party operating the system on the people concerned — so disclosure is an operational obligation, not only a design one.",
+          "ref": "Article 50(3)"
+        },
+        {
+          "title": "At work the same feature would be prohibited",
+          "detail": "Inferring emotions of a natural person in the workplace or in education institutions is banned outright, except where the system is used for medical or safety reasons. A consumer wellbeing app escapes that ban only because it is used neither at work nor in school.",
+          "ref": "Article 5(1)(f)"
+        },
+        {
+          "title": "Not high-risk by itself",
+          "detail": "Consumer emotion inference is not listed in Annex III and is not an Annex I safety component, so the Chapter III regime does not apply — only the transparency duty does.",
+          "ref": "Article 6"
+        }
+      ],
+      "watchouts": [
+        "The dividing line is the area of use, not the technology: the same model is a transparency case at home and a prohibited practice in the workplace or a classroom.",
+        "Disclosure must reach everyone exposed, at the latest at first exposure, and the data-protection rules apply in parallel."
+      ]
+    },
+    {
+      "id": "deepfake-celebrity-endorsement",
+      "title": "A deepfake star endorsing a product",
+      "sector": "Media",
+      "summary": "A marketing agency generates a video in which a famous actor's face and voice appear to endorse a product he has never seen, and publishes it as an ordinary advertisement.",
+      "tier": "limited_risk",
+      "refs": [
+        "Article 50(4)",
+        "Article 50(2)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The developer of the video-generation model used to make the clip."
+        },
+        {
+          "role": "Deployer",
+          "who": "The marketing agency producing and publishing the advertisement."
+        },
+        {
+          "role": "Affected persons",
+          "who": "The audience, and the celebrity whose likeness is reproduced."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "It is a deepfake, so the deployer must disclose",
+          "detail": "Deployers of a system that generates or manipulates image, audio or video content constituting a deep fake must disclose that the content has been artificially generated or manipulated.",
+          "ref": "Article 50(4)"
+        },
+        {
+          "title": "The provider must mark the output machine-readable",
+          "detail": "Independently of the agency's disclosure, the provider of the generating system must ensure its outputs are marked in a machine-readable format and detectable as artificially generated or manipulated.",
+          "ref": "Article 50(2)"
+        },
+        {
+          "title": "The artistic carve-out is thin here",
+          "detail": "Where the content forms part of an evidently artistic, creative, satirical or fictional work, the duty narrows to disclosing the manipulated content without spoiling the work. A straight endorsement advertisement is not such a work.",
+          "ref": "Article 50(4)"
+        },
+        {
+          "title": "Advertising is not an Annex III use",
+          "detail": "The system is not an Annex I safety component and does not fall within the Annex III list, so the obligation is transparency only.",
+          "ref": "Article 6"
+        }
+      ],
+      "watchouts": [
+        "Publishing a real person's likeness without consent also engages personality and data-protection law, which the Act does not displace.",
+        "Labeling the video as AI-generated does not make an unauthorised use of a real person's face and voice lawful."
+      ]
+    },
+    {
+      "id": "ai-news-summaries",
+      "title": "AI-written summaries of the news",
+      "sector": "Media",
+      "summary": "A news aggregator automatically generates summaries of political and economic stories to inform the public, with no editor reviewing the text before it is published.",
+      "tier": "limited_risk",
+      "refs": [
+        "Article 50(4)",
+        "Article 50(2)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The developer of the text-generation system."
+        },
+        {
+          "role": "Deployer",
+          "who": "The aggregator publishing the summaries."
+        },
+        {
+          "role": "Affected persons",
+          "who": "The reading public."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Public-interest text must be labelled",
+          "detail": "Deployers that generate or manipulate text published to inform the public on matters of public interest must disclose that the text has been artificially generated or manipulated.",
+          "ref": "Article 50(4)"
+        },
+        {
+          "title": "The editorial-control exception does not apply",
+          "detail": "The duty falls away only where the content has undergone human review or editorial control and a natural or legal person holds editorial responsibility for the publication. An unreviewed publishing pipeline cannot rely on it.",
+          "ref": "Article 50(4)"
+        },
+        {
+          "title": "The generating provider marks the output",
+          "detail": "Separately, the provider of the text-generating system must ensure outputs are marked in a machine-readable format and detectable as artificially generated.",
+          "ref": "Article 50(2)"
+        },
+        {
+          "title": "Not high-risk",
+          "detail": "Aggregating and summarising news is not an Annex III use and is not an Annex I safety component, so only the transparency duty applies.",
+          "ref": "Article 6"
+        }
+      ],
+      "watchouts": [
+        "The exception turns on genuine editorial responsibility, not a nominal editor drawn on the workflow diagram.",
+        "The disclosure must be clear and distinguishable and reach the reader at the latest at first exposure to the text."
+      ]
+    },
+    {
+      "id": "open-weights-general-purpose-model",
+      "title": "A downloadable open-weights model",
+      "sector": "Foundation models",
+      "summary": "A research lab releases a general-purpose language model under a free and open-source licence, with the weights, architecture and usage information posted publicly for anyone to download.",
+      "tier": "gpai",
+      "refs": [
+        "Article 53",
+        "Article 53(1)(c) and (d)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The lab that develops and releases the model."
+        },
+        {
+          "role": "Downstream providers",
+          "who": "Developers who download the model and build AI systems on it."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Users of the resulting systems."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "A general-purpose model, so Article 53 applies",
+          "detail": "A model that displays significant generality and can competently perform a wide range of distinct tasks is a general-purpose AI model, and its provider carries the Article 53 obligations.",
+          "ref": "Article 53"
+        },
+        {
+          "title": "Open weights lighten two of the four duties",
+          "detail": "The technical-documentation duty in Article 53(1)(a), set out in Annex XI, and the downstream-information duty in Article 53(1)(b), set out in Annex XII, do not apply to a model released under a free and open-source licence whose weights, architecture and usage information are made publicly available.",
+          "ref": "Article 53"
+        },
+        {
+          "title": "Two duties survive even for open weights",
+          "detail": "The copyright-compliance policy and the public summary of training content are not disapplied, so an open-weights release still needs both.",
+          "ref": "Article 53(1)(c) and (d)"
+        },
+        {
+          "title": "The exemption is conditional",
+          "detail": "It depends on a licence that genuinely allows access, use, modification and distribution, and it stops applying altogether once the model meets the systemic-risk threshold.",
+          "ref": "Article 53"
+        }
+      ],
+      "watchouts": [
+        "A gated or restricted download is not an open-source release, so the exemption may not be available.",
+        "A downstream developer that fine-tunes the model and releases its own version may become a provider with its own Article 53 duties."
+      ]
+    },
+    {
+      "id": "open-model-above-compute-threshold",
+      "title": "The same model above the compute threshold",
+      "sector": "Foundation models",
+      "summary": "The lab's next release uses cumulative training compute above 10^25 floating-point operations, so the general-purpose model is presumed to carry systemic risk and the open-source carve-out falls away.",
+      "tier": "gpai_systemic",
+      "refs": [
+        "Article 55",
+        "Article 53"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The lab, now subject to the systemic-risk regime."
+        },
+        {
+          "role": "AI Office",
+          "who": "The Union body it must report serious incidents to."
+        },
+        {
+          "role": "Downstream providers",
+          "who": "Those integrating the model into their own systems."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "The compute threshold triggers the regime",
+          "detail": "A general-purpose AI model is presumed to have systemic risk where the cumulative compute used for training exceeds 10^25 floating-point operations, and the provider must notify the Commission without delay.",
+          "ref": "Article 55"
+        },
+        {
+          "title": "Everything in Article 53 still applies",
+          "detail": "The systemic-risk duties are additional to, not instead of, the baseline documentation, downstream-information, copyright and training-summary duties.",
+          "ref": "Article 53"
+        },
+        {
+          "title": "Evaluation, mitigation, incident reporting, cybersecurity",
+          "detail": "The provider must perform model evaluation including documented adversarial testing, assess and mitigate systemic risks at Union level, track and report serious incidents to the AI Office, and ensure an adequate level of cybersecurity protection.",
+          "ref": "Article 55"
+        },
+        {
+          "title": "The open-source exemption no longer helps",
+          "detail": "The carve-out from the Article 53(1)(a) and (b) duties expressly does not apply to general-purpose AI models with systemic risk.",
+          "ref": "Article 53"
+        }
+      ],
+      "watchouts": [
+        "The compute figure is a rebuttable presumption — the provider may argue it away before the Commission, but the notification duty stands.",
+        "A provider established outside the Union must appoint an authorised representative in the Union before placing the model on the market."
+      ]
+    },
+    {
+      "id": "fine-tuner-becomes-provider",
+      "title": "Fine-tuning someone else's model and selling it",
+      "sector": "Software",
+      "summary": "A startup takes an open-weights general-purpose model, fine-tunes it on domain data, brands it and puts the resulting model on the market as its own product.",
+      "tier": "gpai",
+      "refs": [
+        "Article 53",
+        "Article 53(1)(c) and (d)"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The startup, once it places the fine-tuned model on the market under its own name."
+        },
+        {
+          "role": "Upstream provider",
+          "who": "The lab that released the original model."
+        },
+        {
+          "role": "Downstream providers",
+          "who": "Developers who build products on the fine-tuned model."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Releasing your own model makes you the provider",
+          "detail": "A party that develops a general-purpose AI model and places it on the market is its provider. Putting a modified model on the market under your own name is what draws the Article 53 duties to you.",
+          "ref": "Article 53"
+        },
+        {
+          "title": "A copyright policy is mandatory",
+          "detail": "The provider must put in place a policy to comply with Union law on copyright and related rights, including identifying and honouring a reservation of rights for text and data mining.",
+          "ref": "Article 53(1)(c)"
+        },
+        {
+          "title": "A public training-content summary is mandatory",
+          "detail": "The provider must draw up and make publicly available a sufficiently detailed summary of the content used for training, following the template provided by the AI Office — covering the fine-tuning data as well as the base model's.",
+          "ref": "Article 53(1)(d)"
+        },
+        {
+          "title": "You lean on the upstream documentation",
+          "detail": "The upstream provider must supply the documentation that lets downstream providers understand the model's capabilities and limitations, but the downstream provider still owns the duties it triggers by releasing its own model.",
+          "ref": "Article 53"
+        }
+      ],
+      "watchouts": [
+        "The upstream provider's own compliance does not transfer: each provider answers for the model it places on the market.",
+        "If the fine-tuned model is released only inside an AI system, the analysis changes — it is placing the model itself on the market that engages Article 53."
+      ]
+    },
+    {
+      "id": "email-spam-filter",
+      "title": "An email spam filter",
+      "sector": "IT security",
+      "summary": "A mail provider runs a machine-learning classifier that sorts incoming messages into inbox and spam.",
+      "tier": "minimal_risk",
+      "refs": [
+        "Article 95",
+        "Article 4"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The mail provider, or the vendor of the filtering engine."
+        },
+        {
+          "role": "Deployer",
+          "who": "The mailbox owner whose mail is filtered."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "No Annex III use",
+          "detail": "Sorting email for spam is not one of the Annex III use cases, and the classifier is not a safety component of an Annex I product, so it is not high-risk.",
+          "ref": "Annex III"
+        },
+        {
+          "title": "No Article 50 trigger",
+          "detail": "A spam filter does not interact directly with people in the transparency sense, does not generate synthetic media, and does not perform emotion recognition or biometric categorisation, so no disclosure duty arises.",
+          "ref": "Article 50"
+        },
+        {
+          "title": "Voluntary codes of conduct",
+          "detail": "Providers of systems outside the mandatory regimes are encouraged to apply codes of conduct voluntarily, drawing on the Chapter III requirements and on Union ethical guidelines for trustworthy AI.",
+          "ref": "Article 95"
+        },
+        {
+          "title": "AI literacy still applies",
+          "detail": "Even with no risk-tier obligations, providers and deployers must take measures to ensure, to their best extent, a sufficient level of AI literacy among the people dealing with the system.",
+          "ref": "Article 4"
+        }
+      ],
+      "watchouts": [
+        "\"Out of scope\" means outside the Act's mandatory regimes — data-protection and consumer law still apply.",
+        "If the same classifier were repurposed to profile or rank people rather than messages, the analysis would change."
+      ]
+    },
+    {
+      "id": "small-shop-demand-forecasting",
+      "title": "Demand forecasting for a corner shop",
+      "sector": "Retail",
+      "summary": "A small grocery uses an off-the-shelf tool that predicts which products will sell, to decide what to reorder.",
+      "tier": "minimal_risk",
+      "refs": [
+        "Article 95",
+        "Article 4"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The vendor of the forecasting tool."
+        },
+        {
+          "role": "Deployer",
+          "who": "The shop owner."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "Not an Annex III use",
+          "detail": "Forecasting stock demand is not a listed Annex III purpose and the tool is not a safety component of an Annex I product, so the Chapter III regime does not apply.",
+          "ref": "Annex III"
+        },
+        {
+          "title": "No Article 50 trigger",
+          "detail": "The tool does not converse with people, generate synthetic content, or infer emotions or biometric traits, so none of the transparency duties apply.",
+          "ref": "Article 50"
+        },
+        {
+          "title": "Voluntary codes remain open",
+          "detail": "The provider may voluntarily adopt a code of conduct, for example on energy efficiency or trustworthy-AI practices.",
+          "ref": "Article 95"
+        },
+        {
+          "title": "AI literacy is universal",
+          "detail": "The literacy duty in Article 4 applies to every provider and deployer, whatever the tier.",
+          "ref": "Article 4"
+        }
+      ],
+      "watchouts": [
+        "A tool that forecasts aggregate demand is minimal-risk; one that scores or profiles individual people could move up the ladder.",
+        "Small scale is not itself the test — the intended purpose and the context of use decide the tier."
+      ]
+    },
+    {
+      "id": "crop-yield-forecasting",
+      "title": "Predicting crop yield from satellite imagery",
+      "sector": "Agriculture",
+      "summary": "An agritech platform analyses satellite imagery and weather data to forecast harvest yields for farms and agricultural insurers.",
+      "tier": "minimal_risk",
+      "refs": [
+        "Article 95",
+        "Article 4"
+      ],
+      "roles": [
+        {
+          "role": "Provider",
+          "who": "The agritech company building the model."
+        },
+        {
+          "role": "Deployer",
+          "who": "Farms and agricultural insurers using the forecasts."
+        },
+        {
+          "role": "Affected persons",
+          "who": "Farmers relying on the forecast for planning."
+        }
+      ],
+      "analysis": [
+        {
+          "title": "No Annex III listing fits",
+          "detail": "Crop-yield forecasting is not among the Annex III use cases, and the system is not a safety component of an Annex I product, so it is not high-risk. It does not evaluate people at all.",
+          "ref": "Annex III"
+        },
+        {
+          "title": "No Article 50 trigger",
+          "detail": "The system analyses land and weather, not people: it does not interact with users conversationally, generate synthetic media, or infer emotions, so transparency duties do not bite.",
+          "ref": "Article 50"
+        },
+        {
+          "title": "Voluntary codes of conduct",
+          "detail": "Even outside the mandatory regimes, the provider is encouraged to follow a code of conduct, which can cover environmental sustainability and trustworthy-AI practices.",
+          "ref": "Article 95"
+        },
+        {
+          "title": "AI literacy still applies",
+          "detail": "Everyone who operates the system on the provider's or deployer's behalf must be supported with a sufficient level of AI literacy.",
+          "ref": "Article 4"
+        }
+      ],
+      "watchouts": [
+        "Remote-sensing and geospatial systems have no Annex III entry; a system that instead scored farmers as individuals would need a fresh classification.",
+        "The absence of AI Act obligations does not displace data-protection law, where the data relates to identifiable people."
+      ]
+    }
+  ],
+  "governance_structure": {
+    "title": "Who governs the Act",
+    "ref": "Chapter VII",
+    "note": "Solid lines are institutional; the advisory forum's role is advisory to both the Commission and the Board.",
+    "root": {
+      "name": "European Union",
+      "ref": "Regulation (EU) 2024/1689",
+      "children": [
+        {
+          "name": "European Commission",
+          "ref": "Article 64",
+          "note": "Develops Union expertise and capability in AI.",
+          "children": [
+            {
+              "name": "AI Office",
+              "ref": "Article 64",
+              "note": "Oversees general-purpose AI models, coordinates and enforces at Union level; attends the Board without voting."
+            },
+            {
+              "name": "Scientific panel of independent experts",
+              "ref": "Article 68",
+              "note": "Supports enforcement; independent of AI providers; Member States may call on it and pay fees."
+            }
+          ]
+        },
+        {
+          "name": "European Artificial Intelligence Board",
+          "ref": "Article 65",
+          "note": "One representative per Member State; the EDPS participates as observer; the AI Office attends without voting.",
+          "children": [
+            {
+              "name": "Advises and assists the Commission and Member States",
+              "ref": "Article 66",
+              "note": "Coordinates national authorities, shares expertise, advises on GPAI enforcement and on sandboxes and real-world testing."
+            }
+          ]
+        },
+        {
+          "name": "Advisory forum",
+          "ref": "Article 67",
+          "advisory": true,
+          "note": "Balanced stakeholders: industry, start-ups, SMEs, civil society and academia. Advises the Board and the Commission."
+        },
+        {
+          "name": "National competent authorities",
+          "ref": "Article 70",
+          "note": "Each Member State designates at least one notifying authority and one market surveillance authority, acting independently and impartially.",
+          "children": [
+            {
+              "name": "Notifying authorities",
+              "ref": "Article 70",
+              "note": "Assess, designate and monitor notified bodies."
+            },
+            {
+              "name": "Market surveillance authorities",
+              "ref": "Article 70",
+              "note": "Enforce the Act in the market, receive serious-incident reports and fundamental rights impact assessments."
+            },
+            {
+              "name": "Single points of contact",
+              "ref": "Article 70",
+              "note": "Each Member State designates a single point of contact for the public and for stakeholders."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

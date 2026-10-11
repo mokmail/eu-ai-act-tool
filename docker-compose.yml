@@ -1,0 +1,74 @@
+# EU AI Act Navigator — FastAPI AG-UI server + Next.js web client.
+#
+#   docker compose up --build          → open http://localhost:3000
+#
+# The same file deploys the tool INSIDE a bigger site, mounted under a path
+# prefix. That is how kmail.at serves it at /tools/eu-ai-act — copy
+# .env.deploy.example to .env and set:
+#
+#   NEXT_PUBLIC_BASE_PATH=/tools/eu-ai-act
+#   NEXT_PUBLIC_API_BASE=/tools/eu-ai-act
+#   NEXT_PUBLIC_AGENT_URL=/tools/eu-ai-act/agent
+#   API_UPSTREAM=http://server:8000     # app proxies /api, /health, /agent here
+#   WEB_PORT=3601                       # what the edge proxy forwards to
+#
+# With those set the browser only ever talks to one origin, so there is no CORS
+# and the edge needs exactly one routing rule.
+#
+# The server talks to an OpenAI-compatible model endpoint. By default that is an
+# Ollama instance on the HOST — `host.docker.internal` is wired below so the
+# container can reach it. Point EU_AI_ACT_BASE_URL elsewhere for any other
+# OpenAI-compatible provider and set EU_AI_ACT_CHAT_MODEL / EU_AI_ACT_API_KEY.
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    image: eu-ai-act-server
+    container_name: eu-ai-act-server
+    ports:
+      - "${SERVER_PORT:-8000}:8000"
+    environment:
+      EU_AI_ACT_BASE_URL: ${EU_AI_ACT_BASE_URL:-http://host.docker.internal:11434/v1}
+      EU_AI_ACT_CHAT_MODEL: ${EU_AI_ACT_CHAT_MODEL:-deepseek-v4.1-flash:cloud}
+      EU_AI_ACT_API_KEY: ${EU_AI_ACT_API_KEY:-}
+      EU_AI_ACT_CHROMA_DIR: /data/chroma
+      # 1 = a public deployment: the provider-settings routes are closed (they
+      # write the provider and probe arbitrary URLs, so they are an operator's
+      # tool, not a visitor's).
+      EU_AI_ACT_PUBLIC_MODE: ${EU_AI_ACT_PUBLIC_MODE:-0}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+    volumes:
+      - chroma:/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+      args:
+        # Baked into the client bundle. Under a path prefix these are
+        # same-origin paths and the API is proxied below, so none of them has to
+        # be reachable from the browser on its own.
+        NEXT_PUBLIC_BASE_PATH: ${NEXT_PUBLIC_BASE_PATH:-}
+        NEXT_PUBLIC_AGENT_URL: ${NEXT_PUBLIC_AGENT_URL:-http://localhost:8000/agent}
+        NEXT_PUBLIC_API_BASE: ${NEXT_PUBLIC_API_BASE:-http://localhost:8000}
+        # http://server:8000 → the app proxies /api, /health and /agent to the
+        # server container over the compose network. Empty → no proxy.
+        API_UPSTREAM: ${API_UPSTREAM:-}
+        # Public deployment embedded in another site: drops the duplicate
+        # masthead and hides the provider settings.
+        NEXT_PUBLIC_EMBEDDED: ${NEXT_PUBLIC_EMBEDDED:-}
+    image: eu-ai-act-web
+    container_name: eu-ai-act-web
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    depends_on:
+      - server
+    restart: unless-stopped
+
+volumes:
+  chroma:

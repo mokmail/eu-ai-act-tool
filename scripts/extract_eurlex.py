@@ -70,7 +70,14 @@ def extract(html: str) -> dict:
         title = clean(tm.group(1)) if tm else ""
         positions.append((m.start(), num, title))
 
-    # Extract body text for each article: from end of its title div to start of next article heading
+    # Extract body text for each article: from end of its title div to start of next
+    # article heading. The last article would otherwise run to the end of the
+    # document and swallow every annex, so stop it at the first annex container.
+    annex_marker = html.find('id="anx_')
+    # Cut at the <div ...> that opens the first annex, not at its id, or the
+    # article body ends with a half tag that the tag-stripper cannot match.
+    document_end = html.rfind("<div", 0, annex_marker) if annex_marker != -1 else len(html)
+
     for i, (start, num, title) in enumerate(positions):
         # body starts after the eli-title div closes
         title_div_end = html.find("</div>", html.find("eli-title", start))
@@ -78,7 +85,7 @@ def extract(html: str) -> dict:
         if i + 1 < len(positions):
             body_end = positions[i + 1][0]
         else:
-            body_end = len(html)
+            body_end = document_end
         body = clean(html[body_start:body_end])
         articles.append({"number": num, "title": title, "text": body})
 
@@ -109,7 +116,81 @@ def extract(html: str) -> dict:
         "recitals": recitals,
         "articles": articles,
         "annexes": annexes,
+        "structure": extract_structure(html),
     }
+
+
+def extract_structure(html: str) -> dict:
+    """
+    Derive the Act's own skeleton from the official HTML: chapters, the sections
+    inside them, which articles belong to each, and the annex list.
+
+    Document order is authoritative, so a single pass over the markers
+    (chapter / section / article / annex) is enough — we track the chapter and
+    section we are currently inside and attach each article to both.
+    """
+    markers = []
+    for m in re.finditer(r'<div id="cpt_([IVXL]+)">', html):
+        markers.append((m.start(), "chapter", m.group(1), None))
+    for m in re.finditer(r'<div id="cpt_([IVXL]+)\.sct_(\d+)">', html):
+        markers.append((m.start(), "section", m.group(1), m.group(2)))
+    for m in re.finditer(r'<div class="eli-subdivision" id="art_(\d+[a-z]?)">', html):
+        markers.append((m.start(), "article", m.group(1), None))
+    for m in re.finditer(r'<div class="eli-container" id="anx_([IVXL]+)">', html):
+        markers.append((m.start(), "annex", m.group(1), None))
+    markers.sort()
+
+    def heading(segment: str, cls: str) -> str:
+        m = re.search(r'<p[^>]*class="%s"[^>]*>(.*?)</p>' % cls, segment, re.S)
+        return clean(m.group(1)) if m else ""
+
+    chapters: list = []
+    article_index: dict = {}
+    annexes: list = []
+    current_chapter = None
+    current_section = None
+
+    for i, (pos, kind, num, sub) in enumerate(markers):
+        end = markers[i + 1][0] if i + 1 < len(markers) else len(html)
+        segment = html[pos:end]
+
+        if kind == "chapter":
+            current_chapter = {
+                "number": num,
+                "label": heading(segment, "oj-ti-section-1"),
+                "title": heading(segment, "oj-ti-section-2"),
+                "articles": [],
+                "sections": [],
+            }
+            chapters.append(current_chapter)
+            current_section = None
+        elif kind == "section":
+            current_section = {
+                "number": int(sub),
+                "label": heading(segment, "oj-ti-section-1"),
+                "title": heading(segment, "oj-ti-section-2"),
+                "articles": [],
+            }
+            if current_chapter is not None:
+                current_chapter["sections"].append(current_section)
+        elif kind == "article":
+            if current_chapter is not None:
+                current_chapter["articles"].append(num)
+            if current_section is not None:
+                current_section["articles"].append(num)
+            article_index[num] = {
+                "chapter": current_chapter["number"] if current_chapter else None,
+                "chapter_title": current_chapter["title"] if current_chapter else None,
+                "section": current_section["number"] if current_section else None,
+                "section_title": current_section["title"] if current_section else None,
+            }
+        elif kind == "annex":
+            m = re.search(
+                r'<p class="oj-doc-ti"[^>]*>.*?</p>\s*<p class="oj-doc-ti"[^>]*>(.*?)</p>\.?',
+                segment, re.S)
+            annexes.append({"number": num, "title": clean(m.group(1)) if m else ""})
+
+    return {"chapters": chapters, "article_index": article_index, "annexes": annexes}
 
 
 def main():
@@ -120,7 +201,10 @@ def main():
     data = extract(html)
     with open(sys.argv[2], "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"Extracted {len(data['articles'])} articles, {len(data['annexes'])} annexes -> {sys.argv[2]}")
+    print(
+        f"Extracted {len(data['articles'])} articles, {len(data['annexes'])} annexes, "
+        f"{len(data['structure']['chapters'])} chapters -> {sys.argv[2]}"
+    )
 
 
 if __name__ == "__main__":

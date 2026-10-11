@@ -4,12 +4,22 @@ eu_ai_act — a tool for navigating, understanding and applying the EU AI Act
 
 Provides:
   * Full-text search over articles, recitals and annexes.
+  * The Act's own skeleton: chapters, sections and annexes.
   * Risk-tier and actor obligation maps.
   * Compliance checklists with legal citations.
   * Application timeline, penalties, definitions, governance bodies.
+  * A citation graph between provisions and corpus statistics.
+  * A curated guide layer: classification path, procedures and worked scenarios.
 """
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
-from . import compliance, data, search  # noqa: F401
+from . import compliance, data, guides, search, structure  # noqa: F401
 
-__all__ = ["compliance", "data", "search", "__version__"]
+__all__ = [
+    "compliance",
+    "data",
+    "guides",
+    "search",
+    "structure",
+    "__version__",
+]
