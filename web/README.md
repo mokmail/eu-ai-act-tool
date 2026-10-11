@@ -24,6 +24,26 @@ npm run dev
 Both are build-time values, so they must be set before `npm run build` for a
 production bundle (see `next.config.ts` and `web/Dockerfile`).
 
+## Embedded ("public") build
+
+`NEXT_PUBLIC_EMBEDDED=1` marks a deployment hosted inside another site — kmail.at
+renders its own page and embeds this app at `/tools/eu-ai-act/app`. The host page
+carries the masthead and the footer, so this app drops both, and the provider
+**Settings** view goes with them (its nav group is absent and `page.tsx` refuses
+the view even if requested directly).
+
+The layout adapts so nothing is stranded:
+
+- At `lg` and up the header strip (`SiteHeader`) is `hidden` and the sidebar is
+  permanent — `navOpen` is forced expanded, because the collapse toggle lives in
+  that strip and a collapsed rail would be a dead end. The main pane takes the
+  full viewport height (`lg:h-screen`).
+- Below `lg` the header returns: there the sidebar is an overlay drawer and the
+  header is the only way to open it, so `main` subtracts its height.
+
+Standalone builds keep the header at every width, let the sidebar collapse to a
+rail of section numbers, and leave Settings in place.
+
 ## Layout
 
 ```

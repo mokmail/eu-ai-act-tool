@@ -178,7 +178,15 @@ export function SiteHeader({
   onToggleNav: () => void;
 }) {
   return (
-    <header className="sticky top-0 z-40 isolate border-b border-line-dim bg-bg-void/85 backdrop-blur-md">
+    <header
+      className={`sticky top-0 z-40 isolate border-b border-line-dim bg-bg-void/85 backdrop-blur-md ${
+        // Embedded on a wide screen, the sidebar is permanent and the host page
+        // already supplies the masthead — so this strip is a third horizontal
+        // band for no gain. It stays below lg, where the sidebar becomes a
+        // drawer and this is the only way to open it.
+        EMBEDDED ? "lg:hidden" : ""
+      }`}
+    >
       <div
         className={`mx-auto flex max-w-[1500px] items-center justify-between px-5 md:px-10 ${
           EMBEDDED ? "h-12" : "h-16"

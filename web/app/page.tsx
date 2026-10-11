@@ -96,10 +96,12 @@ export default function Page() {
         {/* Wide screen: inline, and collapses to a rail of section numbers. */}
         <aside
           className={`hidden shrink-0 border-r border-line-dim transition-[width] duration-300 ease-out lg:block ${
-            navOpen ? "w-[252px] px-6 py-8" : "w-[58px] px-2 py-8"
+            // Embedded: this strip's toggle is hidden at lg, so a collapsed rail
+            // would be a dead end. Keep it expanded.
+            navOpen || EMBEDDED ? "w-[252px] px-6 py-8" : "w-[58px] px-2 py-8"
           }`}
         >
-          <SideNav view={view} onSelect={selectView} meta={meta} collapsed={!navOpen} />
+          <SideNav view={view} onSelect={selectView} meta={meta} collapsed={!navOpen && !EMBEDDED} />
         </aside>
 
         {/* Narrow screen: the same nav, as an overlay drawer. */}
@@ -118,7 +120,12 @@ export default function Page() {
         ) : null}
 
         <main
-          className={`flex min-w-0 flex-1 flex-col ${EMBEDDED ? "h-[calc(100vh-3rem)]" : "h-[calc(100vh-4rem)]"}`}
+          className={`flex min-w-0 flex-1 flex-col ${
+            // Embedded, the strip is hidden at lg, so the pane takes the full
+            // height there and only subtracts it on the narrower screens where
+            // the strip is still drawn.
+            EMBEDDED ? "h-[calc(100vh-3rem)] lg:h-screen" : "h-[calc(100vh-4rem)]"
+          }`}
         >
           {view === "overview" ? (
             <DashboardView onSelect={selectView} onOpenArticle={openArticle} onAsk={ask} />

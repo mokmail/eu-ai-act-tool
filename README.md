@@ -99,6 +99,47 @@ docker compose up --build
 
 The server reaches an Ollama instance on the host via `host.docker.internal`.
 
+### Deployment
+
+The command above is the **standalone** shape — one origin, with the app's own
+masthead and footer.
+
+The same compose file also deploys the tool *inside* a bigger site, mounted under
+a path prefix. That is how kmail.at serves it at `/tools/eu-ai-act`: the host
+page renders its own header, footer and tool docs, and embeds this app at the
+nested path. Copy the template and build:
+
+```bash
+cp .env.deploy.example .env
+docker compose up -d --build
+```
+
+The variables that matter:
+
+| Variable | What it does |
+|---|---|
+| `NEXT_PUBLIC_BASE_PATH` | The path prefix the app is built and served under. |
+| `NEXT_PUBLIC_API_BASE`, `NEXT_PUBLIC_AGENT_URL` | Same-origin paths for the REST passthrough and the AG-UI endpoint, so the browser only ever talks to one origin. |
+| `API_UPSTREAM=http://server:8000` | The Next server proxies `/api`, `/health` and `/agent` to the server container; the browser never reaches that service directly. |
+| `NEXT_PUBLIC_EMBEDDED=1` | A public, embedded deployment: drops this app's own masthead **and** footer, and removes the provider **Settings** from the nav. |
+| `EU_AI_ACT_PUBLIC_MODE=1` | Closes the provider-settings routes on the server too — they write the deployment's provider and can probe arbitrary URLs, so on a public host a visitor could repoint the site's inference. |
+| `CORS_ORIGINS` | The host origins allowed to call the server directly. |
+
+Because the host page already supplies the masthead, embedded mode **adapts** the
+layout instead of stacking a second one inside it:
+
+- **Wide screen (≥ `lg`)** — the app's header strip is dropped entirely, and the
+  sidebar stays permanently expanded (its collapse toggle lived in that strip, so
+  a collapsed rail would be a dead end). The main pane then uses the full viewport
+  height.
+- **Narrow screen (< `lg`)** — the header returns: there the sidebar is an overlay
+  drawer and the header is the only way to open it. The pane subtracts the strip's
+  height.
+
+In the standalone shape the header is present at every width, the sidebar
+collapses to a rail of section numbers, and the pane subtracts the full header
+height.
+
 ### Tests
 
 One command verifies everything — library, AG-UI server and web client:
